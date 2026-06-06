@@ -6059,6 +6059,78 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
           return ray.ray.intersectPlane(plane, pt) ? pt : null;
         }
 
+        function refreshHybridAnchors(bi) {
+          if (!bi || !threeEngine) return;
+          bi.group.updateMatrixWorld(true);
+          if (bi.subject) bi.subject.updateMatrix();
+          if (bi.object) bi.object.updateMatrix();
+          threeEngine._hybridScreenAnchor = bi.getScreenAnchor(threeEngine.camera, threeEngine.canvas);
+          threeEngine._hybridScreenAnchorLeft = bi.getScreenAnchorLeft(threeEngine.camera, threeEngine.canvas);
+        }
+
+        function hybridMeshOnScreen(camera, canvas, mesh) {
+          if (!mesh) return false;
+          const wp = new THREE.Vector3();
+          mesh.getWorldPosition(wp);
+          const p = wp.clone().project(camera);
+          if (p.z < -1 || p.z > 1) return false;
+          const rect = canvas.getBoundingClientRect();
+          const cx = (p.x * 0.5 + 0.5) * rect.width;
+          const cy = (-p.y * 0.5 + 0.5) * rect.height;
+          const margin = 40;
+          return cx >= -margin && cx <= rect.width + margin && cy >= -margin && cy <= rect.height + margin;
+        }
+
+        function hybridHitTest(camera, canvas, bi, clientX, clientY) {
+          const rect = canvas.getBoundingClientRect();
+          const sx = clientX - rect.left;
+          const sy = clientY - rect.top;
+          if (sx < 0 || sy < 0 || sx > rect.width || sy > rect.height) return null;
+
+          refreshHybridAnchors(bi);
+          const left = threeEngine._hybridScreenAnchorLeft;
+          const right = threeEngine._hybridScreenAnchor;
+          if (!left || !right) return null;
+
+          const leftVis = hybridMeshOnScreen(camera, canvas, bi.subject);
+          const rightVis = hybridMeshOnScreen(camera, canvas, bi.object);
+          const dl = Math.hypot(sx - left.cx, sy - left.cy);
+          const dr = Math.hypot(sx - right.cx, sy - right.cy);
+          const rl = left.r * 0.82;
+          const rr = right.r * 0.82;
+
+          if (leftVis && dl < rl && (!rightVis || dl <= dr)) return 'left';
+          if (rightVis && dr < rr) return 'right';
+          return null;
+        }
+
+        function clampHybridOffsets(bi) {
+          if (!bi || !threeEngine) return;
+          const camZ = threeEngine.cameraZoom || 18;
+          const d = 4.5 * (camZ / 18);
+          const maxX = d * 1.15;
+          const maxY = 2.8 * (camZ / 18);
+          bi.leftOff.x = Math.max(-maxX, Math.min(maxX, bi.leftOff.x));
+          bi.leftOff.y = Math.max(-maxY, Math.min(maxY, bi.leftOff.y));
+          bi.leftOff.z = 0;
+          bi.rightOff.x = Math.max(-maxX, Math.min(maxX, bi.rightOff.x));
+          bi.rightOff.y = Math.max(-maxY, Math.min(maxY, bi.rightOff.y));
+          bi.rightOff.z = 0;
+        }
+
+        function resetHybridOffsets(bi) {
+          if (!bi) return;
+          bi.leftOff = { x: 0, y: 0, z: 0 };
+          bi.rightOff = { x: 0, y: 0, z: 0 };
+          bi.orbitYaw = 0;
+          bi.orbitPitch = 0;
+          if (bi.group) {
+            bi.group.rotation.x = 0;
+            bi.group.rotation.y = 0;
+          }
+        }
+        window.resetHybrid5DOffsets = resetHybridOffsets;
+
         function hybridDragObject(bi, side, world) {
           if (!bi || !world) return;
           const camZ = threeEngine.cameraZoom || 18;
@@ -6081,15 +6153,17 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
             if (side === 'left') bi.leftOff.x = mid - minGap * 0.5 - (-d);
             else bi.rightOff.x = mid + minGap * 0.5 - d;
           }
+          clampHybridOffsets(bi);
         }
 
         window.addEventListener('mousedown', e => {
           if (!engine || engine.visualMode !== 16 || !threeEngine) return;
+          if (e.target.closest('.ui-chrome, button, input, select, label, a')) return;
           const bi = threeEngine.visualizers[16];
           if (!bi) return;
 
           if (e.button === 0) {
-            const hit = bi.hitTestScreen(threeEngine.camera, threeEngine.canvas, e.clientX, e.clientY);
+            const hit = hybridHitTest(threeEngine.camera, threeEngine.canvas, bi, e.clientX, e.clientY);
             if (hit) {
               hybridObjectDrag = hit;
               const world = hybridScreenToWorld(threeEngine.camera, threeEngine.canvas, e.clientX, e.clientY);
@@ -6131,6 +6205,15 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
 
         window.addEventListener('auxclick', e => {
           if (e.button === 1) e.preventDefault();
+        });
+
+        window.addEventListener('dblclick', e => {
+          if (!engine || engine.visualMode !== 16 || !threeEngine) return;
+          const bi = threeEngine.visualizers[16];
+          if (!bi) return;
+          resetHybridOffsets(bi);
+          refreshHybridAnchors(bi);
+          e.preventDefault();
         });
         
         let mouseActive = false;
@@ -6517,6 +6600,7 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
         disableModeX();
       }
 
+      const prevVisualMode = engine ? engine.visualMode : -1;
       engine.visualMode = modeIdx;
 
       if (modeIdx === 4) {
@@ -6551,6 +6635,9 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
         canvas2d.classList.add('hybrid-overlay');
         if (threeEngine) threeEngine.setMode(renderedIdx);
         if (canvas2dEngine) canvas2dEngine.setMode(renderedIdx);
+        if (threeEngine && threeEngine.visualizers[16] && prevVisualMode !== 16 && window.resetHybrid5DOffsets) {
+          window.resetHybrid5DOffsets(threeEngine.visualizers[16]);
+        }
       } else if (renderedIdx >= 11 && renderedIdx <= 14) {
         particleCanvas.style.display = 'none';
         threeCanvas.style.display = 'block';
