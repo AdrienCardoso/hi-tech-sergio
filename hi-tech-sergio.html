@@ -267,7 +267,7 @@
       gap: 8px;
     }
     .modes-variants-panel {
-      width: 26px;
+      width: 30px;
       display: none;
       flex-direction: column;
       gap: 3px;
@@ -286,43 +286,43 @@
       min-height: 0;
       width: 100%;
       border-radius: 3px;
-      border: 1px solid #262626;
-      background: rgba(18, 18, 22, 0.9);
+      border: 1px solid #2e2e2e;
+      background: rgba(28, 28, 32, 0.95);
       cursor: pointer;
       padding: 0;
       outline: none;
-      transition: border-color 0.15s, box-shadow 0.15s, transform 0.12s;
-      position: relative;
-      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: border-color 0.15s, box-shadow 0.15s, background 0.15s, transform 0.12s;
     }
-    .variant-cell::after {
-      content: '';
-      position: absolute; inset: 2px;
-      border-radius: 2px;
-      opacity: 0.55;
-      background: linear-gradient(135deg, rgba(168,85,247,0.35), rgba(56,189,248,0.2));
+    .variant-cell-num {
+      font-size: 7px;
+      font-weight: 600;
+      line-height: 1;
+      color: rgba(150, 150, 158, 0.95);
+      font-variant-numeric: tabular-nums;
+      letter-spacing: -0.03em;
+      pointer-events: none;
+      user-select: none;
     }
-    .variant-cell[data-variant="0"]::after { background: linear-gradient(135deg, #7c3aed, #a855f7); }
-    .variant-cell[data-variant="1"]::after { background: linear-gradient(135deg, #6366f1, #818cf8); }
-    .variant-cell[data-variant="2"]::after { background: linear-gradient(135deg, #3b82f6, #60a5fa); }
-    .variant-cell[data-variant="3"]::after { background: linear-gradient(135deg, #06b6d4, #22d3ee); }
-    .variant-cell[data-variant="4"]::after { background: linear-gradient(135deg, #10b981, #34d399); }
-    .variant-cell[data-variant="5"]::after { background: linear-gradient(135deg, #84cc16, #a3e635); }
-    .variant-cell[data-variant="6"]::after { background: linear-gradient(135deg, #eab308, #facc15); }
-    .variant-cell[data-variant="7"]::after { background: linear-gradient(135deg, #f97316, #fb923c); }
-    .variant-cell[data-variant="8"]::after { background: linear-gradient(135deg, #ef4444, #f87171); }
-    .variant-cell[data-variant="9"]::after { background: linear-gradient(135deg, #ec4899, #f472b6); }
-    .variant-cell[data-variant="10"]::after { background: linear-gradient(135deg, #d946ef, #e879f9); }
-    .variant-cell[data-variant="11"]::after { background: linear-gradient(135deg, #f8fafc, #94a3b8); }
     .variant-cell:hover {
-      border-color: rgba(64,64,64,0.9);
-      transform: scale(1.06);
+      border-color: rgba(80, 80, 88, 0.95);
+      background: rgba(42, 42, 48, 0.98);
+      transform: scale(1.05);
+    }
+    .variant-cell:hover .variant-cell-num {
+      color: rgba(210, 210, 218, 1);
     }
     .variant-cell.active {
       border-color: var(--purple);
-      box-shadow: 0 0 10px rgba(168,85,247,0.45);
+      background: rgba(139, 92, 246, 0.16);
+      box-shadow: 0 0 8px rgba(168, 85, 247, 0.35);
     }
-    .variant-cell.active::after { opacity: 0.95; }
+    .variant-cell.active .variant-cell-num {
+      color: #d8b4fe;
+      font-weight: 700;
+    }
     .modes-panel-title {
       display: none;
     }
@@ -865,14 +865,25 @@
     }
     .light-theme .variant-cell {
       border-color: var(--panel-border);
-      background: rgba(240, 240, 240, 0.5);
+      background: rgba(235, 235, 238, 0.9);
+    }
+    .light-theme .variant-cell-num {
+      color: rgba(100, 100, 108, 0.95);
     }
     .light-theme .variant-cell:hover {
       border-color: rgba(150, 150, 150, 0.8);
+      background: rgba(220, 220, 224, 0.95);
+    }
+    .light-theme .variant-cell:hover .variant-cell-num {
+      color: rgba(50, 50, 56, 1);
     }
     .light-theme .variant-cell.active {
       border-color: var(--purple);
-      box-shadow: 0 0 10px rgba(139, 92, 246, 0.25);
+      background: rgba(139, 92, 246, 0.12);
+      box-shadow: 0 0 8px rgba(139, 92, 246, 0.2);
+    }
+    .light-theme .variant-cell.active .variant-cell-num {
+      color: var(--purple);
     }
     .light-theme .column-label {
       color: var(--text-muted);
@@ -3152,7 +3163,7 @@
       const family = MODES[mode] ? (isRu ? MODES[mode].ru : MODES[mode].en) : '';
       panel.innerHTML = Array.from({ length: 12 }, (_, i) => {
         const label = isRu ? `Вариант ${i + 1}` : `Variant ${i + 1}`;
-        return `<button type="button" class="variant-cell${i === visualVariantIdx ? ' active' : ''}" data-variant="${i}" title="${family} — ${label}" onclick="setVisualVariant(${i})"></button>`;
+        return `<button type="button" class="variant-cell${i === visualVariantIdx ? ' active' : ''}" data-variant="${i}" title="${family} — ${label}" onclick="setVisualVariant(${i})"><span class="variant-cell-num">${i + 1}</span></button>`;
       }).join('');
     }
 
