@@ -3151,19 +3151,27 @@
     const VISUAL_DIRECTORY = {
       '6D-1': { type: 'milkdrop', presetKey: 'martin - city of shadows', presetNumber: 168 },
       '6D-2': { type: 'milkdrop', presetKey: 'martin - cope - laser dome', presetNumber: 169 },
-      '0D-12': { type: 'webgl', visualMode: 0, variantIdx: 0 }
+      '0D-12': { type: 'webgl', visualMode: 0, variantIdx: 0 },
+      '2D-2': { type: 'milkdrop', presetNumber: 7 },
+      '7D-1': { type: 'milkdrop', presetNumber: 8 },
+      '10D-2': { type: 'webgl', visualMode: 1, variantIdx: 0 },
+      '10D-3': { type: 'webgl', visualMode: 4, variantIdx: 0 },
+      '10D-4': { type: 'webgl', visualMode: 8, variantIdx: 0 }
     };
 
-    // Пресеты, убранные из Other (по ключу — нумерация в списке не сбивается)
+    // Пресеты, убранные из Other (ключ и/или № в полном списке — нумерация не сбивается)
     const OTHER_VISUAL_EXCLUDED_PRESET_KEYS = new Set([
       'martin - city of shadows',
       'martin - cope - laser dome'
     ]);
+    const OTHER_VISUAL_EXCLUDED_PRESET_NUMBERS = new Set([7, 8, 168, 169]);
 
     let activeDirectorySlot = null;
 
-    function isOtherPresetExcluded(key) {
-      return OTHER_VISUAL_EXCLUDED_PRESET_KEYS.has(key);
+    function isOtherPresetExcluded(key, index) {
+      if (OTHER_VISUAL_EXCLUDED_PRESET_KEYS.has(key)) return true;
+      if (index != null && OTHER_VISUAL_EXCLUDED_PRESET_NUMBERS.has(index + 1)) return true;
+      return false;
     }
 
     function getDirSlot(modeIdx, variantIdx) {
@@ -3181,7 +3189,7 @@
       if (!milkdropEngine || !milkdropEngine.presetKeys.length) return [];
       return milkdropEngine.presetKeys
         .map((_, i) => i)
-        .filter(i => !isOtherPresetExcluded(milkdropEngine.presetKeys[i]));
+        .filter(i => !isOtherPresetExcluded(milkdropEngine.presetKeys[i], i));
     }
 
     function isMainVisualMode(modeIdx) {
@@ -6081,7 +6089,7 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
           }
           const available = this.presetKeys
             .map((_, i) => i)
-            .filter(i => !isOtherPresetExcluded(this.presetKeys[i]));
+            .filter(i => !isOtherPresetExcluded(this.presetKeys[i], i));
           this.presetIndex = available[Math.floor(Math.random() * available.length)] || 0;
           this.loadPresetByIndex(this.presetIndex, 0);
           this.resize();
@@ -6166,7 +6174,7 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
         return;
       }
       milkdropEngine.presetKeys.forEach((key, i) => {
-        if (isOtherPresetExcluded(key)) return;
+        if (isOtherPresetExcluded(key, i)) return;
         const opt = document.createElement('option');
         opt.value = String(i);
         const name = key.length > 60 ? key.slice(0, 60) + '…' : key;
@@ -6174,7 +6182,7 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
         sel.appendChild(opt);
       });
       const cur = milkdropEngine.presetIndex;
-      if (isOtherPresetExcluded(milkdropEngine.presetKeys[cur])) {
+      if (isOtherPresetExcluded(milkdropEngine.presetKeys[cur], cur)) {
         const first = getAvailableOtherPresetIndices()[0];
         if (first !== undefined) sel.value = String(first);
       } else {
