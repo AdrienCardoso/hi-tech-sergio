@@ -1,0 +1,41 @@
+---
+description: После правок проекта — бэкап, git commit и push на GitHub (Netlify автообновление)
+alwaysApply: true
+---
+
+# Автодеплой на Netlify через GitHub
+
+Сайт: **https://hi-tech-sergio.netlify.app**  
+Репозиторий: **https://github.com/hitechsergio/hi-tech-sergio**  
+Ветка: **main**
+
+После **любого** завершённого изменения файлов в `/Volumes/T9/PROJECTS/AUDIO REACT/курсор/` выполни **в конце задачи** (если были правки кода/конфига):
+
+## 1. Бэкап
+
+Следуй правилу `numbered-backups.mdc` (создай `NNN-hi-tech-sergio.html` и запись в `manifest.json`).
+
+## 2. Git commit + push
+
+Пользователь просил **автоматически пушить** на GitHub после правок.
+
+```bash
+cd "/Volumes/T9/PROJECTS/AUDIO REACT/курсор"
+git add <изменённые файлы>
+git commit -m "краткое описание на русском или английском"
+git push origin main
+```
+
+**Коммитить:** `hi-tech-sergio.html`, `index.html`, `NEO.html`, `netlify.toml`, `.cursor/rules/`, `package.json`, другие файлы, влияющие на сайт.
+
+**Не коммитить:** `backups/` (в `.gitignore`), `node_modules/`, `*.mp4`, `*.mp3`, тяжёлые подпроекты.
+
+## 3. Сообщить пользователю
+
+После push: «Изменения отправлены на GitHub; сайт обновится за 1–2 минуты».
+
+## Исключения
+
+- Только ответы без редактирования файлов — push не нужен.
+- Если `git push` упал (нет сети, конфликт) — сообщи ошибку и что сделать вручную.
+- Не делать `git push --force` без явной просьбы пользователя.
