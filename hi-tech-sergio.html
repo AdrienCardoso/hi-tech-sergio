@@ -5654,6 +5654,14 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
         this.renderer.setClearColor(isLight ? 0xf8f9fa : 0x000000, 1.0);
         activeVis.update(dt, reactorMock, settings, this.activeMode === 16 ? null : this.mouse);
 
+        if (this.activeMode === 16 && activeVis.getScreenAnchor) {
+          activeVis.group.updateMatrixWorld(true);
+          activeVis.subject && activeVis.subject.updateMatrix();
+          activeVis.object && activeVis.object.updateMatrix();
+          this._hybridScreenAnchor = activeVis.getScreenAnchor(this.camera, this.canvas);
+          this._hybridScreenAnchorLeft = activeVis.getScreenAnchorLeft(this.camera, this.canvas);
+        }
+
         if (this.activeMode === 11 || this.activeMode === 12) {
           const prevExp = this.renderer.toneMappingExposure;
           const prevTM = this.renderer.toneMapping;
@@ -5727,12 +5735,16 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
             ...settings,
             cameraZoom: (typeof threeEngine !== 'undefined' && threeEngine) ? threeEngine.cameraZoom : 18
           };
-          const bi = (typeof threeEngine !== 'undefined' && threeEngine) ? threeEngine.visualizers[16] : null;
-          if (bi && threeEngine.camera && bi.getScreenAnchor) {
-            zoomSettings.screenAnchor = bi.getScreenAnchor(threeEngine.camera, this.canvas);
+          if (threeEngine && threeEngine._hybridScreenAnchor) {
+            zoomSettings.screenAnchor = threeEngine._hybridScreenAnchor;
           }
+          const cssW = this.canvas.clientWidth || window.innerWidth;
+          const cssH = this.canvas.clientHeight || window.innerHeight;
+          const dpr = this.canvas.width / cssW;
+          this.ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
           this.hybridInk.update(dt, reactorMock, zoomSettings);
-          this.hybridInk.draw2d(reactorMock, zoomSettings, this.ctx, this.canvas.width, this.canvas.height);
+          this.hybridInk.draw2d(reactorMock, zoomSettings, this.ctx, cssW, cssH);
+          this.ctx.setTransform(1, 0, 0, 1, 0, 0);
           return;
         }
 
@@ -6076,7 +6088,7 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
           const bi = threeEngine.visualizers[16];
           if (!bi) return;
 
-          if (e.button === 2) {
+          if (e.button === 0) {
             const hit = bi.hitTestScreen(threeEngine.camera, threeEngine.canvas, e.clientX, e.clientY);
             if (hit) {
               hybridObjectDrag = hit;
@@ -6113,16 +6125,12 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
         });
 
         window.addEventListener('mouseup', e => {
-          if (e.button === 2) hybridObjectDrag = null;
+          if (e.button === 0) hybridObjectDrag = null;
           if (e.button === 1) hybridOrbitDrag = false;
         });
 
         window.addEventListener('auxclick', e => {
           if (e.button === 1) e.preventDefault();
-        });
-
-        window.addEventListener('contextmenu', e => {
-          if (engine && engine.visualMode === 16 && hybridObjectDrag) e.preventDefault();
         });
         
         let mouseActive = false;
