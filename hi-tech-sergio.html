@@ -5802,6 +5802,7 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
       }
 
       init() {
+        if (this.renderer) return;
         const w = window.innerWidth;
         const h = window.innerHeight;
         const dpr = Math.min(window.devicePixelRatio || 1, 2);
@@ -6312,12 +6313,12 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
 
     function ensureAeonEngine() {
       if (aeonEngine) return aeonEngine;
+      const aeonCanvas = document.getElementById('aeonCanvas');
       const aeonPh = document.getElementById('aeonPlaceholder');
-      if (typeof AeonEngine !== 'function' || !threeEngine) return null;
+      if (typeof AeonEngine !== 'function') return null;
       try {
-        if (!threeEngine.renderer) threeEngine.init();
-        if (!threeEngine.renderer) return null;
-        aeonEngine = new AeonEngine(reactor, threeEngine);
+        aeonEngine = new AeonEngine(reactor, threeEngine, aeonCanvas);
+        if (!aeonEngine.uses2d && !aeonEngine.getGLRenderer() && !aeonEngine.ctx2d) return null;
         aeonEngine.setPlaceholderElement(aeonPh);
         if (aeonScenesCache.length) aeonEngine.scenes = aeonScenesCache;
         aeonEngine.resize();
@@ -7091,10 +7092,11 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
 
       if (modeIdx === 18) {
         particleCanvas.style.display = 'none';
-        threeCanvas.style.display = 'block';
         canvas2d.style.display = 'none';
         milkdropCanvas.style.display = 'none';
-        aeonCanvas.style.display = 'none';
+        const aeon2d = aeonEngine?.uses2d;
+        threeCanvas.style.display = aeon2d ? 'none' : 'block';
+        aeonCanvas.style.display = aeon2d ? 'block' : 'none';
         if (aeonEngine) aeonEngine.resize();
         if (aeonPlaceholder && aeonEngine && aeonEngine.showsPlaceholder()) {
           aeonPlaceholder.style.display = 'flex';

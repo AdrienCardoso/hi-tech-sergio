@@ -506,6 +506,63 @@
     }
   }
 
+  /** 2D fallback — когда WebGL-контексты исчерпаны */
+  class Aeon2DContext {
+    constructor(aeonEngine) {
+      this.aeon = aeonEngine;
+      this.hueShift = 0;
+    }
+
+    setHueShift(h) { this.hueShift = h; }
+    set3DCamera() {}
+
+    _xy(x, y, z) {
+      const w = this.aeon.width;
+      const h = this.aeon.height;
+      return [w * 0.5 + x * w * 0.38, h * 0.5 - z * h * 0.42 - y * h * 0.12];
+    }
+
+    drawBillboards(positions, colors, scale) {
+      const ctx = this.aeon.ctx2d;
+      if (!ctx) return;
+      const sz = Math.max(2.5, scale * Math.min(this.aeon.width, this.aeon.height) * 0.09);
+      for (let i = 0, j = 0; i < positions.length; i += 3, j += 3) {
+        const [px, py] = this._xy(positions[i], positions[i + 1], positions[i + 2]);
+        const r = Math.min(1, colors[j] * 1.2);
+        const g = Math.min(1, colors[j + 1] * 1.2);
+        const b = Math.min(1, colors[j + 2] * 1.2);
+        const grad = ctx.createRadialGradient(px, py, 0, px, py, sz);
+        grad.addColorStop(0, `rgba(${r * 255 | 0},${g * 255 | 0},${b * 255 | 0},0.95)`);
+        grad.addColorStop(1, `rgba(${r * 255 | 0},${g * 255 | 0},${b * 255 | 0},0)`);
+        ctx.fillStyle = grad;
+        ctx.beginPath();
+        ctx.arc(px, py, sz, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+
+    drawLines(positions, colors, width) {
+      const ctx = this.aeon.ctx2d;
+      if (!ctx) return;
+      ctx.lineWidth = width;
+      ctx.lineCap = 'round';
+      for (let i = 0; i < positions.length; i += 6) {
+        const [x0, y0] = this._xy(positions[i], positions[i + 1], positions[i + 2]);
+        const [x1, y1] = this._xy(positions[i + 3], positions[i + 4], positions[i + 5]);
+        const r = colors[i] ?? 1;
+        const g = colors[i + 1] ?? 1;
+        const b = colors[i + 2] ?? 1;
+        ctx.strokeStyle = `rgba(${r * 255 | 0},${g * 255 | 0},${b * 255 | 0},0.75)`;
+        ctx.beginPath();
+        ctx.moveTo(x0, y0);
+        ctx.lineTo(x1, y1);
+        ctx.stroke();
+      }
+    }
+
+    dispose() {}
+  }
+
   function resolveSceneSpec(entry) {
     if (NAME_SCENE_OVERRIDES[entry.name]) {
       return NAME_SCENE_OVERRIDES[entry.name];
@@ -535,11 +592,12 @@
   }
 
   class AeonEngine {
-    /** @param {object} reactor — AudioReactor */
-    /** @param {object} threeEngineRef — общий ThreeEngine (один WebGL-контекст) */
-    constructor(reactor, threeEngineRef) {
+    constructor(reactor, threeEngineRef, fallbackCanvas) {
       this.reactor = reactor;
       this.threeRef = threeEngineRef || null;
+      this.fallbackCanvas = fallbackCanvas || null;
+      this.ctx2d = fallbackCanvas ? fallbackCanvas.getContext('2d', { alpha: false }) : null;
+      this.uses2d = false;
       this.scenes = [];
       this.sceneIndex = -1;
       this.activeScene = null;
@@ -550,18 +608,36 @@
       this._placeholder = null;
       this.placeholderEl = null;
       this.time = 0;
-      this.threeScene = new THREE.Scene();
-      this.threeScene.background = new THREE.Color(0x000000);
-      this.camera = new THREE.PerspectiveCamera(50, 1, 0.05, 200);
+      this.threeScene = typeof THREE !== 'undefined' ? new THREE.Scene() : null;
+      if (this.threeScene) this.threeScene.background = new THREE.Color(0x000000);
+      this.camera = typeof THREE !== 'undefined' ? new THREE.PerspectiveCamera(50, 1, 0.05, 200) : null;
       this.width = window.innerWidth;
       this.height = window.innerHeight;
+      this._pickRenderMode();
+    }
+
+    _pickRenderMode() {
+      if (this.getGLRenderer()) {
+        this.uses2d = false;
+      } else if (this.ctx2d) {
+        this.uses2d = true;
+      }
     }
 
     getGLRenderer() {
+      if (this.uses2d) return null;
       const te = this.threeRef;
       if (!te) return null;
-      if (!te.renderer && typeof te.init === 'function') te.init();
+      if (te.renderer) return te.renderer;
+      if (typeof te.init === 'function') {
+        try { te.init(); } catch (e) { console.warn('Aeon: ThreeEngine.init', e); }
+      }
       return te.renderer || null;
+    }
+
+    _makeDrawContext() {
+      if (this.uses2d) return new Aeon2DContext(this);
+      return new AeonDrawContext(this, this.threeScene);
     }
 
     async loadManifest() {
@@ -599,7 +675,7 @@
           this.ready = true;
           return;
         }
-        this._drawCtx = new AeonDrawContext(this, this.threeScene);
+        this._drawCtx = this._makeDrawContext();
         this._placeholder = null;
         this._hidePlaceholder();
         this.activeScene = entry;
@@ -639,11 +715,13 @@
       this._drawCtx?.dispose();
       this._drawCtx = null;
       this._sceneImpl = null;
-      while (this.threeScene.children.length) {
-        const ch = this.threeScene.children[0];
-        this.threeScene.remove(ch);
-        ch.geometry?.dispose();
-        ch.material?.dispose();
+      if (this.threeScene) {
+        while (this.threeScene.children.length) {
+          const ch = this.threeScene.children[0];
+          this.threeScene.remove(ch);
+          ch.geometry?.dispose();
+          ch.material?.dispose();
+        }
       }
     }
 
@@ -652,16 +730,23 @@
       const h = window.innerHeight;
       this.width = w;
       this.height = h;
-      const gl = this.getGLRenderer();
-      if (gl) gl.setSize(w, h, true);
-      this.camera.aspect = w / h;
-      this.camera.updateProjectionMatrix();
+      if (this.uses2d && this.fallbackCanvas && this.ctx2d) {
+        const dpr = Math.min(window.devicePixelRatio || 1, 2);
+        this.fallbackCanvas.width = Math.floor(w * dpr);
+        this.fallbackCanvas.height = Math.floor(h * dpr);
+        this.ctx2d.setTransform(dpr, 0, 0, dpr, 0, 0);
+      } else {
+        const gl = this.getGLRenderer();
+        if (gl) gl.setSize(w, h, true);
+        if (this.camera) {
+          this.camera.aspect = w / h;
+          this.camera.updateProjectionMatrix();
+        }
+      }
     }
 
     render(dt) {
       if (!this.ready) return;
-      const gl = this.getGLRenderer();
-      if (!gl) return;
 
       const sens = parseFloat(document.getElementById('paramSensitivity')?.value || '1');
       this.audio.updateFromReactor(this.reactor, sens, this.time);
@@ -671,6 +756,20 @@
       const themeIdx = eng?.themeIdx !== undefined ? eng.themeIdx : 0;
       const hues = [0, 0, 30, 55, 120, 210, 275, 190, 165, 0];
       const hue = hues[Math.min(9, Math.max(0, themeIdx))] || 0;
+
+      if (this.uses2d && this.ctx2d) {
+        const ctx = this.ctx2d;
+        ctx.fillStyle = '#000';
+        ctx.fillRect(0, 0, this.width, this.height);
+        if (this._sceneImpl && this._drawCtx) {
+          this._drawCtx.setHueShift(hue);
+          this._sceneImpl.draw(this._drawCtx, this.time, dt, this.audio);
+        }
+        return;
+      }
+
+      const gl = this.getGLRenderer();
+      if (!gl || !this.camera || !this.threeScene) return;
 
       if (this._sceneImpl && this._drawCtx) {
         this._drawCtx.setHueShift(hue);
