@@ -6030,9 +6030,104 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
             if (threeEngine.cameraZoom > 50.0) threeEngine.cameraZoom = 50.0;
           }
         }, { passive: true });
+
+        let hybridOrbitDrag = false;
+        let hybridOrbitLast = { x: 0, y: 0 };
+        let hybridOrbitStart = { yaw: 0, pitch: 0 };
+        let hybridObjectDrag = null;
+
+        function hybridScreenToWorld(camera, canvas, clientX, clientY) {
+          const rect = canvas.getBoundingClientRect();
+          const nx = ((clientX - rect.left) / rect.width) * 2 - 1;
+          const ny = -((clientY - rect.top) / rect.height) * 2 + 1;
+          const ray = new THREE.Raycaster();
+          ray.setFromCamera(new THREE.Vector2(nx, ny), camera);
+          const plane = new THREE.Plane(new THREE.Vector3(0, 0, 1), 0);
+          const pt = new THREE.Vector3();
+          return ray.ray.intersectPlane(plane, pt) ? pt : null;
+        }
+
+        function hybridDragObject(bi, side, world) {
+          if (!bi || !world) return;
+          const camZ = threeEngine.cameraZoom || 18;
+          const d = 4.5 * (camZ / 18);
+          const M = Math.sin(bi.time * 0.5) * 0.2;
+          if (side === 'left') {
+            bi.leftOff.x = world.x - (-d);
+            bi.leftOff.y = world.y - M;
+            bi.leftOff.z = 0;
+          } else {
+            bi.rightOff.x = world.x - d;
+            bi.rightOff.y = world.y - (-M * 0.7);
+            bi.rightOff.z = 0;
+          }
+          const minGap = 1.8;
+          const lx = -d + bi.leftOff.x;
+          const rx = d + bi.rightOff.x;
+          if (rx - lx < minGap) {
+            const mid = (lx + rx) * 0.5;
+            if (side === 'left') bi.leftOff.x = mid - minGap * 0.5 - (-d);
+            else bi.rightOff.x = mid + minGap * 0.5 - d;
+          }
+        }
+
+        window.addEventListener('mousedown', e => {
+          if (!engine || engine.visualMode !== 16 || !threeEngine) return;
+          const bi = threeEngine.visualizers[16];
+          if (!bi) return;
+
+          if (e.button === 2) {
+            const hit = bi.hitTestScreen(threeEngine.camera, threeEngine.canvas, e.clientX, e.clientY);
+            if (hit) {
+              hybridObjectDrag = hit;
+              const world = hybridScreenToWorld(threeEngine.camera, threeEngine.canvas, e.clientX, e.clientY);
+              hybridDragObject(bi, hit, world);
+              e.preventDefault();
+            }
+            return;
+          }
+
+          if (e.button !== 1) return;
+          e.preventDefault();
+          hybridOrbitDrag = true;
+          hybridOrbitLast = { x: e.clientX, y: e.clientY };
+          hybridOrbitStart = { yaw: bi.orbitYaw || 0, pitch: bi.orbitPitch || 0 };
+        });
+
+        window.addEventListener('mousemove', e => {
+          if (hybridObjectDrag && threeEngine) {
+            const bi = threeEngine.visualizers[16];
+            const world = hybridScreenToWorld(threeEngine.camera, threeEngine.canvas, e.clientX, e.clientY);
+            hybridDragObject(bi, hybridObjectDrag, world);
+            return;
+          }
+          if (hybridOrbitDrag && threeEngine) {
+            const bi = threeEngine.visualizers[16];
+            if (!bi) return;
+            bi.orbitYaw = hybridOrbitStart.yaw + (e.clientX - hybridOrbitLast.x) * 0.008;
+            bi.orbitPitch = Math.max(-1.25, Math.min(1.25, hybridOrbitStart.pitch + (e.clientY - hybridOrbitLast.y) * 0.008));
+            bi.group.rotation.y = bi.orbitYaw;
+            bi.group.rotation.x = bi.orbitPitch;
+            return;
+          }
+        });
+
+        window.addEventListener('mouseup', e => {
+          if (e.button === 2) hybridObjectDrag = null;
+          if (e.button === 1) hybridOrbitDrag = false;
+        });
+
+        window.addEventListener('auxclick', e => {
+          if (e.button === 1) e.preventDefault();
+        });
+
+        window.addEventListener('contextmenu', e => {
+          if (engine && engine.visualMode === 16 && hybridObjectDrag) e.preventDefault();
+        });
         
         let mouseActive = false;
         window.addEventListener('mousemove', e => {
+          if (hybridObjectDrag || hybridOrbitDrag) return;
           mouseActive = true;
           const x = (e.clientX / window.innerWidth) * 2 - 1;
           const y = -(e.clientY / window.innerHeight) * 2 + 1;
