@@ -3141,6 +3141,39 @@
     const MAIN_VISUAL_MODES = new Set([0, 1, 4, 8, 10, 11, 12, 13, 14, 15, 16]);
     let visualVariantIdx = 0;
 
+    // Слоты «директории»: метка режима + номер вариации (1–12), напр. 6D-1, 0D-12
+    const MODE_DIR_LABEL = {
+      11: '0D', 12: '1D', 13: '2D', 14: '3D', 15: '4D', 16: '5D',
+      0: '6D', 1: '7D', 4: '8D', 8: '9D', 10: '10D'
+    };
+
+    // Переносы из Other Visualisations → слоты основных режимов (методика для следующих переносов)
+    const VISUAL_DIRECTORY = {
+      '6D-1': { type: 'milkdrop', presetNumber: 168 },
+      '0D-12': { type: 'webgl', visualMode: 0, variantIdx: 0 }
+    };
+
+    // Индексы пресетов (0-based), убранных из списка Other Visualisations
+    const OTHER_VISUAL_EXCLUDED_PRESET_INDICES = new Set([167]);
+
+    function getDirSlot(modeIdx, variantIdx) {
+      const label = MODE_DIR_LABEL[modeIdx];
+      if (!label) return null;
+      return `${label}-${variantIdx + 1}`;
+    }
+
+    function getDirectoryEntry(modeIdx, variantIdx) {
+      const slot = getDirSlot(modeIdx, variantIdx);
+      return slot ? VISUAL_DIRECTORY[slot] : null;
+    }
+
+    function getAvailableOtherPresetIndices() {
+      if (!milkdropEngine || !milkdropEngine.presetKeys.length) return [];
+      return milkdropEngine.presetKeys
+        .map((_, i) => i)
+        .filter(i => !OTHER_VISUAL_EXCLUDED_PRESET_INDICES.has(i));
+    }
+
     function isMainVisualMode(modeIdx) {
       return MAIN_VISUAL_MODES.has(modeIdx);
     }
@@ -3150,6 +3183,7 @@
       visualVariantIdx = variantIdx;
       if (engine) engine.variantIdx = variantIdx;
       renderVariantCells();
+      applyVisualCanvases();
     }
     window.setVisualVariant = setVisualVariant;
 
@@ -6035,7 +6069,10 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
             this.reactor.gainNode.connect(this.mdGain);
             this.visualizer.connectAudio(this.mdGain);
           }
-          this.presetIndex = Math.floor(Math.random() * this.presetKeys.length);
+          const available = this.presetKeys
+            .map((_, i) => i)
+            .filter(i => !OTHER_VISUAL_EXCLUDED_PRESET_INDICES.has(i));
+          this.presetIndex = available[Math.floor(Math.random() * available.length)] || 0;
           this.loadPresetByIndex(this.presetIndex, 0);
           this.resize();
           this.ready = true;
@@ -6059,17 +6096,27 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
         if (this.visualizer) this.visualizer.setRendererSize(bw, bh);
       }
 
-      loadPresetByIndex(idx, blend = 5.7) {
-        if (!this.visualizer || !this.presetKeys.length) return;
-        this.presetIndex = Math.max(0, Math.min(idx, this.presetKeys.length - 1));
+      loadPresetByIndex(idx, blend = 5.7, updateSelect = true) {
+        if (!this.presetKeys.length) return;
+        const safeIdx = Math.max(0, Math.min(idx, this.presetKeys.length - 1));
+        this.presetIndex = safeIdx;
+        if (!this.visualizer) return;
         try {
-          const p = this.visualizer.loadPreset(this.presets[this.presetKeys[this.presetIndex]], blend);
+          const p = this.visualizer.loadPreset(this.presets[this.presetKeys[safeIdx]], blend);
           if (p && typeof p.then === 'function') p.catch(() => {});
         } catch (err) {
-          console.warn('MilkDrop preset load failed:', this.presetKeys[this.presetIndex], err);
+          console.warn('MilkDrop preset load failed:', this.presetKeys[safeIdx], err);
         }
-        const sel = document.getElementById('milkdropPresetSelect');
-        if (sel) sel.value = String(this.presetIndex);
+        if (updateSelect) {
+          const sel = document.getElementById('milkdropPresetSelect');
+          if (sel) sel.value = String(safeIdx);
+        }
+      }
+
+      loadDirectoryPreset(presetNumber, blend = 0) {
+        this.ensurePresetList();
+        const idx = presetNumber - 1;
+        return this.init().then(() => this.loadPresetByIndex(idx, blend, false));
       }
 
       render() {
@@ -6094,15 +6141,23 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
         sel.appendChild(opt);
         return;
       }
+      let displayNum = 0;
       milkdropEngine.presetKeys.forEach((key, i) => {
+        if (OTHER_VISUAL_EXCLUDED_PRESET_INDICES.has(i)) return;
+        displayNum++;
         const opt = document.createElement('option');
         opt.value = String(i);
-        const num = String(i + 1);
         const name = key.length > 60 ? key.slice(0, 60) + '…' : key;
-        opt.textContent = `${num}. ${name}`;
+        opt.textContent = `${displayNum}. ${name}`;
         sel.appendChild(opt);
       });
-      sel.value = String(milkdropEngine.presetIndex);
+      const cur = milkdropEngine.presetIndex;
+      if (OTHER_VISUAL_EXCLUDED_PRESET_INDICES.has(cur)) {
+        const first = getAvailableOtherPresetIndices()[0];
+        if (first !== undefined) sel.value = String(first);
+      } else {
+        sel.value = String(cur);
+      }
     }
 
     function tryLoadMilkdropPresetList(attempt = 0) {
@@ -6638,7 +6693,20 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
       
       const modeIdx = engine ? Math.round(engine.visualMode) : 0;
       const renderedIdx = getRenderedMode(modeIdx);
-      if (renderedIdx < 11) {
+      const variantIdx = engine ? (engine.variantIdx || 0) : 0;
+      const dir = getDirectoryEntry(modeIdx, variantIdx);
+
+      if (dir?.type === 'milkdrop') {
+        if (milkdropEngine) milkdropEngine.render();
+      } else if (dir?.type === 'webgl') {
+        const savedMode = engine.visualMode;
+        const savedVar = engine.variantIdx;
+        engine.visualMode = dir.visualMode;
+        engine.variantIdx = dir.variantIdx !== undefined ? dir.variantIdx : 0;
+        engine.render(dt);
+        engine.visualMode = savedMode;
+        engine.variantIdx = savedVar;
+      } else if (renderedIdx < 11) {
         engine.render(dt);
       } else if ((renderedIdx >= 11 && renderedIdx <= 14) || renderedIdx === 16) {
         if (threeEngine) threeEngine.render(dt);
@@ -6784,6 +6852,74 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
       return modeIdx;
     }
 
+    function applyVisualCanvases() {
+      if (!engine) return;
+      const modeIdx = Math.round(engine.visualMode);
+      const renderedIdx = getRenderedMode(modeIdx);
+      const variantIdx = engine.variantIdx || 0;
+      const dir = getDirectoryEntry(modeIdx, variantIdx);
+
+      const particleCanvas = document.getElementById('canvas');
+      const threeCanvas = document.getElementById('threeCanvas');
+      const canvas2d = document.getElementById('canvas2d');
+      const milkdropCanvas = document.getElementById('milkdropCanvas');
+      if (!particleCanvas || !threeCanvas || !canvas2d || !milkdropCanvas) return;
+
+      canvas2d.classList.remove('hybrid-overlay');
+
+      if (dir?.type === 'milkdrop') {
+        particleCanvas.style.display = 'none';
+        threeCanvas.style.display = 'none';
+        canvas2d.style.display = 'none';
+        milkdropCanvas.style.display = 'block';
+        if (milkdropEngine) {
+          milkdropEngine.loadDirectoryPreset(dir.presetNumber, 0);
+        }
+        return;
+      }
+
+      if (dir?.type === 'webgl') {
+        particleCanvas.style.display = 'block';
+        threeCanvas.style.display = 'none';
+        canvas2d.style.display = 'none';
+        milkdropCanvas.style.display = 'none';
+        return;
+      }
+
+      if (renderedIdx < 11) {
+        particleCanvas.style.display = 'block';
+        threeCanvas.style.display = 'none';
+        canvas2d.style.display = 'none';
+        milkdropCanvas.style.display = 'none';
+      } else if (renderedIdx === 16) {
+        particleCanvas.style.display = 'none';
+        threeCanvas.style.display = 'block';
+        canvas2d.style.display = 'block';
+        milkdropCanvas.style.display = 'none';
+        canvas2d.classList.add('hybrid-overlay');
+        if (threeEngine) threeEngine.setMode(renderedIdx);
+        if (canvas2dEngine) canvas2dEngine.setMode(renderedIdx);
+      } else if (renderedIdx >= 11 && renderedIdx <= 14) {
+        particleCanvas.style.display = 'none';
+        threeCanvas.style.display = 'block';
+        canvas2d.style.display = 'none';
+        milkdropCanvas.style.display = 'none';
+        if (threeEngine) threeEngine.setMode(renderedIdx);
+      } else if (renderedIdx === 15) {
+        particleCanvas.style.display = 'none';
+        threeCanvas.style.display = 'none';
+        canvas2d.style.display = 'block';
+        milkdropCanvas.style.display = 'none';
+        if (canvas2dEngine) canvas2dEngine.setMode(renderedIdx);
+      } else if (renderedIdx === 17) {
+        particleCanvas.style.display = 'none';
+        threeCanvas.style.display = 'none';
+        canvas2d.style.display = 'none';
+        milkdropCanvas.style.display = 'block';
+        if (milkdropEngine) milkdropEngine.init();
+      }
+    }
+
     function setVisualMode(modeIdx, isAuto = false) {
       if (!engine || modeIdx < 0 || modeIdx >= MODES.length) return;
       
@@ -6808,50 +6944,12 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
       if (bhPanel) bhPanel.style.display = 'none';
       
       const renderedIdx = getRenderedMode(modeIdx);
-      
-      // Multi-engine canvas switcher
-      const particleCanvas = document.getElementById('canvas');
-      const threeCanvas = document.getElementById('threeCanvas');
-      const canvas2d = document.getElementById('canvas2d');
-      const milkdropCanvas = document.getElementById('milkdropCanvas');
 
-      canvas2d.classList.remove('hybrid-overlay');
-
-      if (renderedIdx < 11) {
-        particleCanvas.style.display = 'block';
-        threeCanvas.style.display = 'none';
-        canvas2d.style.display = 'none';
-        if (milkdropCanvas) milkdropCanvas.style.display = 'none';
-      } else if (renderedIdx === 16) {
-        particleCanvas.style.display = 'none';
-        threeCanvas.style.display = 'block';
-        canvas2d.style.display = 'block';
-        if (milkdropCanvas) milkdropCanvas.style.display = 'none';
-        canvas2d.classList.add('hybrid-overlay');
-        if (threeEngine) threeEngine.setMode(renderedIdx);
-        if (canvas2dEngine) canvas2dEngine.setMode(renderedIdx);
-        if (threeEngine && threeEngine.visualizers[16] && prevVisualMode !== 16 && window.resetHybrid5DOffsets) {
-          window.resetHybrid5DOffsets(threeEngine.visualizers[16]);
-        }
-      } else if (renderedIdx >= 11 && renderedIdx <= 14) {
-        particleCanvas.style.display = 'none';
-        threeCanvas.style.display = 'block';
-        canvas2d.style.display = 'none';
-        if (milkdropCanvas) milkdropCanvas.style.display = 'none';
-        if (threeEngine) threeEngine.setMode(renderedIdx);
-      } else if (renderedIdx === 15) {
-        particleCanvas.style.display = 'none';
-        threeCanvas.style.display = 'none';
-        canvas2d.style.display = 'block';
-        if (milkdropCanvas) milkdropCanvas.style.display = 'none';
-        if (canvas2dEngine) canvas2dEngine.setMode(renderedIdx);
-      } else if (renderedIdx === 17) {
-        particleCanvas.style.display = 'none';
-        threeCanvas.style.display = 'none';
-        canvas2d.style.display = 'none';
-        if (milkdropCanvas) milkdropCanvas.style.display = 'block';
-        if (milkdropEngine) milkdropEngine.init();
+      if (renderedIdx === 16 && threeEngine && threeEngine.visualizers[16] && prevVisualMode !== 16 && window.resetHybrid5DOffsets) {
+        window.resetHybrid5DOffsets(threeEngine.visualizers[16]);
       }
+
+      applyVisualCanvases();
       
       if (!isAuto) {
         renderModeCards();
