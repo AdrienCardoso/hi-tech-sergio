@@ -6047,16 +6047,26 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
         let hybridOrbitLast = { x: 0, y: 0 };
         let hybridOrbitStart = { yaw: 0, pitch: 0 };
         let hybridObjectDrag = null;
+        let hybridDragGrab = null;
+        const _hybridRay = new THREE.Raycaster();
+        const _hybridHit = new THREE.Vector3();
+        const _hybridNormal = new THREE.Vector3();
+        const _hybridPlane = new THREE.Plane();
+        const _hybridCenter = new THREE.Vector3();
 
-        function hybridScreenToWorld(camera, canvas, clientX, clientY) {
+        function hybridScreenToLocalOnMesh(camera, canvas, group, mesh, clientX, clientY) {
+          if (!group || !mesh) return null;
           const rect = canvas.getBoundingClientRect();
           const nx = ((clientX - rect.left) / rect.width) * 2 - 1;
           const ny = -((clientY - rect.top) / rect.height) * 2 + 1;
-          const ray = new THREE.Raycaster();
-          ray.setFromCamera(new THREE.Vector2(nx, ny), camera);
-          const plane = new THREE.Plane(new THREE.Vector3(0, 0, 1), 0);
-          const pt = new THREE.Vector3();
-          return ray.ray.intersectPlane(plane, pt) ? pt : null;
+          _hybridRay.setFromCamera(new THREE.Vector2(nx, ny), camera);
+          group.updateMatrixWorld(true);
+          mesh.updateMatrixWorld(true);
+          mesh.getWorldPosition(_hybridCenter);
+          camera.getWorldDirection(_hybridNormal);
+          _hybridPlane.setFromNormalAndCoplanarPoint(_hybridNormal, _hybridCenter);
+          if (!_hybridRay.ray.intersectPlane(_hybridPlane, _hybridHit)) return null;
+          return group.worldToLocal(_hybridHit.clone());
         }
 
         function refreshHybridAnchors(bi) {
@@ -6107,15 +6117,21 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
         function clampHybridOffsets(bi) {
           if (!bi || !threeEngine) return;
           const camZ = threeEngine.cameraZoom || 18;
-          const d = 4.5 * (camZ / 18);
-          const maxX = d * 1.15;
-          const maxY = 2.8 * (camZ / 18);
-          bi.leftOff.x = Math.max(-maxX, Math.min(maxX, bi.leftOff.x));
-          bi.leftOff.y = Math.max(-maxY, Math.min(maxY, bi.leftOff.y));
+          const lim = 9 * (camZ / 18);
+          bi.leftOff.x = Math.max(-lim, Math.min(lim, bi.leftOff.x));
+          bi.leftOff.y = Math.max(-lim, Math.min(lim, bi.leftOff.y));
           bi.leftOff.z = 0;
-          bi.rightOff.x = Math.max(-maxX, Math.min(maxX, bi.rightOff.x));
-          bi.rightOff.y = Math.max(-maxY, Math.min(maxY, bi.rightOff.y));
+          bi.rightOff.x = Math.max(-lim, Math.min(lim, bi.rightOff.x));
+          bi.rightOff.y = Math.max(-lim, Math.min(lim, bi.rightOff.y));
           bi.rightOff.z = 0;
+        }
+
+        function hybridBasePose(bi, side) {
+          const camZ = threeEngine.cameraZoom || 18;
+          const d = 4.5 * (camZ / 18);
+          const M = Math.sin(bi.time * 0.5) * 0.2;
+          if (side === 'left') return { x: -d, y: M };
+          return { x: d, y: -M * 0.7 };
         }
 
         function resetHybridOffsets(bi) {
@@ -6131,20 +6147,23 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
         }
         window.resetHybrid5DOffsets = resetHybridOffsets;
 
-        function hybridDragObject(bi, side, world) {
-          if (!bi || !world) return;
-          const camZ = threeEngine.cameraZoom || 18;
-          const d = 4.5 * (camZ / 18);
-          const M = Math.sin(bi.time * 0.5) * 0.2;
+        function hybridDragObject(bi, side, localPt) {
+          if (!bi || !localPt) return;
+          const base = hybridBasePose(bi, side);
+          const grab = hybridDragGrab || { lx: 0, ly: 0 };
+          const targetX = localPt.x - grab.lx;
+          const targetY = localPt.y - grab.ly;
           if (side === 'left') {
-            bi.leftOff.x = world.x - (-d);
-            bi.leftOff.y = world.y - M;
+            bi.leftOff.x = targetX - base.x;
+            bi.leftOff.y = targetY - base.y;
             bi.leftOff.z = 0;
           } else {
-            bi.rightOff.x = world.x - d;
-            bi.rightOff.y = world.y - (-M * 0.7);
+            bi.rightOff.x = targetX - base.x;
+            bi.rightOff.y = targetY - base.y;
             bi.rightOff.z = 0;
           }
+          const camZ = threeEngine.cameraZoom || 18;
+          const d = 4.5 * (camZ / 18);
           const minGap = 1.8;
           const lx = -d + bi.leftOff.x;
           const rx = d + bi.rightOff.x;
@@ -6165,9 +6184,17 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
           if (e.button === 0) {
             const hit = hybridHitTest(threeEngine.camera, threeEngine.canvas, bi, e.clientX, e.clientY);
             if (hit) {
+              const mesh = hit === 'left' ? bi.subject : bi.object;
+              const local = hybridScreenToLocalOnMesh(threeEngine.camera, threeEngine.canvas, bi.group, mesh, e.clientX, e.clientY);
+              if (!local) return;
+              const base = hybridBasePose(bi, hit);
+              const off = hit === 'left' ? bi.leftOff : bi.rightOff;
+              hybridDragGrab = {
+                lx: local.x - (base.x + off.x),
+                ly: local.y - (base.y + off.y)
+              };
               hybridObjectDrag = hit;
-              const world = hybridScreenToWorld(threeEngine.camera, threeEngine.canvas, e.clientX, e.clientY);
-              hybridDragObject(bi, hit, world);
+              hybridDragObject(bi, hit, local);
               e.preventDefault();
             }
             return;
@@ -6183,8 +6210,9 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
         window.addEventListener('mousemove', e => {
           if (hybridObjectDrag && threeEngine) {
             const bi = threeEngine.visualizers[16];
-            const world = hybridScreenToWorld(threeEngine.camera, threeEngine.canvas, e.clientX, e.clientY);
-            hybridDragObject(bi, hybridObjectDrag, world);
+            const mesh = hybridObjectDrag === 'left' ? bi.subject : bi.object;
+            const local = hybridScreenToLocalOnMesh(threeEngine.camera, threeEngine.canvas, bi.group, mesh, e.clientX, e.clientY);
+            if (local) hybridDragObject(bi, hybridObjectDrag, local);
             return;
           }
           if (hybridOrbitDrag && threeEngine) {
@@ -6199,7 +6227,10 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
         });
 
         window.addEventListener('mouseup', e => {
-          if (e.button === 0) hybridObjectDrag = null;
+          if (e.button === 0) {
+            hybridObjectDrag = null;
+            hybridDragGrab = null;
+          }
           if (e.button === 1) hybridOrbitDrag = false;
         });
 
