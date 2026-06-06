@@ -2162,6 +2162,7 @@
 
         const bufferLength = this.analyser.frequencyBinCount;
         this.dataArray = new Uint8Array(bufferLength);
+        this.waveArray = new Uint8Array(this.analyser.fftSize);
 
         this._bufferSource = null;
 
@@ -2242,6 +2243,7 @@
         if (!this.analyser) return;
 
         this.analyser.getByteFrequencyData(this.dataArray);
+        if (this.waveArray) this.analyser.getByteTimeDomainData(this.waveArray);
         
         let bassSum = 0, midSum = 0, highSum = 0;
         const totalBins = this.analyser.frequencyBinCount;
@@ -3293,7 +3295,8 @@ class bI{constructor(t){this.use3d=!0,this.time=0,this.subScale=1,this.objScale=
         void main() {
           vN = normalize(normalMatrix * normal);
           vP = position;
-          vec3 p = position + normal * sin(uBass * .4) * .06;
+          float pulse = 1. + uBass * .28;
+          vec3 p = (position + normal * sin(uBass * .5) * .08) * pulse;
           gl_Position = projectionMatrix * modelViewMatrix * vec4(p, 1.);
         }
       `,fragmentShader:`
@@ -3321,11 +3324,16 @@ class bI{constructor(t){this.use3d=!0,this.time=0,this.subScale=1,this.objScale=
         void main() {
           vec3 p = vP * 1.8 + uTime * .04;
           float n1 = fbm(p), n2 = fbm(p * 2.3 + vec3(4.1, 2.7, 1.3) + uTime * .03);
-          float river = pow(abs(sin(n1 * 12. + n2 * 8. + uTime * .15)), 3.5);
-          float vein = pow(abs(sin(n1 * 28. + uTime * .1)), 6.);
-          vec3 col = vec3(.03, .02, .04) + vec3(.22, .20, .25) * (1. + uBass * .6) * river * .7 + vec3(.35, .33, .38) * (1. + uBass * .8) * vein * .5;
-          float rim = pow(1. - max(0., dot(vN, vec3(0, 0, 1))), 2.5);
-          col += vec3(.08, .04, .14) * rim * (1. + uBass * .5) + vec3(.22, .20, .25) * uBass * river * .4;
+          float river = pow(abs(sin(n1 * 12. + n2 * 8. + uTime * .15)), 6.2);
+          float vein = pow(abs(sin(n1 * 28. + uTime * .1)), 9.5);
+          vec3 base = vec3(.0002, .0002, .0004);
+          vec3 redRiver = vec3(.98, .07, .12);
+          vec3 redVein = vec3(1.0, .11, .18);
+          vec3 col = base;
+          col += redRiver * river * (.14 + uBass * .22);
+          col += redVein * vein * (.26 + uBass * .38);
+          float rim = pow(1. - max(0., dot(vN, vec3(0, 0, 1))), 3.2);
+          col += vec3(.08, .01, .02) * rim * (.2 + uBass * .28);
           gl_FragColor = vec4(col, 1.);
         }
       `});this.subject=new tn(t,e),this.subject.position.x=-4.5;
@@ -3357,27 +3365,13 @@ class bI{constructor(t){this.use3d=!0,this.time=0,this.subScale=1,this.objScale=
         })
       );
       this.object.add(this.outerMesh);
+      this.object.visible = false;
+      this.innerMesh.visible = false;
+      this.outerMesh.visible = false;
 
-      const l=new _s({color:16777215,transparent:!0,opacity:.06,blending:Zn,side:Kn,depthWrite:!1});this.glow=new tn(new ds(2.5,32,32),l),this.glow.position.x=4.5;const u=new _s({color:196872,transparent:!0,opacity:.5,side:Kn,depthWrite:!1});this.darkAura=new tn(new ds(2.6,32,32),u),this.darkAura.position.x=-4.5;const f=new jw(2236962,1);this.group.add(f);const h=new Af(8939263,.8);h.position.set(-5,3,2),this.group.add(h);const d=new Af(16777215,1.2);d.position.set(6,2,4),this.group.add(d),this.wLight=new o1(16777215,2,20),this.wLight.position.set(4.5,0,3),this.group.add(this.wLight),this.group.add(this.subject,this.object,this.glow,this.darkAura)}_buildStrings(t){this.strGroup&&(this.group.remove(this.strGroup),this.lines.forEach(o=>{o.geo.dispose(),o.mat.dispose()})),this.strGroup=new Yn,this.lines=[];const e=[16720486,16729088,16746496,16763904,8969472,52360,43775,8930559,15615231].map(o=>new de(o)),s=t;for(let o=0;o<s;o++){const l=o*2.3981+.5,u=28,f=new Tn;f.setAttribute("position",new ni(new Float32Array((u+1)*3),3)),f.setAttribute("color",new ni(new Float32Array((u+1)*3),3));const h=new Ia({vertexColors:!0,transparent:!0,opacity:.55+Math.random()*.3,blending:Zn,depthWrite:!1}),d=new Mr(f,h);this.lines.push({mesh:d,geo:f,mat:h,seed:l,SEGS:u,aaSub:l*Math.PI*2,aaObj:(l+.3+Math.sin(l*3)*.4)*Math.PI*2,aeSub:Math.sin(l*5.1)*.8,aeObj:Math.cos(l*4.7)*.8,phase:Math.random()*Math.PI*2,vf:.5+Math.random()*2,spectrum:e}),this.strGroup.add(d)}this.group.add(this.strGroup)}update(t,e,s,o){this.time+=t;const l=e.sBass*s.sensitivity,u=(e.sMid*.6+e.sHigh*.4)*s.sensitivity,f=Math.max(.5,Math.min(2.2,.8+l*1.4)),h=Math.max(.4,Math.min(2.4,.7+u*1.6));this.subScale+=(f-this.subScale)*.12,this.objScale+=(h-this.objScale)*.08,this.subject.scale.setScalar(this.subScale),this.darkAura.scale.setScalar(this.subScale),this.object.scale.setScalar(this.objScale),this.glow.scale.setScalar(this.objScale+.15);const d=4.5-e.sEnergy*s.sensitivity*.8+Math.sin(this.time*.8)*.15;this.subject.position.x=-d,this.darkAura.position.x=-d,this.object.position.x=d,this.glow.position.x=d,this.wLight.position.x=d;const g=this.subject.material;g.uniforms.uTime.value+=t,g.uniforms.uBass.value+=(l-g.uniforms.uBass.value)*.1;
+      const l=new _s({color:16777215,transparent:!0,opacity:.06,blending:Zn,side:Kn,depthWrite:!1});this.glow=new tn(new ds(2.5,32,32),l),this.glow.position.x=4.5,this.glow.visible=!1;const u=new _s({color:6184,transparent:!0,opacity:.03,side:Kn,depthWrite:!1});this.darkAura=new tn(new ds(2.6,32,32),u),this.darkAura.position.x=-4.5;const f=new jw(2236962,1);this.group.add(f);const h=new Af(8939263,.8);h.position.set(-5,3,2),this.group.add(h);const d=new Af(16777215,1.2);d.position.set(6,2,4),this.group.add(d),this.wLight=new o1(16777215,2,20),this.wLight.position.set(4.5,0,3),this.group.add(this.wLight),this.group.add(this.subject,this.object,this.glow,this.darkAura),this.orbitYaw=0,this.orbitPitch=0,this.leftOff={x:0,y:0,z:0},this.rightOff={x:0,y:0,z:0}}_buildStrings(t){this.strGroup&&(this.group.remove(this.strGroup),this.lines.forEach(o=>{o.geo.dispose(),o.mat.dispose()})),this.strGroup=new Yn,this.lines=[];const e=[16720486,16729088,16746496,16763904,4489215,52360,43775,8930559,15615231].map(o=>new de(o)),s=t;for(let o=0;o<s;o++){const l=o*2.3981+.5,u=28,f=new Tn;f.setAttribute("position",new ni(new Float32Array((u+1)*3),3)),f.setAttribute("color",new ni(new Float32Array((u+1)*3),3));const h=new Ia({vertexColors:!0,transparent:!0,opacity:.48+Math.random()*.28,blending:Zn,depthWrite:!1}),d=new Mr(f,h);this.lines.push({mesh:d,geo:f,mat:h,seed:l,SEGS:u,aaSub:l*Math.PI*2,aaObj:(l+.3+Math.sin(l*3)*.4)*Math.PI*2,aeSub:Math.sin(l*5.1)*.8,aeObj:Math.cos(l*4.7)*.8,phase:Math.random()*Math.PI*2,vf:.5+Math.random()*2,spectrum:e}),this.strGroup.add(d)}this.group.add(this.strGroup)}update(t,e,s,o){this.time+=t;const l=e.sBass*s.sensitivity,u=(e.sMid*.6+e.sHigh*.4)*s.sensitivity,f=Math.max(.5,Math.min(2.5,.68+l*2.1)),h=1;this.subScale+=(f-this.subScale)*.18,this.objScale+=(h-this.objScale)*.08,this.subject.scale.setScalar(this.subScale),this.darkAura.scale.setScalar(this.subScale),this.object.scale.setScalar(this.objScale),this.glow.scale.setScalar(this.objScale+.15);const camZ=s.cameraZoom||18;const d=4.5*(camZ/18)+Math.sin(this.time*.8)*.06;const M=Math.sin(this.time*.5)*.2;this.subject.position.set(-d+this.leftOff.x,M+this.leftOff.y,this.leftOff.z),this.darkAura.position.copy(this.subject.position),this.object.position.set(d+this.rightOff.x,-M*.7+this.rightOff.y,this.rightOff.z),this.glow.position.copy(this.object.position),this.wLight.position.x=this.object.position.x;const g=this.subject.material;g.uniforms.uTime.value+=t,g.uniforms.uBass.value+=(l-g.uniforms.uBass.value)*.1;
 
-      // Shimmer and rotate the white/light-yellow wireframe clockwork meshes from 0D
-      if (this.innerMesh && this.outerMesh) {
-        this.innerMesh.rotation.x += t * 0.25 * (1.0 + u * 1.5);
-        this.innerMesh.rotation.y += t * 0.3 * (1.0 + u * 1.5);
-        this.outerMesh.rotation.x -= t * 0.12 * (1.0 + l * 2.0);
-        this.outerMesh.rotation.y += t * 0.2 * (1.0 + l * 2.0);
-
-        const colorCycle = Math.sin(this.time * 2.0) * 0.5 + 0.5;
-        // Mix between pure white (1,1,1) and warm shimmering light yellow (1.0, 0.99, 0.88)
-        this.innerMesh.material.color.setRGB(1.0, 1.0 - colorCycle * 0.01, 1.0 - colorCycle * 0.1);
-        this.outerMesh.material.color.setRGB(1.0, 1.0 - (1.0 - colorCycle) * 0.01, 1.0 - (1.0 - colorCycle) * 0.12);
-
-        // Beat-reactive opacity
-        this.innerMesh.material.opacity = 0.55 + u * 0.35;
-        this.outerMesh.material.opacity = 0.3 + u * 0.25;
-      }
-
-      const v=this.glow.material;v.opacity=.03+u*.22,this.wLight.intensity=.8+u*5;const y=this.darkAura.material;y.opacity=.4+l*.4,this.subject.rotation.y-=t*.06*(1+e.sBass*.3),this.object.rotation.y+=t*.04*(1+e.sBass*.1);const M=Math.sin(this.time*.5)*.2;this.subject.position.y=M,this.darkAura.position.y=M,this.object.position.y=-M*.7,this.glow.position.y=-M*.7,Math.abs(this.lines.length-s.strings)>4&&this._buildStrings(s.strings);const A=this.subject.position.x,S=this.object.position.x,x=2.2*this.subScale,T=2*this.objScale;const mActive=!!o,mx=mActive?o.x:0,my=mActive?o.y:0;this.lines.forEach(R=>{const{seed:C,SEGS:I,aaSub:P,aaObj:N,aeSub:E,aeObj:L,phase:z,vf:F,spectrum:X}=R,nt=e.sEnergy,et=(.15+nt*s.sensitivity*.8+e.sBass*.4+e.sHigh*.3)*s.turbulence,W=nt*s.sensitivity,B=A+Math.cos(P)*Math.cos(E)*x,G=this.subject.position.y+Math.sin(E)*x,Z=Math.sin(P)*Math.cos(E)*x,ct=S+Math.cos(N)*Math.cos(L)*T*-1,gt=this.object.position.y+Math.sin(L)*T,V=Math.sin(N)*Math.cos(L)*T,Q=R.geo.attributes.position.array,xt=R.geo.attributes.color.array;for(let At=0;At<=I;At++){const Ct=At/I,tt=B+(ct-B)*Ct,yt=G+(gt-G)*Ct,bt=Z+(V-Z)*Ct,Ft=(1-W)*1.8*Math.sin(Ct*Math.PI),$t=Math.sin(Ct*Math.PI)*(1-W*.7)*.8*Math.sin(C*7.3),jt=1+nt*s.sensitivity*2.5,be=Math.sin(this.time*F*jt+Ct*9+z)*et+Math.sin(this.time*F*jt*1.618+Ct*17+z*1.4)*et*.5,ce=Math.cos(this.time*F*jt*.8+Ct*13+z*1.1)*et*.6,pe=e.onset?Math.sin(Ct*Math.PI)*e.sBass*s.sensitivity*1.2:0;const att=mActive?Math.sin(Ct*Math.PI)*1.5:0;Q[At*3]=tt+$t+mx*att*3.5;Q[At*3+1]=yt-Ft+be+pe+my*att*2.5;Q[At*3+2]=bt+ce+$t*.3;const ue=Math.max(0,Math.min(1,(tt-A)/Math.max(.1,S-A)))*(X.length-1),Ve=Math.floor(ue),It=Math.min(Ve+1,X.length-1),Zt=new de().lerpColors(X[Ve],X[It],ue-Ve),k=Math.sin(Ct*Math.PI),fe=.6+nt*s.sensitivity*.8;xt[At*3]=Zt.r*k*fe,xt[At*3+1]=Zt.g*k*fe,xt[At*3+2]=Zt.b*k*fe}R.geo.attributes.position.needsUpdate=!0,R.geo.attributes.color.needsUpdate=!0,R.mat.opacity=(.3+e.sEnergy*s.sensitivity*.55)*(.6+.4*Math.sin(this.time*.5+C))})}show(t){this.group.visible=t}destroy(){this.scene3d.remove(this.group),this.lines.forEach(t=>{t.geo.dispose(),t.mat.dispose()})}}
+      const v=this.glow.material;v.opacity=0,this.wLight.intensity=0;const y=this.darkAura.material;y.opacity=.02+l*.03,this.subject.rotation.y-=t*.06*(1+e.sBass*.3),this.object.rotation.y+=t*.04*(1+e.sBass*.1),Math.abs(this.lines.length-s.strings)>4&&this._buildStrings(s.strings);this.flowTime=(this.flowTime||0)+t*(.28+e.sEnergy*s.sensitivity*.45);const wa=e.waveArray;const ra=s.screenAnchor,la=s.screenAnchorLeft,ac=s.attachCamera,av=s.attachCanvas;this.group.updateMatrixWorld(!0);this.subject.updateMatrix(),this.object.updateMatrix();const leftBase=2.2*(1+l*.28),rightBase=2*(s.rightVisualScale??.96),_pL=new q,_pR=new q,A=this.subject.position.x,S=this.object.position.x,refSpan=Math.max(2.5,2*d),span=Math.max(.8,Math.abs(S-A)),tension=Math.max(.32,Math.min(3.2,span/refSpan));this.lines.forEach(R=>{const{seed:C,SEGS:I,aaSub:P,aaObj:N,aeSub:E,aeObj:L,phase:z,vf:F,spectrum:X}=R,nt=e.sEnergy,et=(.12+nt*s.sensitivity*.65+e.sBass*.32+e.sHigh*.22)*s.turbulence*(.55+tension*.65),W=nt*s.sensitivity;let B,G,Z,ct,gt,V;if(ra&&la&&ac&&av){const rD=this._diskAttachGroupLocal(ac,av,ra,C,s.rightVisualScale??.96,this.object),lD=this._diskAttachGroupLocal(ac,av,la,C,s.leftVisualScale??.96,this.subject);if(lD){B=lD.x;G=lD.y;Z=lD.z}else{_pL.set(Math.cos(P)*Math.cos(E)*leftBase,Math.sin(E)*leftBase,Math.sin(P)*Math.cos(E)*leftBase);_pL.applyMatrix4(this.subject.matrix);B=_pL.x;G=_pL.y;Z=_pL.z}if(rD){ct=rD.x;gt=rD.y;V=rD.z}else{_pR.set(-Math.cos(N)*Math.cos(L)*rightBase,Math.sin(L)*rightBase,Math.sin(N)*Math.cos(L)*rightBase);_pR.applyMatrix4(this.object.matrix);ct=_pR.x;gt=_pR.y;V=_pR.z}}else{_pL.set(Math.cos(P)*Math.cos(E)*leftBase,Math.sin(E)*leftBase,Math.sin(P)*Math.cos(E)*leftBase);_pL.applyMatrix4(this.subject.matrix);B=_pL.x;G=_pL.y;Z=_pL.z;_pR.set(-Math.cos(N)*Math.cos(L)*rightBase,Math.sin(L)*rightBase,Math.sin(N)*Math.cos(L)*rightBase);_pR.applyMatrix4(this.object.matrix);ct=_pR.x;gt=_pR.y;V=_pR.z}const Q=R.geo.attributes.position.array,xt=R.geo.attributes.color.array,flowSpd=1.1+nt*s.sensitivity*1.6+l*1.1;for(let At=0;At<=I;At++){const Ct=At/I,tt=B+(ct-B)*Ct,yt=G+(gt-G)*Ct,bt=Z+(V-Z)*Ct,Ft=(1-W)*1.8*Math.sin(Ct*Math.PI)/tension,$t=Math.sin(Ct*Math.PI)*(1-W*.7)*.8*Math.sin(C*7.3)/Math.max(.7,tension*.85);let wv=0;if(wa&&wa.length){const wi=((Ct*.84-this.flowTime*.42+z*.07)%1+1)%1;const wIdx=Math.floor(wi*wa.length)%wa.length;wv=(wa[wIdx]-128)/128}const anchorFade=Math.sin(Ct*Math.PI),cinemaAmp=et*(.5+wv*(.9+l*.55)),be=(Math.sin(Ct*11.-this.flowTime*flowSpd+z)*cinemaAmp+Math.sin(Ct*17.-this.flowTime*flowSpd*1.12+z*1.3)*cinemaAmp*.42+wv*et*.85)*anchorFade,ce=(Math.sin(Ct*9.-this.flowTime*flowSpd*.88+z*1.1)*cinemaAmp*.5+wv*et*.32)*anchorFade,pe=e.onset?anchorFade*e.sBass*s.sensitivity*1.2:0;Q[At*3]=tt+$t*anchorFade;Q[At*3+1]=yt-Ft+be+pe;Q[At*3+2]=bt+ce+$t*.3*anchorFade;const ue=Math.max(0,Math.min(1,(tt-A)/Math.max(.1,S-A)))*(X.length-1),Ve=Math.floor(ue),It=Math.min(Ve+1,X.length-1),Zt=new de().lerpColors(X[Ve],X[It],ue-Ve);const k=Math.sin(Ct*Math.PI),fe=.6+nt*s.sensitivity*.8;xt[At*3]=Zt.r*k*fe,xt[At*3+1]=Zt.g*k*fe,xt[At*3+2]=Zt.b*k*fe}R.geo.attributes.position.needsUpdate=!0,R.geo.attributes.color.needsUpdate=!0,R.mat.opacity=(.28+tension*.42+e.sEnergy*s.sensitivity*.45)*(.65+.35*Math.sin(this.time*.5+C))})}_diskAttachGroupLocal(t,e,s,o,l,m){if(!s||!t||!e||!m)return null;const u=l??.96,f=Math.sqrt(Math.abs(Math.sin(o*12.9898+78.233)))*u,h=o*Math.PI*2,d=e.clientWidth||e.width,g=e.clientHeight||e.height,_=s.cx+Math.cos(h)*s.r*f,v=s.cy+Math.sin(h)*s.r*f,y=(_/d)*2-1,M=-(v/g)*2+1,b=new THREE.Raycaster;b.setFromCamera(new THREE.Vector2(y,M),t);const k=new q;m.getWorldPosition(k);const wr=(s.worldR||1)*(u),oc=b.ray.origin.clone().sub(k),a=b.ray.direction.dot(b.ray.direction),bb=2*oc.dot(b.ray.direction),cc=oc.dot(oc)-wr*wr,disc=bb*bb-4*a*cc;let R=null;if(disc>=0){const sq=Math.sqrt(disc),t1=(-bb-sq)/(2*a),t2=(-bb+sq)/(2*a),th=t1>.001?t1:t2;th>.001&&(R=b.ray.origin.clone().add(b.ray.direction.clone().multiplyScalar(th)))}if(!R){const mx=t.matrixWorld.elements,px=new q(mx[0],mx[1],mx[2]),py=new q(mx[4],mx[5],mx[6]),pz=new q(mx[8],mx[9],mx[10]),dir=px.clone().multiplyScalar(y).add(py.clone().multiplyScalar(M)).add(pz.clone().negate()).normalize();R=k.clone().add(dir.multiplyScalar(wr))}return this.group.updateMatrixWorld(!0),this.group.worldToLocal(R),R}_projAnchor(t,e,s,o){s.updateWorldMatrix(!0,!1);const l=new q;s.getWorldPosition(l);const u=l.clone();u.project(t);const f=e.clientWidth||e.width,h=e.clientHeight||e.height,d=(u.x*.5+.5)*f,g=(-u.y*.5+.5)*h,mx=t.matrixWorld.elements,R=new q(mx[0],mx[1],mx[2]),U=new q(mx[4],mx[5],mx[6]),wr=o*s.scale.x;let v=10;for(let i=0;i<12;i++){const a=i/12*Math.PI*2,T=l.clone().add(R.clone().multiplyScalar(Math.cos(a)*wr)).add(U.clone().multiplyScalar(Math.sin(a)*wr)),P=T.clone();P.project(t);v=Math.max(v,Math.hypot((P.x-u.x)*.5*f,(P.y-u.y)*.5*h))}return{cx:d,cy:g,r:v,worldR:wr}}getScreenAnchor(t,e){return this._projAnchor(t,e,this.object,2)}getScreenAnchorLeft(t,e){const p=1+(this.subject.material.uniforms.uBass.value||0)*.28;return this._projAnchor(t,e,this.subject,2.2*p)}hitTestScreen(t,e,s,o){const l=this.getScreenAnchorLeft(t,e),u=this.getScreenAnchor(t,e),f=Math.hypot(s-l.cx,o-l.cy),h=Math.hypot(s-u.cx,o-u.cy),d=l.r*1.2,g=u.r*1.2;return f<d&&f<=h?"left":h<g?"right":null}show(t){this.group.visible=t}destroy(){this.scene3d.remove(this.group),this.lines.forEach(t=>{t.geo.dispose(),t.mat.dispose()})}}
 
 // ====================FractalZoom4D (4D — Mandelbrot exploration zoom, Three.js) ====================
 class FractalZoom4D {
@@ -4422,6 +4416,188 @@ class RI {
 }
 
 
+// ====================InkTrailsOrb (5D right object — Canvas2D ink fill) ====================
+class InkTrailsOrb {
+  constructor() {
+    this.use3d = false;
+    this.time = 0;
+    this.trails = Array.from({ length: 2240 }, (_, i) => ({
+      phase: i * 0.37,
+      pts: []
+    }));
+    this.orbScale = 1;
+    this.orbY = 0;
+    this.mandalaBins = new Float32Array(96);
+  }
+
+  _updateMandalaBins(reactor, settings) {
+    const da = reactor.dataArray;
+    if (!da || !da.length) return;
+    const n = 96;
+    const sens = settings?.sensitivity || 1;
+    const mid = reactor.sMid * sens;
+    const high = reactor.sHigh * sens;
+    const atk = 0.62 + mid * 0.28 + high * 0.18;
+    const rel = 0.1 + mid * 0.04;
+    for (let i = 0; i < n; i++) {
+      const idx = Math.floor((i / n) * da.length);
+      const raw = da[idx] / 255;
+      const hi = da[Math.min(da.length - 1, idx + Math.floor(da.length * 0.04))] / 255;
+      const v = raw * (0.55 + mid * 0.3) + hi * (0.2 + high * 0.45);
+      const cur = this.mandalaBins[i];
+      const k = v > cur ? atk : rel;
+      this.mandalaBins[i] = cur + (v - cur) * k;
+    }
+  }
+
+  _bright(a) { return Math.min(1, a * 5); }
+
+  _drawMandalaCrown(ctx, cx, cy, r, mid, high, energy, t) {
+    const n = 96;
+    const step = (Math.PI * 2) / n;
+    const crownDepth = r * (0.9 + energy * 0.45 + mid * 0.38) * 2;
+    const r1 = r;
+    const spin = t * (0.15 + mid * 0.22 + high * 0.12);
+    const lw = 0.65 + high * 1.6 + mid * 0.45 + energy * 0.25;
+    const flutter = 0.1 + mid * 0.22 + high * 0.32;
+
+    for (let i = 0; i < n; i++) {
+      const v0 = this.mandalaBins[i] || 0;
+      const v1 = this.mandalaBins[(i + 1) % n] || 0;
+      const v2 = this.mandalaBins[(i + n - 1) % n] || 0;
+      const v = (v0 + v1 + v2) / 3;
+      const alt = i % 2 === 0 ? 1.0 : 0.72;
+      const a = i * step + spin;
+      const live = Math.pow(v, 0.72) * (0.42 + mid * 0.38 + high * 0.28);
+      const wobble = Math.sin(t * (5.2 + i * 0.27) + high * 8.5) * flutter * crownDepth;
+      const r2 = r1 + (0.16 + live * 0.84) * crownDepth * alt + wobble;
+      const alpha = this._bright(0.38 + v * 0.62 + energy * 0.42 + mid * 0.18);
+      ctx.beginPath();
+      ctx.moveTo(cx + Math.cos(a) * r1, cy + Math.sin(a) * r1);
+      ctx.lineTo(cx + Math.cos(a) * r2, cy + Math.sin(a) * r2);
+      ctx.strokeStyle = `rgba(255, 255, 255, ${alpha})`;
+      ctx.lineWidth = lw * (i % 2 === 0 ? 1 : 0.78);
+      ctx.stroke();
+    }
+
+    for (let i = 0; i < n; i++) {
+      const v0 = this.mandalaBins[(i + n / 2) % n] || 0;
+      const v1 = this.mandalaBins[(i + n / 2 + 1) % n] || 0;
+      const v = (v0 + v1) * 0.5;
+      const a = i * step + spin + step * 0.5;
+      const live = Math.pow(v, 0.8) * (0.38 + high * 0.42);
+      const wobble = Math.sin(t * (6.8 + i * 0.41) + mid * 5) * flutter * 0.75 * crownDepth;
+      const r2 = r1 + (0.14 + live * 0.76) * crownDepth * 0.8 + wobble;
+      const alpha = this._bright(0.28 + v * 0.5 + energy * 0.32 + high * 0.22);
+      ctx.beginPath();
+      ctx.moveTo(cx + Math.cos(a) * r1, cy + Math.sin(a) * r1);
+      ctx.lineTo(cx + Math.cos(a) * r2, cy + Math.sin(a) * r2);
+      ctx.strokeStyle = `rgba(255, 255, 255, ${alpha})`;
+      ctx.lineWidth = lw * 0.65;
+      ctx.stroke();
+    }
+
+    ctx.beginPath();
+    for (let i = 0; i <= n; i++) {
+      const v0 = this.mandalaBins[i % n] || 0;
+      const v1 = this.mandalaBins[(i + 1) % n] || 0;
+      const v = (v0 + v1) * 0.5;
+      const a = i * step + spin;
+      const ringWobble = Math.sin(t * 3.4 + i * 0.18) * (0.02 + mid * 0.04) * r;
+      const rr = r + (0.03 + v * 0.08) * r + energy * r * 0.06 + ringWobble;
+      const x = cx + Math.cos(a) * rr;
+      const y = cy + Math.sin(a) * rr;
+      if (i === 0) ctx.moveTo(x, y);
+      else ctx.lineTo(x, y);
+    }
+    ctx.strokeStyle = `rgba(255, 255, 255, ${this._bright(0.22 + energy * 0.42 + mid * 0.15)})`;
+    ctx.lineWidth = 0.7 + high * 0.6 + mid * 0.28;
+    ctx.stroke();
+  }
+
+  update(dt, reactor, settings) {
+    this.time += dt;
+    this._updateMandalaBins(reactor, settings);
+    this.orbScale = 1;
+    this.orbY += ((-Math.sin(this.time * 0.5) * 0.2 * Math.min(window.innerHeight, 900) * 0.35) - this.orbY) * 0.1;
+  }
+
+  draw2d(reactor, settings, ctx, width, height) {
+    const bass = reactor.sBass * settings.sensitivity;
+    const mid = reactor.sMid * settings.sensitivity;
+    const high = reactor.sHigh * settings.sensitivity;
+    const energy = reactor.sEnergy * settings.sensitivity;
+    const t = this.time;
+
+    ctx.clearRect(0, 0, width, height);
+
+    const anchor = settings.screenAnchor;
+    const cx = anchor ? anchor.cx : width * 0.72;
+    const cy = anchor ? anchor.cy : height * 0.5 + this.orbY;
+    const r = anchor ? anchor.r * 0.96 : Math.min(width, height) * 0.13 * this.orbScale * (18 / (settings.cameraZoom || 18));
+    ctx.save();
+    ctx.translate(cx, cy);
+
+    ctx.save();
+    ctx.beginPath();
+    ctx.arc(0, 0, r, 0, Math.PI * 2);
+    ctx.clip();
+
+    const whiteA = this._bright(0.38 + energy * 0.58);
+    const lw = 0.1 + mid * 0.12 + high * 0.08;
+
+    for (let ring = 1; ring <= 200; ring++) {
+      const rr = r * (ring / 200) * 0.96;
+      ctx.beginPath();
+      ctx.arc(0, 0, rr, 0, Math.PI * 2);
+      ctx.strokeStyle = `rgba(255,255,255,${this._bright(0.04 + energy * 0.08)})`;
+      ctx.lineWidth = lw * 0.55;
+      ctx.stroke();
+    }
+
+    for (let i = 0; i < 960; i++) {
+      const ang = (i / 960) * Math.PI * 2 + t * (0.08 + mid * 0.12);
+      const len = r * (0.94 + Math.sin(t * 1.3 + i * 0.07) * 0.05);
+      ctx.beginPath();
+      ctx.moveTo(0, 0);
+      ctx.lineTo(Math.cos(ang) * len, Math.sin(ang) * len);
+      ctx.strokeStyle = `rgba(255,255,255,${this._bright(0.06 + energy * 0.1)})`;
+      ctx.lineWidth = lw * 0.5;
+      ctx.stroke();
+    }
+
+    for (let i = 0; i < this.trails.length; i++) {
+      const tr = this.trails[i];
+      const a = t * (0.55 + mid * 0.75) + tr.phase;
+      const spread = 0.97;
+      const bx = Math.sin(a * 1.7 + i * 0.13) * r * spread;
+      const by = Math.cos(a * 2.3 + i * 0.11) * r * spread;
+      const x = bx + Math.sin(t * 3 + i * 0.05) * high * r * 0.1;
+      const y = by + Math.cos(t * 2.5 + i * 0.05) * mid * r * 0.08;
+      tr.pts.push({ x, y });
+      if (tr.pts.length > 28) tr.pts.shift();
+      if (tr.pts.length < 2) continue;
+      ctx.beginPath();
+      tr.pts.forEach((p, j) => j === 0 ? ctx.moveTo(p.x, p.y) : ctx.lineTo(p.x, p.y));
+      ctx.strokeStyle = `rgba(255,255,255,${whiteA})`;
+      ctx.lineWidth = lw;
+      ctx.stroke();
+    }
+
+    ctx.restore();
+
+    ctx.beginPath();
+    ctx.arc(0, 0, r, 0, Math.PI * 2);
+    ctx.strokeStyle = `rgba(255,255,255,${this._bright(0.55 + energy * 0.45)})`;
+    ctx.lineWidth = 1.2 + mid * 0.6 + high * 0.4;
+    ctx.stroke();
+    this._drawMandalaCrown(ctx, 0, 0, r, mid, high, energy, t);
+    ctx.restore();
+  }
+
+  show() {}
+}
+
 // ====================CI====================
 class CI {
   constructor(t) {
@@ -5422,6 +5598,7 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
           trail: parseFloat(document.getElementById('paramTrails').value),
           turbulence: parseFloat(document.getElementById('paramNoise').value),
           strings: 60,
+          cameraZoom: this.cameraZoom,
           colorHue: (() => {
             const ti = (engine && engine.themeIdx !== undefined) ? engine.themeIdx : 0;
             const hues = [(performance.now() * 0.02) % 360, 0, 30, 55, 120, 210, 275, 190, 165, 0];
@@ -5441,8 +5618,20 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
         const analyser = this.reactor.analyser;
 
         const reactorMock = {
-          sBass, sMid, sHigh, sEnergy, onset, analyser
+          sBass, sMid, sHigh, sEnergy, onset, analyser,
+          waveArray: this.reactor.waveArray,
+          dataArray: this.reactor.dataArray
         };
+
+        if (this.activeMode === 16) {
+          settings.rightVisualScale = 0.96;
+          settings.leftVisualScale = 1.0;
+          activeVis.group.updateMatrixWorld(true);
+          settings.screenAnchor = activeVis.getScreenAnchor(this.camera, this.canvas);
+          settings.screenAnchorLeft = activeVis.getScreenAnchorLeft(this.camera, this.canvas);
+          settings.attachCamera = this.camera;
+          settings.attachCanvas = this.canvas;
+        }
 
         if (this.activeMode === 11 || this.activeMode === 12) {
           this.camera.position.set(0, 0, this.cameraZoom);
@@ -5463,7 +5652,7 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
 
         const isLight = document.documentElement.classList.contains('light-theme');
         this.renderer.setClearColor(isLight ? 0xf8f9fa : 0x000000, 1.0);
-        activeVis.update(dt, reactorMock, settings, this.mouse);
+        activeVis.update(dt, reactorMock, settings, this.activeMode === 16 ? null : this.mouse);
 
         if (this.activeMode === 11 || this.activeMode === 12) {
           const prevExp = this.renderer.toneMappingExposure;
@@ -5487,12 +5676,19 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
         this.reactor = audioReactor;
         this.ctx = null;
         this.visualizer = null;
+        this.hybridInk = null;
+        this.activeMode = 15;
         this.mouse = { x: 0, y: 0 };
       }
 
       init() {
         this.ctx = this.canvas.getContext('2d');
         this.visualizer = new CI();
+        this.hybridInk = new InkTrailsOrb();
+      }
+
+      setMode(modeIdx) {
+        this.activeMode = modeIdx;
       }
 
       resize() {
@@ -5522,8 +5718,23 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
         const onset = this.reactor.onset;
 
         const reactorMock = {
-          sBass, sMid, sHigh, sEnergy, onset, paused: !this.reactor.isPlaying
+          sBass, sMid, sHigh, sEnergy, onset, paused: !this.reactor.isPlaying,
+          dataArray: this.reactor.dataArray
         };
+
+        if (this.activeMode === 16) {
+          const zoomSettings = {
+            ...settings,
+            cameraZoom: (typeof threeEngine !== 'undefined' && threeEngine) ? threeEngine.cameraZoom : 18
+          };
+          const bi = (typeof threeEngine !== 'undefined' && threeEngine) ? threeEngine.visualizers[16] : null;
+          if (bi && threeEngine.camera && bi.getScreenAnchor) {
+            zoomSettings.screenAnchor = bi.getScreenAnchor(threeEngine.camera, this.canvas);
+          }
+          this.hybridInk.update(dt, reactorMock, zoomSettings);
+          this.hybridInk.draw2d(reactorMock, zoomSettings, this.ctx, this.canvas.width, this.canvas.height);
+          return;
+        }
 
         this.visualizer.update(dt, reactorMock, settings, this.mouse);
         this.visualizer.draw2d(reactorMock, settings, this.ctx, this.canvas.width, this.canvas.height, this.mouse);
@@ -6054,6 +6265,7 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
         engine.render(dt);
       } else if ((renderedIdx >= 11 && renderedIdx <= 14) || renderedIdx === 16) {
         if (threeEngine) threeEngine.render(dt);
+        if (renderedIdx === 16 && canvas2dEngine) canvas2dEngine.render(dt);
       } else if (renderedIdx === 15) {
         if (canvas2dEngine) canvas2dEngine.render(dt);
       } else if (renderedIdx === 17) {
@@ -6257,13 +6469,7 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
       }
       
       if (!isAuto) {
-        document.querySelectorAll('.mode-card').forEach(btn => {
-          btn.classList.toggle('active', parseInt(btn.getAttribute('data-mode')) === modeIdx);
-        });
-        const btnH = document.getElementById('btnModeH');
-        if (btnH) {
-          btnH.classList.toggle('active', modeIdx === 16);
-        }
+        renderModeCards();
       }
     }
 
