@@ -10,6 +10,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
   <script src="https://unpkg.com/butterchurn-presets@3.0.0-beta.4/dist/base.min.js"></script>
   <script src="https://unpkg.com/butterchurn-presets@3.0.0-beta.4/dist/extra.min.js"></script>
+  <script src="aeon/aeon-engine.js"></script>
 
   <style>
     :root {
@@ -44,12 +45,31 @@
       font-family: var(--font-mono);
     }
 
-    #canvas, #threeCanvas, #canvas2d, #milkdropCanvas {
+    #canvas, #threeCanvas, #canvas2d, #milkdropCanvas, #aeonCanvas {
       position: fixed; inset: 0;
       width: 100vw; height: 100vh;
       z-index: 1; display: block;
     }
-    #threeCanvas, #canvas2d, #milkdropCanvas { display: none; }
+    #threeCanvas, #canvas2d, #milkdropCanvas, #aeonCanvas { display: none; }
+    #aeonPlaceholder {
+      position: fixed; inset: 0; z-index: 2;
+      display: none; align-items: center; justify-content: center;
+      flex-direction: column; gap: 10px;
+      background: rgba(0, 0, 0, 0.55);
+      pointer-events: none;
+      font-family: var(--font-sans);
+    }
+    #aeonPlaceholder .aeon-ph-brand {
+      font-family: var(--font-mono);
+      font-size: 11px; letter-spacing: 0.2em; color: var(--purple);
+    }
+    #aeonPlaceholder .aeon-ph-title {
+      font-size: 18px; font-weight: 600; color: var(--text);
+    }
+    #aeonPlaceholder .aeon-ph-sub, #aeonPlaceholder .aeon-ph-stat {
+      font-size: 12px; color: var(--text-muted);
+      font-family: var(--font-mono);
+    }
     #canvas2d.hybrid-overlay {
       z-index: 2;
       pointer-events: none;
@@ -1060,6 +1080,13 @@
   <canvas id="threeCanvas"></canvas>
   <canvas id="canvas2d"></canvas>
   <canvas id="milkdropCanvas"></canvas>
+  <canvas id="aeonCanvas"></canvas>
+  <div id="aeonPlaceholder" aria-hidden="true">
+    <span class="aeon-ph-brand">AEON //</span>
+    <span class="aeon-ph-title" data-aeon-ph-title>…</span>
+    <span class="aeon-ph-sub" data-aeon-ph-sub>Сцена в очереди на портирование</span>
+    <span class="aeon-ph-stat" data-aeon-ph-stat></span>
+  </div>
 
   <!-- Drag & Drop overlay -->
   <div class="drag-overlay" id="dragOverlay">
@@ -1254,6 +1281,12 @@
     <div class="param-group" id="milkdropParamGroup">
       <div class="param-labels"><span id="lblMilkdrop">OTHER VISUALISATIONS //</span></div>
       <select class="param-select" id="milkdropPresetSelect" title="Other visualisations">
+        <option value="">…</option>
+      </select>
+    </div>
+    <div class="param-group" id="aeonParamGroup">
+      <div class="param-labels"><span id="lblAeon">AEON SCENES //</span></div>
+      <select class="param-select" id="aeonSceneSelect" title="Aeon visualisations">
         <option value="">…</option>
       </select>
     </div>
@@ -3293,6 +3326,9 @@
       milkdrop: ['ДРУГИЕ ВИЗУАЛИЗАЦИИ //', 'OTHER VISUALISATIONS //'],
       milkdropLoading: ['Загрузка пресетов…', 'Loading presets…'],
       milkdropEmpty: ['Пресеты не загрузились (нужен интернет)', 'Presets not loaded (internet required)'],
+      aeon: ['AEON SCENES //', 'AEON SCENES //'],
+      aeonLoading: ['Загрузка сцен Aeon…', 'Loading Aeon scenes…'],
+      aeonEmpty: ['Сцены Aeon не загрузились', 'Aeon scenes failed to load'],
       cinemaEnter: ['Полный экран без панелей', 'Fullscreen without panels'],
       cinemaExit: ['Выйти из полного экрана (Esc)', 'Exit fullscreen (Esc)'],
       dragTitle: ['ОТПУСТИТЕ ДЛЯ ЗАПУСКА', 'RELEASE TO REACTOR'],
@@ -3345,6 +3381,8 @@
       document.getElementById('lblColor').textContent = t('color');
       const lblMd = document.getElementById('lblMilkdrop');
       if (lblMd) lblMd.textContent = t('milkdrop');
+      const lblAeon = document.getElementById('lblAeon');
+      if (lblAeon) lblAeon.textContent = t('aeon');
       document.getElementById('dragTitle').textContent = t('dragTitle');
       document.getElementById('dragHint').textContent = t('dragHint');
       document.getElementById('timeLoop').textContent = t('loop');
@@ -6004,6 +6042,7 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
     let threeEngine = null;
     let canvas2dEngine = null;
     let milkdropEngine = null;
+    let aeonEngine = null;
     let resizeVisualsRaf = 0;
 
     function resizeAllVisuals() {
@@ -6011,6 +6050,7 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
       if (threeEngine) threeEngine.resize();
       if (canvas2dEngine) canvas2dEngine.resize();
       if (milkdropEngine) milkdropEngine.resize();
+      if (aeonEngine) aeonEngine.resize();
     }
 
     function scheduleResizeVisuals() {
@@ -6226,6 +6266,40 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
       }
     }
 
+    async function fillAeonSceneSelect() {
+      const sel = document.getElementById('aeonSceneSelect');
+      if (!sel || !aeonEngine) return;
+      await aeonEngine.loadManifest();
+      sel.innerHTML = '';
+      if (!aeonEngine.scenes.length) {
+        const opt = document.createElement('option');
+        opt.value = '';
+        opt.textContent = typeof t === 'function' ? t('aeonEmpty') : '—';
+        sel.appendChild(opt);
+        return;
+      }
+      const placeholder = document.createElement('option');
+      placeholder.value = '';
+      placeholder.textContent = '—';
+      sel.appendChild(placeholder);
+      aeonEngine.scenes.forEach((scene, i) => {
+        const opt = document.createElement('option');
+        opt.value = String(i);
+        const mark = (typeof isAeonScenePorted === 'function' && isAeonScenePorted(scene)) ? '● ' : '○ ';
+        const name = scene.name.length > 52 ? scene.name.slice(0, 52) + '…' : scene.name;
+        opt.textContent = `${mark}${i + 1}. ${name}`;
+        sel.appendChild(opt);
+      });
+    }
+
+    function tryLoadAeonSceneList(attempt = 0) {
+      if (!aeonEngine) return;
+      fillAeonSceneSelect().then(() => {
+        if (aeonEngine.scenes.length) return;
+        if (attempt < 8) setTimeout(() => tryLoadAeonSceneList(attempt + 1), 400);
+      });
+    }
+
     function tryLoadMilkdropPresetList(attempt = 0) {
       if (!milkdropEngine) return;
       if (milkdropEngine.ensurePresetList()) return;
@@ -6266,6 +6340,14 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
 
       const mdCanvas = document.getElementById('milkdropCanvas');
       milkdropEngine = new MilkDropEngine(mdCanvas, reactor);
+      const aeonCanvas = document.getElementById('aeonCanvas');
+      const aeonPh = document.getElementById('aeonPlaceholder');
+      if (aeonCanvas && typeof AeonEngine === 'function') {
+        aeonEngine = new AeonEngine(aeonCanvas, reactor);
+        aeonEngine.setPlaceholderElement(aeonPh);
+        aeonEngine.resize();
+        tryLoadAeonSceneList();
+      }
       tryLoadMilkdropPresetList();
 
       try {
@@ -6305,8 +6387,31 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
             if (Number.isNaN(idx)) return;
             if (!isAudioCtxStarted) await startAudioContext();
             await milkdropEngine.init();
+            const aeonSel = document.getElementById('aeonSceneSelect');
+            if (aeonSel) aeonSel.value = '';
             if (engine && Math.round(engine.visualMode) !== 17) setVisualMode(17);
             milkdropEngine.loadPresetByIndex(idx, 5.7);
+          });
+        }
+
+        const aeonSceneSelect = document.getElementById('aeonSceneSelect');
+        if (aeonSceneSelect && aeonEngine) {
+          aeonSceneSelect.addEventListener('change', async () => {
+            const raw = aeonSceneSelect.value;
+            if (raw === '') {
+              if (engine && Math.round(engine.visualMode) === 18) setVisualMode(0);
+              return;
+            }
+            const idx = parseInt(raw, 10);
+            if (Number.isNaN(idx)) return;
+            if (!isAudioCtxStarted) await startAudioContext();
+            const mdSel = document.getElementById('milkdropPresetSelect');
+            if (mdSel) mdSel.value = '';
+            await aeonEngine.loadSceneByIndex(idx);
+            if (engine) {
+              engine.visualMode = 18;
+              applyVisualCanvases();
+            }
           });
         }
         
@@ -6781,6 +6886,8 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
         if (canvas2dEngine) canvas2dEngine.render(dt);
       } else if (renderedIdx === 17) {
         if (milkdropEngine) milkdropEngine.render();
+      } else if (renderedIdx === 18) {
+        if (aeonEngine) aeonEngine.render(dt);
       }
     }
 
@@ -6928,6 +7035,7 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
     function getRenderedMode(modeIdx) {
       if (modeIdx === 12) return 15;
       if (modeIdx === 15) return 12;
+      if (modeIdx === 18) return 18;
       return modeIdx;
     }
 
@@ -6942,9 +7050,27 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
       const threeCanvas = document.getElementById('threeCanvas');
       const canvas2d = document.getElementById('canvas2d');
       const milkdropCanvas = document.getElementById('milkdropCanvas');
-      if (!particleCanvas || !threeCanvas || !canvas2d || !milkdropCanvas) return;
+      const aeonCanvas = document.getElementById('aeonCanvas');
+      const aeonPlaceholder = document.getElementById('aeonPlaceholder');
+      if (!particleCanvas || !threeCanvas || !canvas2d || !milkdropCanvas || !aeonCanvas) return;
 
       canvas2d.classList.remove('hybrid-overlay');
+
+      if (modeIdx === 18) {
+        particleCanvas.style.display = 'none';
+        threeCanvas.style.display = 'none';
+        canvas2d.style.display = 'none';
+        milkdropCanvas.style.display = 'none';
+        aeonCanvas.style.display = 'block';
+        if (aeonPlaceholder && aeonEngine && aeonEngine.showsPlaceholder()) {
+          aeonPlaceholder.style.display = 'flex';
+        } else if (aeonPlaceholder) {
+          aeonPlaceholder.style.display = 'none';
+        }
+        return;
+      }
+      if (aeonPlaceholder) aeonPlaceholder.style.display = 'none';
+      aeonCanvas.style.display = 'none';
 
       if (dir?.type === 'milkdrop') {
         particleCanvas.style.display = 'none';
@@ -7004,7 +7130,13 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
     }
 
     function setVisualMode(modeIdx, isAuto = false) {
-      if (!engine || modeIdx < 0 || modeIdx >= MODES.length) return;
+      if (!engine || modeIdx < 0) return;
+      if (modeIdx >= MODES.length && modeIdx !== 18) return;
+
+      if (modeIdx !== 18) {
+        const aeonSel = document.getElementById('aeonSceneSelect');
+        if (aeonSel) aeonSel.value = '';
+      }
       
       if (!isAuto) {
         disableModeX();

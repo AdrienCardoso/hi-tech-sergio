@@ -19,3 +19,7 @@ trinity/
 пример.html
 audio_visualizer*
 _shot_*.png
+
+# SoundSpectrum Aeon installer (локально, не для git)
+.aeon_extract/
+Aeon_426.pkg
