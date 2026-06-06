@@ -376,19 +376,19 @@
     }
     .mode-card-x:hover {
       color: #fff; border-color: rgba(64,64,64,0.8); background: rgba(23,23,23,0.4);
-      box-shadow: 0 0 15px rgba(168,85,247,0.15);
+      box-shadow: 0 0 15px rgba(34, 211, 238, 0.18);
       transform: scale(1.03);
     }
     .mode-card-x.active {
-      background: rgba(147,51,234,0.3); border-color: var(--purple);
-      color: #d8b4fe; box-shadow: 0 0 20px rgba(168,85,247,0.4);
+      background: rgba(6, 182, 212, 0.22); border-color: #22d3ee;
+      color: #a5f3fc; box-shadow: 0 0 20px rgba(34, 211, 238, 0.45), 0 0 36px rgba(6, 182, 212, 0.2);
       animation: modeXGlow 2s ease-in-out infinite alternate;
     }
     .mode-card-x-title {
       font-size: 9px; font-weight: 700; color: #737373;
     }
     .mode-card-x.active .mode-card-x-title {
-      color: #fff; text-shadow: 0 0 6px var(--purple);
+      color: #fff; text-shadow: 0 0 8px #22d3ee, 0 0 14px rgba(34, 211, 238, 0.5);
     }
     .mode-card-x-icon {
       flex: 1; display: flex; align-items: center; justify-content: center; transform: scale(1.0);
@@ -398,15 +398,15 @@
       width: 22px; height: 14px;
     }
     .mode-card-x.active .mode-card-x-icon {
-      color: #e9d5ff;
+      color: #67e8f9;
     }
     .mode-card-x-name {
       font-size: 6px; letter-spacing: 0.05em;
       font-weight: 700; line-height: 1; margin-bottom: 1px;
     }
     @keyframes modeXGlow {
-      from { border-color: rgba(168,85,247,0.5); box-shadow: 0 0 10px rgba(168,85,247,0.2); }
-      to { border-color: rgba(168,85,247,1.0); box-shadow: 0 0 20px rgba(168,85,247,0.5); }
+      from { border-color: rgba(34, 211, 238, 0.45); box-shadow: 0 0 10px rgba(34, 211, 238, 0.25); }
+      to { border-color: rgba(103, 232, 249, 1); box-shadow: 0 0 22px rgba(34, 211, 238, 0.65), 0 0 40px rgba(6, 182, 212, 0.3); }
     }
     .mode-card-h {
       width: 100%; height: 50px; flex-shrink: 0;
@@ -899,23 +899,34 @@
       border-color: rgba(150, 150, 150, 0.8);
       background: rgba(220, 220, 220, 0.5);
     }
-    .light-theme .mode-card-x.active, .light-theme .mode-card-h.active {
+    .light-theme .mode-card-x.active {
+      background: rgba(6, 182, 212, 0.14);
+      border-color: #0891b2;
+      color: #0e7490;
+      box-shadow: 0 0 12px rgba(6, 182, 212, 0.28);
+      animation: modeXGlowLight 2s ease-in-out infinite alternate;
+    }
+    .light-theme .mode-card-h.active {
       background: rgba(139, 92, 246, 0.12);
       border-color: var(--purple);
       color: var(--purple);
       box-shadow: 0 0 10px rgba(139, 92, 246, 0.2);
-      animation: modeXGlowLight 2s ease-in-out infinite alternate;
     }
     @keyframes modeXGlowLight {
-      from { border-color: rgba(139, 92, 246, 0.4); box-shadow: 0 0 8px rgba(139, 92, 246, 0.1); }
-      to { border-color: rgba(139, 92, 246, 0.8); box-shadow: 0 0 16px rgba(139, 92, 246, 0.3); }
+      from { border-color: rgba(8, 145, 178, 0.45); box-shadow: 0 0 8px rgba(6, 182, 212, 0.15); }
+      to { border-color: rgba(6, 182, 212, 0.95); box-shadow: 0 0 18px rgba(6, 182, 212, 0.35); }
     }
-    .light-theme .mode-card-x.active .mode-card-x-title,
+    .light-theme .mode-card-x.active .mode-card-x-title {
+      color: #0e7490;
+      text-shadow: 0 0 6px rgba(34, 211, 238, 0.35);
+    }
     .light-theme .mode-card-h.active .mode-card-h-title {
       color: var(--purple);
       text-shadow: none;
     }
-    .light-theme .mode-card-x.active .mode-card-x-icon,
+    .light-theme .mode-card-x.active .mode-card-x-icon {
+      color: #0891b2;
+    }
     .light-theme .mode-card-h.active .mode-card-h-icon {
       color: var(--purple);
     }
@@ -3233,7 +3244,7 @@
     function renderVariantCells() {
       const panel = document.getElementById('modesVariantsPanel');
       if (!panel) return;
-      const mode = (engine && !modeXActive) ? Math.round(engine.visualMode) : -1;
+      const mode = engine ? Math.round(engine.visualMode) : -1;
       const show = isMainVisualMode(mode);
       panel.classList.toggle('visible', show);
       if (!show) return;
@@ -6862,7 +6873,8 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
     // Interactive Mode Selection Switch
     let modeXActive = false;
     let modeXTimer = null;
-    let modeXLastMode = -1;
+    let modeXLastCombo = { mode: -1, variant: -1 };
+    const MODE_X_POOL = [11, 12, 13, 14, 15, 16, 0, 1, 4, 8, 10];
 
     function enableModeX() {
       if (modeXActive) return;
@@ -6887,17 +6899,29 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
     }
 
     function playRandomModeX() {
-      const visibleIndices = [11, 12, 13, 14, 15, 16, 0, 1, 4, 8, 10];
-      let randomMode;
+      let randomMode, randomVariant;
+      let attempts = 0;
       do {
-        randomMode = visibleIndices[Math.floor(Math.random() * visibleIndices.length)];
-      } while (randomMode === modeXLastMode && visibleIndices.length > 1);
-      
-      modeXLastMode = randomMode;
+        randomMode = MODE_X_POOL[Math.floor(Math.random() * MODE_X_POOL.length)];
+        randomVariant = Math.floor(Math.random() * 12);
+        attempts++;
+      } while (
+        randomMode === modeXLastCombo.mode &&
+        randomVariant === modeXLastCombo.variant &&
+        attempts < 32
+      );
+
+      modeXLastCombo = { mode: randomMode, variant: randomVariant };
       setVisualMode(randomMode, true);
-      
+      setVisualVariant(randomVariant);
+
+      const dirLabel = MODE_DIR_LABEL[randomMode] || '';
+      const slotLabel = `${dirLabel}-${randomVariant + 1}`;
       const modeName = isRu ? MODES[randomMode].ru : MODES[randomMode].en;
-      showToast(isRu ? `Автовыбор режима: ${modeName}` : `Auto Mode: ${modeName}`, false);
+      showToast(
+        isRu ? `Автовыбор: ${slotLabel} · ${modeName}` : `Auto: ${slotLabel} · ${modeName}`,
+        false
+      );
       setTimeout(hideToast, 3000);
     }
 
