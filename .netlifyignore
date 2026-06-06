@@ -1,0 +1,16 @@
+node_modules
+backups
+milkdrop2077-main
+MilkDrop3-main
+trinity
+.cursor
+*.mp4
+*.mov
+*.mkv
+*.mp3
+*.wav
+*.flac
+пример.html
+audio_visualizer*
+_neo_test*
+package-lock.json

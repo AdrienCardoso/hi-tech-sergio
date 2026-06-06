@@ -1,0 +1,16 @@
+# HI-TECH SERGIO — публичный деплой (Netlify, бесплатно)
+[build]
+  publish = "."
+  command = "echo 'static site — no build'"
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+
+[[headers]]
+  for = "/hi-tech-sergio.html"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"

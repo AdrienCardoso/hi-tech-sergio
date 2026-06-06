@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MilkDrop // Butterchurn</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/butterchurn-presets@3.0.0-beta.4/dist/base.min.js"></script>
+  <script src="https://unpkg.com/butterchurn-presets@3.0.0-beta.4/dist/extra.min.js"></script>
+  <style>
+    :root {
+      --bg: #000;
+      --panel: rgba(8, 8, 12, 0.88);
+      --border: rgba(255, 255, 255, 0.1);
+      --text: #e8e8ec;
+      --muted: #7a7a88;
+      --accent: #a855f7;
+      --accent-dim: rgba(168, 85, 247, 0.35);
+      --font: 'Share Tech Mono', ui-monospace, monospace;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      width: 100%; height: 100%; overflow: hidden;
+      background: var(--bg); color: var(--text);
+      font-family: var(--font);
+    }
+
+    #canvas {
+      position: fixed; inset: 0;
+      width: 100%; height: 100%;
+      display: block;
+    }
+
+    #audio { display: none; }
+
+    #splash {
+      position: fixed; inset: 0; z-index: 30;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      background: rgba(0, 0, 0, 0.92);
+      backdrop-filter: blur(8px);
+      transition: opacity 0.4s ease;
+    }
+    #splash.hidden { opacity: 0; pointer-events: none; }
+
+    #splash h1 {
+      font-size: 14px; letter-spacing: 0.35em;
+      text-transform: uppercase; margin-bottom: 8px;
+    }
+    #splash p {
+      font-size: 11px; color: var(--muted);
+      margin-bottom: 28px; text-align: center; max-width: 320px; line-height: 1.6;
+    }
+
+    .btn {
+      font-family: var(--font); font-size: 11px;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      padding: 10px 18px; margin: 5px;
+      border: 1px solid var(--border);
+      background: rgba(255, 255, 255, 0.04);
+      color: var(--text); cursor: pointer;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .btn:hover { border-color: var(--accent-dim); background: rgba(168, 85, 247, 0.12); }
+    .btn.primary { border-color: var(--accent-dim); background: rgba(168, 85, 247, 0.18); }
+
+    #panel {
+      position: fixed; left: 16px; bottom: 16px; z-index: 20;
+      width: min(420px, calc(100vw - 32px));
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px 14px;
+      backdrop-filter: blur(14px);
+      transition: opacity 0.3s, transform 0.3s;
+    }
+    #panel.ui-hidden {
+      opacity: 0; transform: translateY(12px);
+      pointer-events: none;
+    }
+
+    #panel .row {
+      display: flex; flex-wrap: wrap; gap: 8px;
+      align-items: center; margin-bottom: 10px;
+    }
+    #panel .row:last-child { margin-bottom: 0; }
+
+    #panel label {
+      font-size: 9px; color: var(--muted);
+      letter-spacing: 0.1em; text-transform: uppercase;
+    }
+
+    #presetSelect {
+      flex: 1; min-width: 180px;
+      font-family: var(--font); font-size: 10px;
+      background: rgba(0, 0, 0, 0.5);
+      color: var(--text); border: 1px solid var(--border);
+      padding: 6px 8px; border-radius: 4px;
+    }
+
+    #presetSelect option { background: #111; }
+
+    .chk {
+      display: flex; align-items: center; gap: 5px;
+      font-size: 10px; color: var(--muted); cursor: pointer;
+    }
+    .chk input { accent-color: var(--accent); }
+
+    .num-input {
+      width: 44px; font-family: var(--font); font-size: 10px;
+      background: rgba(0, 0, 0, 0.5); color: var(--text);
+      border: 1px solid var(--border); padding: 4px 6px;
+      border-radius: 4px;
+    }
+
+    #nowPlaying {
+      font-size: 10px; color: var(--muted);
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+      max-width: 100%;
+    }
+
+    #brand {
+      position: fixed; top: 16px; left: 16px; z-index: 20;
+      font-size: 10px; letter-spacing: 0.2em;
+      color: rgba(255, 255, 255, 0.35);
+      pointer-events: none;
+      transition: opacity 0.3s;
+    }
+    #brand.ui-hidden { opacity: 0; }
+
+    #hints {
+      position: fixed; top: 16px; right: 16px; z-index: 20;
+      font-size: 9px; color: rgba(255, 255, 255, 0.28);
+      text-align: right; line-height: 1.7;
+      pointer-events: none;
+      transition: opacity 0.3s;
+    }
+    #hints.ui-hidden { opacity: 0; }
+
+    #errorBox {
+      position: fixed; inset: 0; z-index: 40;
+      display: none; align-items: center; justify-content: center;
+      background: rgba(0, 0, 0, 0.95); padding: 24px;
+    }
+    #errorBox.show { display: flex; }
+    #errorBox .inner {
+      max-width: 420px; text-align: center; line-height: 1.7;
+      font-size: 12px; color: #f87171;
+    }
+
+    #dropOverlay {
+      position: fixed; inset: 0; z-index: 25;
+      display: none; align-items: center; justify-content: center;
+      background: rgba(168, 85, 247, 0.15);
+      border: 3px dashed var(--accent-dim);
+      font-size: 13px; letter-spacing: 0.15em;
+      pointer-events: none;
+    }
+    #dropOverlay.show { display: flex; }
+  </style>
+</head>
+<body>
+  <canvas id="canvas"></canvas>
+  <audio id="audio" loop crossorigin="anonymous"></audio>
+
+  <div id="brand">MILKDROP // BUTTERCHURN</div>
+  <div id="hints">
+    Пробел — след. пресет<br>
+    ← → — назад / вперёд<br>
+    H — скрыть UI &nbsp; F — полный экран
+  </div>
+
+  <div id="splash">
+    <h1>MilkDrop Visualizer</h1>
+    <p>
+      WebGL-визуализатор в стиле MilkDrop.<br>
+      Нужен локальный сервер и WebGL 2.<br>
+      <span style="color:#555">python3 -m http.server 8080</span>
+    </p>
+    <button class="btn primary" id="btnFile">Загрузить MP3</button>
+    <button class="btn" id="btnMic">Микрофон</button>
+    <button class="btn" id="btnDemo">Демо без звука</button>
+    <input type="file" id="fileInput" accept="audio/*" hidden>
+  </div>
+
+  <div id="dropOverlay">Отпустите аудиофайл</div>
+
+  <div id="panel" class="ui-hidden">
+    <div class="row">
+      <span id="nowPlaying">—</span>
+    </div>
+    <div class="row">
+      <label for="presetSelect">Пресет</label>
+      <select id="presetSelect"></select>
+    </div>
+    <div class="row">
+      <label class="chk"><input type="checkbox" id="presetCycle" checked> Авто</label>
+      <label class="chk"><input type="checkbox" id="presetRandom" checked> Случайно</label>
+      <label>сек <input type="number" class="num-input" id="presetCycleLength" value="15" min="3" max="120"></label>
+      <button class="btn" id="btnPrev">←</button>
+      <button class="btn" id="btnNext">→</button>
+      <button class="btn" id="btnNewFile">MP3</button>
+      <button class="btn" id="btnNewMic">MIC</button>
+    </div>
+  </div>
+
+  <div id="errorBox">
+    <div class="inner" id="errorText"></div>
+  </div>
+
+  <script type="module">
+    import butterchurn from 'https://unpkg.com/butterchurn@3.0.0-beta.5/dist/butterchurn.js';
+
+    const canvas = document.getElementById('canvas');
+    const audioEl = document.getElementById('audio');
+    const splash = document.getElementById('splash');
+    const panel = document.getElementById('panel');
+    const brand = document.getElementById('brand');
+    const hints = document.getElementById('hints');
+    const presetSelect = document.getElementById('presetSelect');
+    const nowPlaying = document.getElementById('nowPlaying');
+    const errorBox = document.getElementById('errorBox');
+    const errorText = document.getElementById('errorText');
+    const dropOverlay = document.getElementById('dropOverlay');
+
+    let audioContext = null;
+    let visualizer = null;
+    let delayedAudible = null;
+    let mediaSource = null;
+    let micStream = null;
+    let micSource = null;
+    let micGain = null;
+    let rendering = false;
+    let cycleInterval = null;
+
+    let presets = {};
+    let presetKeys = [];
+    let presetIndex = 0;
+    let presetIndexHist = [];
+    let presetCycle = true;
+    let presetRandom = true;
+    let presetCycleLength = 15000;
+    let uiVisible = true;
+
+    function showError(msg) {
+      errorText.textContent = msg;
+      errorBox.classList.add('show');
+    }
+
+    function checkWebGL2() {
+      const test = document.createElement('canvas');
+      return !!test.getContext('webgl2');
+    }
+
+    if (!checkWebGL2()) {
+      showError('Браузер не поддерживает WebGL 2. Обновите Chrome, Firefox или Safari.');
+      throw new Error('WebGL2 required');
+    }
+
+    function collectPresets() {
+      const out = {};
+      if (window.base?.default) Object.assign(out, window.base.default);
+      if (window.extra?.default) Object.assign(out, window.extra.default);
+      return Object.fromEntries(
+        Object.entries(out).sort((a, b) =>
+          a[0].localeCompare(b[0], undefined, { sensitivity: 'base' })
+        )
+      );
+    }
+
+    function stopMic() {
+      if (micSource) {
+        try { micSource.disconnect(); } catch (_) {}
+        micSource = null;
+      }
+      if (micGain) {
+        try { micGain.disconnect(); } catch (_) {}
+        micGain = null;
+      }
+      if (micStream) {
+        micStream.getTracks().forEach(t => t.stop());
+        micStream = null;
+      }
+    }
+
+    function stopFile() {
+      audioEl.pause();
+      if (audioEl.src.startsWith('blob:')) URL.revokeObjectURL(audioEl.src);
+      audioEl.removeAttribute('src');
+      audioEl.load();
+    }
+
+    function ensureDelayNode() {
+      if (!delayedAudible) {
+        delayedAudible = audioContext.createDelay();
+        delayedAudible.delayTime.value = 0.26;
+        delayedAudible.connect(audioContext.destination);
+      }
+      visualizer.connectAudio(delayedAudible);
+    }
+
+    function startRenderLoop() {
+      if (rendering) return;
+      rendering = true;
+      const loop = () => {
+        requestAnimationFrame(loop);
+        if (visualizer) visualizer.render();
+      };
+      loop();
+    }
+
+    function resize() {
+      if (!visualizer) return;
+      const w = Math.floor(window.innerWidth * devicePixelRatio);
+      const h = Math.floor(window.innerHeight * devicePixelRatio);
+      canvas.width = w;
+      canvas.height = h;
+      visualizer.setRendererSize(w, h);
+    }
+
+    function fillPresetSelect() {
+      presetSelect.innerHTML = '';
+      presetKeys.forEach((key, i) => {
+        const opt = document.createElement('option');
+        opt.value = String(i);
+        opt.textContent = key.length > 72 ? key.slice(0, 72) + '…' : key;
+        presetSelect.appendChild(opt);
+      });
+    }
+
+    function loadPresetByIndex(idx, blend = 5.7) {
+      presetIndex = idx;
+      visualizer.loadPreset(presets[presetKeys[presetIndex]], blend);
+      presetSelect.value = String(presetIndex);
+    }
+
+    function nextPreset(blend = 5.7) {
+      presetIndexHist.push(presetIndex);
+      if (presetRandom) {
+        presetIndex = Math.floor(Math.random() * presetKeys.length);
+      } else {
+        presetIndex = (presetIndex + 1) % presetKeys.length;
+      }
+      loadPresetByIndex(presetIndex, blend);
+    }
+
+    function prevPreset(blend = 5.7) {
+      if (presetIndexHist.length) {
+        presetIndex = presetIndexHist.pop();
+      } else {
+        presetIndex = (presetIndex - 1 + presetKeys.length) % presetKeys.length;
+      }
+      loadPresetByIndex(presetIndex, blend);
+    }
+
+    function restartCycle() {
+      if (cycleInterval) clearInterval(cycleInterval);
+      cycleInterval = null;
+      if (presetCycle) {
+        cycleInterval = setInterval(() => nextPreset(2.7), presetCycleLength);
+      }
+    }
+
+    function hideSplash() {
+      splash.classList.add('hidden');
+      panel.classList.remove('ui-hidden');
+    }
+
+    async function initEngine() {
+      if (visualizer) return;
+      audioContext = new AudioContext();
+      presets = collectPresets();
+      presetKeys = Object.keys(presets);
+      if (!presetKeys.length) {
+        showError('Пресеты не загрузились. Проверьте интернет и перезагрузите страницу.');
+        return;
+      }
+      presetIndex = Math.floor(Math.random() * presetKeys.length);
+      fillPresetSelect();
+
+      visualizer = butterchurn.createVisualizer(audioContext, canvas, {
+        width: 800,
+        height: 600,
+        pixelRatio: devicePixelRatio || 1,
+        textureRatio: 1,
+      });
+
+      resize();
+      loadPresetByIndex(presetIndex, 0);
+      restartCycle();
+      startRenderLoop();
+    }
+
+    async function connectFile(file) {
+      await initEngine();
+      await audioContext.resume();
+      stopMic();
+      stopFile();
+      ensureDelayNode();
+
+      if (!mediaSource) {
+        mediaSource = audioContext.createMediaElementSource(audioEl);
+        mediaSource.connect(delayedAudible);
+      }
+
+      const url = URL.createObjectURL(file);
+      audioEl.src = url;
+      await audioEl.play();
+      nowPlaying.textContent = file.name;
+      hideSplash();
+    }
+
+    async function connectMic() {
+      await initEngine();
+      await audioContext.resume();
+      stopFile();
+      stopMic();
+      ensureDelayNode();
+
+      micStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      micGain = audioContext.createGain();
+      micGain.gain.value = 1.35;
+      micSource = audioContext.createMediaStreamSource(micStream);
+      micSource.connect(micGain);
+      micGain.connect(delayedAudible);
+
+      nowPlaying.textContent = 'Микрофон';
+      hideSplash();
+    }
+
+    async function startSilentDemo() {
+      await initEngine();
+      await audioContext.resume();
+      stopFile();
+      stopMic();
+      ensureDelayNode();
+
+      const osc = audioContext.createOscillator();
+      const gain = audioContext.createGain();
+      gain.gain.value = 0.0001;
+      osc.frequency.value = 440;
+      osc.connect(gain);
+      gain.connect(delayedAudible);
+      osc.start();
+
+      nowPlaying.textContent = 'Демо (без звука)';
+      hideSplash();
+    }
+
+    document.getElementById('btnFile').addEventListener('click', () => {
+      document.getElementById('fileInput').click();
+    });
+    document.getElementById('btnNewFile').addEventListener('click', () => {
+      document.getElementById('fileInput').click();
+    });
+    document.getElementById('fileInput').addEventListener('change', (e) => {
+      const file = e.target.files?.[0];
+      if (file) connectFile(file);
+      e.target.value = '';
+    });
+
+    document.getElementById('btnMic').addEventListener('click', () => connectMic().catch(() => {
+      showError('Не удалось получить доступ к микрофону.');
+    }));
+    document.getElementById('btnNewMic').addEventListener('click', () => connectMic().catch(() => {
+      showError('Не удалось получить доступ к микрофону.');
+    }));
+    document.getElementById('btnDemo').addEventListener('click', () => startSilentDemo());
+
+    document.getElementById('btnNext').addEventListener('click', () => nextPreset());
+    document.getElementById('btnPrev').addEventListener('click', () => prevPreset());
+
+    presetSelect.addEventListener('change', () => {
+      presetIndexHist.push(presetIndex);
+      loadPresetByIndex(parseInt(presetSelect.value, 10), 5.7);
+    });
+
+    document.getElementById('presetCycle').addEventListener('change', (e) => {
+      presetCycle = e.target.checked;
+      restartCycle();
+    });
+    document.getElementById('presetRandom').addEventListener('change', (e) => {
+      presetRandom = e.target.checked;
+    });
+    document.getElementById('presetCycleLength').addEventListener('change', (e) => {
+      const sec = Math.max(3, Math.min(120, parseInt(e.target.value, 10) || 15));
+      e.target.value = sec;
+      presetCycleLength = sec * 1000;
+      restartCycle();
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (!visualizer) return;
+      if (e.code === 'Space') { e.preventDefault(); nextPreset(); }
+      else if (e.code === 'ArrowRight') nextPreset();
+      else if (e.code === 'ArrowLeft' || e.code === 'Backspace') { e.preventDefault(); prevPreset(); }
+      else if (e.code === 'KeyH') toggleUi();
+      else if (e.code === 'KeyF') toggleFullscreen();
+    });
+
+    function toggleUi() {
+      uiVisible = !uiVisible;
+      panel.classList.toggle('ui-hidden', !uiVisible);
+      brand.classList.toggle('ui-hidden', !uiVisible);
+      hints.classList.toggle('ui-hidden', !uiVisible);
+    }
+
+    function toggleFullscreen() {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen?.();
+      } else {
+        document.exitFullscreen?.();
+      }
+    }
+
+    window.addEventListener('resize', resize);
+
+    let dragDepth = 0;
+    document.addEventListener('dragenter', (e) => {
+      e.preventDefault();
+      dragDepth++;
+      dropOverlay.classList.add('show');
+    });
+    document.addEventListener('dragleave', () => {
+      dragDepth = Math.max(0, dragDepth - 1);
+      if (!dragDepth) dropOverlay.classList.remove('show');
+    });
+    document.addEventListener('dragover', (e) => e.preventDefault());
+    document.addEventListener('drop', (e) => {
+      e.preventDefault();
+      dragDepth = 0;
+      dropOverlay.classList.remove('show');
+      const file = e.dataTransfer.files?.[0];
+      if (file && file.type.startsWith('audio/')) connectFile(file);
+    });
+  </script>
+</body>
+</html>

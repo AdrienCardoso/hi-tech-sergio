@@ -1,0 +1,11 @@
+{
+  "name": "hi-tech-sergio",
+  "private": true,
+  "scripts": {
+    "dev": "live-server . --port=8080 --open=/hi-tech-sergio.html --watch=.",
+    "start": "npm run dev"
+  },
+  "devDependencies": {
+    "live-server": "^1.2.2"
+  }
+}
