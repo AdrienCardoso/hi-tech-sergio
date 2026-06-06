@@ -10,8 +10,8 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
   <script src="https://unpkg.com/butterchurn-presets@3.0.0-beta.4/dist/base.min.js"></script>
   <script src="https://unpkg.com/butterchurn-presets@3.0.0-beta.4/dist/extra.min.js"></script>
-  <script src="aeon/aeon-scenes-builtin.js"></script>
-  <script src="aeon/aeon-engine.js"></script>
+  <script src="aeon/aeon-scenes-builtin.js?v=40"></script>
+  <script src="aeon/aeon-engine.js?v=40"></script>
 
   <style>
     :root {
@@ -6318,7 +6318,7 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
       if (typeof AeonEngine !== 'function') return null;
       try {
         aeonEngine = new AeonEngine(reactor, threeEngine, aeonCanvas);
-        if (!aeonEngine.uses2d && !aeonEngine.getGLRenderer() && !aeonEngine.ctx2d) return null;
+        if (!aeonEngine.getGLRenderer() && aeonEngine.ctx2d) aeonEngine.uses2d = true;
         aeonEngine.setPlaceholderElement(aeonPh);
         if (aeonScenesCache.length) aeonEngine.scenes = aeonScenesCache;
         aeonEngine.resize();
@@ -6433,7 +6433,7 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
             hideToast();
             const eng = ensureAeonEngine();
             if (!eng) {
-              showToast(isRu ? 'Aeon: WebGL недоступен' : 'Aeon: WebGL unavailable', false);
+              showToast(isRu ? 'Aeon: движок не загрузился (обновите страницу)' : 'Aeon: engine failed to load (refresh)', false);
               return;
             }
             if (!isAudioCtxStarted) await startAudioContext(true);

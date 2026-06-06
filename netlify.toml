@@ -14,3 +14,8 @@
   for = "/hi-tech-sergio.html"
   [headers.values]
     Cache-Control = "public, max-age=0, must-revalidate"
+
+[[headers]]
+  for = "/aeon/*"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"

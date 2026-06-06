@@ -591,8 +591,25 @@
     return PORTED_PATH_RE.some((re) => re.test(path));
   }
 
+  function _isCanvas(el) {
+    return el && (el.tagName === 'CANVAS' || typeof el.getContext === 'function');
+  }
+
   class AeonEngine {
-    constructor(reactor, threeEngineRef, fallbackCanvas) {
+    /** (reactor, threeEngine, canvas) или legacy (canvas, reactor) */
+    constructor(arg1, arg2, arg3) {
+      let reactor;
+      let threeEngineRef;
+      let fallbackCanvas;
+      if (_isCanvas(arg1)) {
+        fallbackCanvas = arg1;
+        reactor = arg2;
+        threeEngineRef = arg3 || null;
+      } else {
+        reactor = arg1;
+        threeEngineRef = arg2 || null;
+        fallbackCanvas = arg3 || (typeof document !== 'undefined' ? document.getElementById('aeonCanvas') : null);
+      }
       this.reactor = reactor;
       this.threeRef = threeEngineRef || null;
       this.fallbackCanvas = fallbackCanvas || null;
@@ -619,9 +636,9 @@
     _pickRenderMode() {
       if (this.getGLRenderer()) {
         this.uses2d = false;
-      } else if (this.ctx2d) {
-        this.uses2d = true;
+        return;
       }
+      this.uses2d = !!this.ctx2d;
     }
 
     getGLRenderer() {
