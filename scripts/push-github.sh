@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # Создать репозиторий на GitHub и запушить (после gh auth login)
 set -e
 cd "$(dirname "$0")/.."

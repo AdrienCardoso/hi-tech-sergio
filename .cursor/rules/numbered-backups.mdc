@@ -11,7 +11,8 @@ alwaysApply: true
 
 1. Прочитай `backups/manifest.json` → поле `next` (следующий номер).
 2. Скопируй изменённые ключевые файлы в `backups/`:
-   - `NNN-NEO.html` — если менялся `NEO.html`
+   - `NNN-hi-tech-sergio.html` — если менялся `hi-tech-sergio.html` (основной файл)
+   - `NNN-NEO.html` — если менялся `NEO.html` (редирект)
    - `NNN-audio_visualizer 2.html` — если менялся этот файл
    - и т.д. (один номер на одно действие; несколько файлов — один номер, разные суффиксы).
 3. Обнови `manifest.json`:
