@@ -3401,7 +3401,7 @@
       const colRight = document.getElementById('modesColRight');
       if (!colLeft || !colRight) return;
       
-      const active = (engine && !modeXActive) ? Math.round(engine.visualMode) : -1;
+      const active = engine ? Math.round(engine.visualMode) : -1;
 
       // Left Column objective indices: 11, 12, 13, 14, 15
       // Displayed numbers: 0, 1, 2, 3, 4
@@ -7034,7 +7034,7 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
 
       applyVisualCanvases();
       
-      if (!isAuto) {
+      if (!isAuto || modeXActive) {
         renderModeCards();
       }
     }
