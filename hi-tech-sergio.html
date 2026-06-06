@@ -3149,12 +3149,20 @@
 
     // Переносы из Other Visualisations → слоты основных режимов (методика для следующих переносов)
     const VISUAL_DIRECTORY = {
-      '6D-2': { type: 'milkdrop', presetNumber: 168 },
+      '6D-2': { type: 'milkdrop', presetKey: 'martin - city of shadows', presetNumber: 168 },
       '0D-12': { type: 'webgl', visualMode: 0, variantIdx: 0 }
     };
 
-    // Индексы пресетов (0-based), убранных из списка Other Visualisations
-    const OTHER_VISUAL_EXCLUDED_PRESET_INDICES = new Set([167]);
+    // Пресеты, убранные из Other (по ключу — нумерация в списке не сбивается)
+    const OTHER_VISUAL_EXCLUDED_PRESET_KEYS = new Set([
+      'martin - city of shadows'
+    ]);
+
+    let activeDirectorySlot = null;
+
+    function isOtherPresetExcluded(key) {
+      return OTHER_VISUAL_EXCLUDED_PRESET_KEYS.has(key);
+    }
 
     function getDirSlot(modeIdx, variantIdx) {
       const label = MODE_DIR_LABEL[modeIdx];
@@ -3171,7 +3179,7 @@
       if (!milkdropEngine || !milkdropEngine.presetKeys.length) return [];
       return milkdropEngine.presetKeys
         .map((_, i) => i)
-        .filter(i => !OTHER_VISUAL_EXCLUDED_PRESET_INDICES.has(i));
+        .filter(i => !isOtherPresetExcluded(milkdropEngine.presetKeys[i]));
     }
 
     function isMainVisualMode(modeIdx) {
@@ -6050,7 +6058,7 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
       async init() {
         this.ensurePresetList();
         if (!this.presetKeys.length) return;
-        if (this.ready) return;
+        if (this.ready) return Promise.resolve();
         if (this._initPromise) return this._initPromise;
         this._initPromise = (async () => {
           if (!this.reactor.ctx) return;
@@ -6071,7 +6079,7 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
           }
           const available = this.presetKeys
             .map((_, i) => i)
-            .filter(i => !OTHER_VISUAL_EXCLUDED_PRESET_INDICES.has(i));
+            .filter(i => !isOtherPresetExcluded(this.presetKeys[i]));
           this.presetIndex = available[Math.floor(Math.random() * available.length)] || 0;
           this.loadPresetByIndex(this.presetIndex, 0);
           this.resize();
@@ -6113,10 +6121,24 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
         }
       }
 
-      loadDirectoryPreset(presetNumber, blend = 0) {
+      loadPresetByKey(key, blend = 5.7, updateSelect = true) {
         this.ensurePresetList();
-        const idx = presetNumber - 1;
-        return this.init().then(() => this.loadPresetByIndex(idx, blend, false));
+        const idx = this.presetKeys.indexOf(key);
+        if (idx < 0) {
+          console.warn('MilkDrop preset key not found:', key);
+          return Promise.resolve();
+        }
+        return this.init().then(() => this.loadPresetByIndex(idx, blend, updateSelect));
+      }
+
+      loadDirectoryPreset(dirEntry, blend = 0) {
+        this.ensurePresetList();
+        let key = dirEntry.presetKey;
+        if (!key && dirEntry.presetNumber) {
+          key = this.presetKeys[dirEntry.presetNumber - 1];
+        }
+        if (!key) return Promise.resolve();
+        return this.loadPresetByKey(key, blend, false);
       }
 
       render() {
@@ -6141,18 +6163,16 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
         sel.appendChild(opt);
         return;
       }
-      let displayNum = 0;
       milkdropEngine.presetKeys.forEach((key, i) => {
-        if (OTHER_VISUAL_EXCLUDED_PRESET_INDICES.has(i)) return;
-        displayNum++;
+        if (isOtherPresetExcluded(key)) return;
         const opt = document.createElement('option');
         opt.value = String(i);
         const name = key.length > 60 ? key.slice(0, 60) + '…' : key;
-        opt.textContent = `${displayNum}. ${name}`;
+        opt.textContent = `${i + 1}. ${name}`;
         sel.appendChild(opt);
       });
       const cur = milkdropEngine.presetIndex;
-      if (OTHER_VISUAL_EXCLUDED_PRESET_INDICES.has(cur)) {
+      if (isOtherPresetExcluded(milkdropEngine.presetKeys[cur])) {
         const first = getAvailableOtherPresetIndices()[0];
         if (first !== undefined) sel.value = String(first);
       } else {
@@ -6872,11 +6892,15 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
         threeCanvas.style.display = 'none';
         canvas2d.style.display = 'none';
         milkdropCanvas.style.display = 'block';
-        if (milkdropEngine) {
-          milkdropEngine.loadDirectoryPreset(dir.presetNumber, 0);
+        const slot = getDirSlot(modeIdx, variantIdx);
+        if (milkdropEngine && slot) {
+          activeDirectorySlot = slot;
+          milkdropEngine.loadDirectoryPreset(dir, 0);
         }
         return;
       }
+
+      activeDirectorySlot = null;
 
       if (dir?.type === 'webgl') {
         particleCanvas.style.display = 'block';
