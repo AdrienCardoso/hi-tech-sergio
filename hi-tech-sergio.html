@@ -10,6 +10,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
   <script src="https://unpkg.com/butterchurn-presets@3.0.0-beta.4/dist/base.min.js"></script>
   <script src="https://unpkg.com/butterchurn-presets@3.0.0-beta.4/dist/extra.min.js"></script>
+  <script src="aeon/aeon-scenes-builtin.js"></script>
   <script src="aeon/aeon-engine.js"></script>
 
   <style>
@@ -519,6 +520,7 @@
     }
     .param-select:focus { border-color: var(--purple-dim); }
     .param-select option { background: #111; color: var(--text); }
+    .param-select optgroup { background: #111; color: var(--text-muted); font-weight: 600; }
     .theme-grid {
       display: grid;
       grid-template-columns: repeat(10, 1fr);
@@ -6266,59 +6268,63 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
       }
     }
 
-    function appendAeonOptions(parent, items) {
-      items.forEach(({ scene, i }) => {
-        const opt = document.createElement('option');
-        opt.value = String(i);
-        const name = scene.name.length > 50 ? scene.name.slice(0, 50) + '…' : scene.name;
-        opt.textContent = `${i + 1}. ${name}`;
-        parent.appendChild(opt);
-      });
-    }
+    let aeonScenesCache = [];
 
     async function fillAeonSceneSelect() {
       const sel = document.getElementById('aeonSceneSelect');
-      if (!sel || !aeonEngine) return;
-      await aeonEngine.loadManifest();
+      if (!sel) return;
+      const loader = typeof loadAeonScenes === 'function' ? loadAeonScenes : null;
+      if (loader) {
+        aeonScenesCache = await loader();
+      } else if (window.AEON_SCENES_BUILTIN?.scenes?.length) {
+        aeonScenesCache = window.AEON_SCENES_BUILTIN.scenes;
+      } else if (aeonEngine) {
+        aeonScenesCache = await aeonEngine.loadManifest();
+      }
+      if (aeonEngine && aeonScenesCache.length) aeonEngine.scenes = aeonScenesCache;
+
       sel.innerHTML = '';
-      if (!aeonEngine.scenes.length) {
+      if (!aeonScenesCache.length) {
         const opt = document.createElement('option');
         opt.value = '';
-        opt.textContent = typeof t === 'function' ? t('aeonEmpty') : '—';
+        opt.textContent = typeof t === 'function' ? t('aeonEmpty') : 'Сцены не загрузились';
         sel.appendChild(opt);
         return;
       }
       const placeholder = document.createElement('option');
       placeholder.value = '';
-      placeholder.textContent = '— выберите сцену —';
+      placeholder.textContent = isRu ? '— выберите сцену —' : '— pick a scene —';
       sel.appendChild(placeholder);
 
-      const ported = [];
-      const pending = [];
-      aeonEngine.scenes.forEach((scene, i) => {
-        (typeof isAeonScenePorted === 'function' && isAeonScenePorted(scene) ? ported : pending).push({ scene, i });
+      aeonScenesCache.forEach((scene, i) => {
+        const opt = document.createElement('option');
+        opt.value = String(i);
+        const ready = typeof isAeonScenePorted === 'function' && isAeonScenePorted(scene);
+        const name = scene.name.length > 48 ? scene.name.slice(0, 48) + '…' : scene.name;
+        opt.textContent = ready ? `✓ ${i + 1}. ${name}` : `${i + 1}. ${name}`;
+        sel.appendChild(opt);
       });
-
-      if (ported.length) {
-        const ogReady = document.createElement('optgroup');
-        ogReady.label = isRu ? `✓ Готовые (${ported.length})` : `✓ Ready (${ported.length})`;
-        appendAeonOptions(ogReady, ported);
-        sel.appendChild(ogReady);
-      }
-      if (pending.length) {
-        const ogWait = document.createElement('optgroup');
-        ogWait.label = isRu ? `○ В очереди (${pending.length})` : `○ Pending (${pending.length})`;
-        appendAeonOptions(ogWait, pending);
-        sel.appendChild(ogWait);
-      }
     }
 
-    function tryLoadAeonSceneList(attempt = 0) {
-      if (!aeonEngine) return;
-      fillAeonSceneSelect().then(() => {
-        if (aeonEngine.scenes.length) return;
-        if (attempt < 8) setTimeout(() => tryLoadAeonSceneList(attempt + 1), 400);
-      });
+    function tryLoadAeonSceneList() {
+      fillAeonSceneSelect().catch((err) => console.warn('Aeon scene list:', err));
+    }
+
+    function ensureAeonEngine() {
+      if (aeonEngine) return aeonEngine;
+      const aeonCanvas = document.getElementById('aeonCanvas');
+      const aeonPh = document.getElementById('aeonPlaceholder');
+      if (!aeonCanvas || typeof AeonEngine !== 'function') return null;
+      try {
+        aeonEngine = new AeonEngine(aeonCanvas, reactor);
+        aeonEngine.setPlaceholderElement(aeonPh);
+        if (aeonScenesCache.length) aeonEngine.scenes = aeonScenesCache;
+        aeonEngine.resize();
+        return aeonEngine;
+      } catch (err) {
+        console.warn('AeonEngine init failed:', err);
+        return null;
+      }
     }
 
     function tryLoadMilkdropPresetList(attempt = 0) {
@@ -6362,14 +6368,7 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
 
       const mdCanvas = document.getElementById('milkdropCanvas');
       milkdropEngine = new MilkDropEngine(mdCanvas, reactor);
-      const aeonCanvas = document.getElementById('aeonCanvas');
-      const aeonPh = document.getElementById('aeonPlaceholder');
-      if (aeonCanvas && typeof AeonEngine === 'function') {
-        aeonEngine = new AeonEngine(aeonCanvas, reactor);
-        aeonEngine.setPlaceholderElement(aeonPh);
-        aeonEngine.resize();
-        tryLoadAeonSceneList();
-      }
+      tryLoadAeonSceneList();
       tryLoadMilkdropPresetList();
 
       try {
@@ -6417,7 +6416,10 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
         }
 
         const aeonSceneSelect = document.getElementById('aeonSceneSelect');
-        if (aeonSceneSelect && aeonEngine) {
+        if (aeonSceneSelect) {
+          aeonSceneSelect.addEventListener('focus', () => {
+            if (aeonScenesCache.length < 2) tryLoadAeonSceneList();
+          });
           aeonSceneSelect.addEventListener('change', async () => {
             const raw = aeonSceneSelect.value;
             if (raw === '') {
@@ -6426,14 +6428,19 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
             }
             const idx = parseInt(raw, 10);
             if (Number.isNaN(idx)) return;
+            const eng = ensureAeonEngine();
+            if (!eng) {
+              showToast(isRu ? 'Aeon: не удалось запустить WebGL' : 'Aeon: WebGL failed', true);
+              return;
+            }
             if (!isAudioCtxStarted) await startAudioContext();
             const mdSel = document.getElementById('milkdropPresetSelect');
             if (mdSel) mdSel.value = '';
-            await aeonEngine.loadSceneByIndex(idx);
+            await eng.loadSceneByIndex(idx);
             if (engine) {
               engine.visualMode = 18;
               applyVisualCanvases();
-              if (aeonEngine) aeonEngine.resize();
+              eng.resize();
             }
           });
         }

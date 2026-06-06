@@ -4,6 +4,33 @@
 (function (global) {
   'use strict';
 
+  let _scenesCache = null;
+
+  async function loadAeonScenes() {
+    if (_scenesCache?.length) return _scenesCache;
+    if (global.AEON_SCENES_BUILTIN?.scenes?.length) {
+      _scenesCache = global.AEON_SCENES_BUILTIN.scenes;
+      return _scenesCache;
+    }
+    const bases = [];
+    try {
+      bases.push(new URL('aeon/aeon-scenes.json', document.baseURI || global.location.href).href);
+    } catch (_) {}
+    bases.push('aeon/aeon-scenes.json', './aeon/aeon-scenes.json', '/aeon/aeon-scenes.json');
+    for (const url of bases) {
+      try {
+        const res = await fetch(url, { cache: 'no-cache' });
+        if (res.ok) {
+          const data = await res.json();
+          _scenesCache = data.scenes || [];
+          if (_scenesCache.length) return _scenesCache;
+        }
+      } catch (_) {}
+    }
+    _scenesCache = [];
+    return _scenesCache;
+  }
+
   const ss_PaletteBack = 1;
   const ss_PaletteFore = 2;
   const ss_PaletteFull = 0;
@@ -534,17 +561,7 @@
 
     async loadManifest() {
       if (this.scenes.length) return this.scenes;
-      try {
-        const res = await fetch('aeon/aeon-scenes.json');
-        if (res.ok) {
-          const data = await res.json();
-          this.scenes = data.scenes || [];
-          return this.scenes;
-        }
-      } catch (e) {
-        console.warn('Aeon manifest fetch failed:', e);
-      }
-      this.scenes = [];
+      this.scenes = await loadAeonScenes();
       return this.scenes;
     }
 
@@ -661,4 +678,5 @@
 
   global.AeonEngine = AeonEngine;
   global.isAeonScenePorted = isScenePorted;
+  global.loadAeonScenes = loadAeonScenes;
 })();
