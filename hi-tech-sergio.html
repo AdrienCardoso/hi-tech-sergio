@@ -6312,11 +6312,12 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
 
     function ensureAeonEngine() {
       if (aeonEngine) return aeonEngine;
-      const aeonCanvas = document.getElementById('aeonCanvas');
       const aeonPh = document.getElementById('aeonPlaceholder');
-      if (!aeonCanvas || typeof AeonEngine !== 'function') return null;
+      if (typeof AeonEngine !== 'function' || !threeEngine) return null;
       try {
-        aeonEngine = new AeonEngine(aeonCanvas, reactor);
+        if (!threeEngine.renderer) threeEngine.init();
+        if (!threeEngine.renderer) return null;
+        aeonEngine = new AeonEngine(reactor, threeEngine);
         aeonEngine.setPlaceholderElement(aeonPh);
         if (aeonScenesCache.length) aeonEngine.scenes = aeonScenesCache;
         aeonEngine.resize();
@@ -6428,12 +6429,13 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
             }
             const idx = parseInt(raw, 10);
             if (Number.isNaN(idx)) return;
+            hideToast();
             const eng = ensureAeonEngine();
             if (!eng) {
-              showToast(isRu ? 'Aeon: не удалось запустить WebGL' : 'Aeon: WebGL failed', true);
+              showToast(isRu ? 'Aeon: WebGL недоступен' : 'Aeon: WebGL unavailable', false);
               return;
             }
-            if (!isAudioCtxStarted) await startAudioContext();
+            if (!isAudioCtxStarted) await startAudioContext(true);
             const mdSel = document.getElementById('milkdropPresetSelect');
             if (mdSel) mdSel.value = '';
             await eng.loadSceneByIndex(idx);
@@ -6442,6 +6444,7 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
               applyVisualCanvases();
               eng.resize();
             }
+            hideToast();
           });
         }
         
@@ -6842,7 +6845,7 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
       await startAudioContext();
     });
 
-    async function startAudioContext() {
+    async function startAudioContext(keepCurrentMode = false) {
       if (isAudioCtxStarted) return;
       isAudioCtxStarted = true;
       
@@ -6852,7 +6855,7 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
 
       if (milkdropEngine) milkdropEngine.ensurePresetList();
 
-      setVisualMode(11);
+      if (!keepCurrentMode) setVisualMode(11);
 
       if (!renderLoopStarted) {
         renderLoopStarted = true;
@@ -7088,10 +7091,10 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
 
       if (modeIdx === 18) {
         particleCanvas.style.display = 'none';
-        threeCanvas.style.display = 'none';
+        threeCanvas.style.display = 'block';
         canvas2d.style.display = 'none';
         milkdropCanvas.style.display = 'none';
-        aeonCanvas.style.display = 'block';
+        aeonCanvas.style.display = 'none';
         if (aeonEngine) aeonEngine.resize();
         if (aeonPlaceholder && aeonEngine && aeonEngine.showsPlaceholder()) {
           aeonPlaceholder.style.display = 'flex';

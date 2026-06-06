@@ -412,8 +412,8 @@
   }
 
   class AeonDrawContext {
-    constructor(renderer, scene) {
-      this.renderer = renderer;
+    constructor(aeonEngine, scene) {
+      this.aeon = aeonEngine;
       this.scene = scene;
       this.hueShift = 0;
       this._points = null;
@@ -430,7 +430,7 @@
     }
 
     set3DCamera(pos, lookAt, up, fov, near, far) {
-      const cam = this.renderer.camera;
+      const cam = this.aeon.camera;
       cam.fov = (fov * 180) / Math.PI;
       cam.near = near;
       cam.far = far;
@@ -441,7 +441,7 @@
     }
 
     _pointSize(scale) {
-      const dim = Math.min(this.renderer.width, this.renderer.height);
+      const dim = Math.min(this.aeon.width, this.aeon.height);
       return Math.max(14, scale * dim * 0.22);
     }
 
@@ -535,9 +535,11 @@
   }
 
   class AeonEngine {
-    constructor(canvas, reactor) {
-      this.canvas = canvas;
+    /** @param {object} reactor — AudioReactor */
+    /** @param {object} threeEngineRef — общий ThreeEngine (один WebGL-контекст) */
+    constructor(reactor, threeEngineRef) {
       this.reactor = reactor;
+      this.threeRef = threeEngineRef || null;
       this.scenes = [];
       this.sceneIndex = -1;
       this.activeScene = null;
@@ -548,15 +550,18 @@
       this._placeholder = null;
       this.placeholderEl = null;
       this.time = 0;
-
-      this.renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: false, powerPreference: 'high-performance' });
-      this.renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
       this.threeScene = new THREE.Scene();
       this.threeScene.background = new THREE.Color(0x000000);
       this.camera = new THREE.PerspectiveCamera(50, 1, 0.05, 200);
-      this.renderer.camera = this.camera;
       this.width = window.innerWidth;
       this.height = window.innerHeight;
+    }
+
+    getGLRenderer() {
+      const te = this.threeRef;
+      if (!te) return null;
+      if (!te.renderer && typeof te.init === 'function') te.init();
+      return te.renderer || null;
     }
 
     async loadManifest() {
@@ -594,7 +599,7 @@
           this.ready = true;
           return;
         }
-        this._drawCtx = new AeonDrawContext(this.renderer, this.threeScene);
+        this._drawCtx = new AeonDrawContext(this, this.threeScene);
         this._placeholder = null;
         this._hidePlaceholder();
         this.activeScene = entry;
@@ -647,15 +652,17 @@
       const h = window.innerHeight;
       this.width = w;
       this.height = h;
-      this.canvas.style.width = w + 'px';
-      this.canvas.style.height = h + 'px';
-      this.renderer.setSize(w, h, true);
+      const gl = this.getGLRenderer();
+      if (gl) gl.setSize(w, h, true);
       this.camera.aspect = w / h;
       this.camera.updateProjectionMatrix();
     }
 
     render(dt) {
       if (!this.ready) return;
+      const gl = this.getGLRenderer();
+      if (!gl) return;
+
       const sens = parseFloat(document.getElementById('paramSensitivity')?.value || '1');
       this.audio.updateFromReactor(this.reactor, sens, this.time);
       this.time += dt;
@@ -668,10 +675,11 @@
       if (this._sceneImpl && this._drawCtx) {
         this._drawCtx.setHueShift(hue);
         this._sceneImpl.draw(this._drawCtx, this.time, dt, this.audio);
-        this.renderer.render(this.threeScene, this.camera);
+        gl.setClearColor(0x000000, 1);
+        gl.render(this.threeScene, this.camera);
       } else if (this._placeholder) {
-        this.renderer.setClearColor(0x000000, 1);
-        this.renderer.clear();
+        gl.setClearColor(0x000000, 1);
+        gl.clear();
       }
     }
   }
