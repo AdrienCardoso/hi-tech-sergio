@@ -248,10 +248,14 @@
       flex-shrink: 0;
     }
 
-    /* ── Visualizer modes vertical sidebar (left) ── */
-    .modes-panel-top {
+    /* ── Visualizer modes vertical sidebar (left) + variant strip ── */
+    .modes-panel-wrap {
       position: absolute; top: 50%; left: 20px; z-index: 20;
       transform: translateY(-50%);
+      display: flex; flex-direction: row; align-items: stretch; gap: 5px;
+    }
+    .modes-panel-top {
+      position: static; transform: none;
       width: 156px;
       background: rgba(10, 10, 10, 0.75);
       backdrop-filter: blur(20px);
@@ -262,6 +266,63 @@
       flex-direction: column;
       gap: 8px;
     }
+    .modes-variants-panel {
+      width: 26px;
+      display: none;
+      flex-direction: column;
+      gap: 3px;
+      background: rgba(10, 10, 10, 0.75);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(38, 38, 38, 0.4);
+      border-radius: 10px;
+      padding: 6px 4px;
+      box-shadow: 0 25px 50px -12px rgba(0,0,0,0.6);
+      justify-content: space-between;
+      flex-shrink: 0;
+    }
+    .modes-variants-panel.visible { display: flex; }
+    .variant-cell {
+      flex: 1 1 0;
+      min-height: 0;
+      width: 100%;
+      border-radius: 3px;
+      border: 1px solid #262626;
+      background: rgba(18, 18, 22, 0.9);
+      cursor: pointer;
+      padding: 0;
+      outline: none;
+      transition: border-color 0.15s, box-shadow 0.15s, transform 0.12s;
+      position: relative;
+      overflow: hidden;
+    }
+    .variant-cell::after {
+      content: '';
+      position: absolute; inset: 2px;
+      border-radius: 2px;
+      opacity: 0.55;
+      background: linear-gradient(135deg, rgba(168,85,247,0.35), rgba(56,189,248,0.2));
+    }
+    .variant-cell[data-variant="0"]::after { background: linear-gradient(135deg, #7c3aed, #a855f7); }
+    .variant-cell[data-variant="1"]::after { background: linear-gradient(135deg, #6366f1, #818cf8); }
+    .variant-cell[data-variant="2"]::after { background: linear-gradient(135deg, #3b82f6, #60a5fa); }
+    .variant-cell[data-variant="3"]::after { background: linear-gradient(135deg, #06b6d4, #22d3ee); }
+    .variant-cell[data-variant="4"]::after { background: linear-gradient(135deg, #10b981, #34d399); }
+    .variant-cell[data-variant="5"]::after { background: linear-gradient(135deg, #84cc16, #a3e635); }
+    .variant-cell[data-variant="6"]::after { background: linear-gradient(135deg, #eab308, #facc15); }
+    .variant-cell[data-variant="7"]::after { background: linear-gradient(135deg, #f97316, #fb923c); }
+    .variant-cell[data-variant="8"]::after { background: linear-gradient(135deg, #ef4444, #f87171); }
+    .variant-cell[data-variant="9"]::after { background: linear-gradient(135deg, #ec4899, #f472b6); }
+    .variant-cell[data-variant="10"]::after { background: linear-gradient(135deg, #d946ef, #e879f9); }
+    .variant-cell[data-variant="11"]::after { background: linear-gradient(135deg, #f8fafc, #94a3b8); }
+    .variant-cell:hover {
+      border-color: rgba(64,64,64,0.9);
+      transform: scale(1.06);
+    }
+    .variant-cell.active {
+      border-color: var(--purple);
+      box-shadow: 0 0 10px rgba(168,85,247,0.45);
+    }
+    .variant-cell.active::after { opacity: 0.95; }
     .modes-panel-title {
       display: none;
     }
@@ -696,7 +757,7 @@
     .play-btn svg { width: 16px; height: 16px; fill: #000; }
 
     @media (max-width: 860px) {
-      .modes-panel-top {
+      .modes-panel-wrap {
         left: 10px;
       }
       .right-sidebar {
@@ -796,6 +857,22 @@
       background: var(--panel-bg);
       border-color: var(--panel-border);
       box-shadow: 0 15px 30px rgba(0,0,0,0.08);
+    }
+    .light-theme .modes-variants-panel {
+      background: var(--panel-bg);
+      border-color: var(--panel-border);
+      box-shadow: 0 15px 30px rgba(0,0,0,0.08);
+    }
+    .light-theme .variant-cell {
+      border-color: var(--panel-border);
+      background: rgba(240, 240, 240, 0.5);
+    }
+    .light-theme .variant-cell:hover {
+      border-color: rgba(150, 150, 150, 0.8);
+    }
+    .light-theme .variant-cell.active {
+      border-color: var(--purple);
+      box-shadow: 0 0 10px rgba(139, 92, 246, 0.25);
     }
     .light-theme .column-label {
       color: var(--text-muted);
@@ -1049,8 +1126,9 @@
     </div>
   </div>
 
-  <!-- Visualizer modes (vertical sidebar) -->
-  <div class="modes-panel-top ui-chrome">
+  <!-- Visualizer modes (vertical sidebar) + 12 variant squares -->
+  <div class="modes-panel-wrap ui-chrome">
+  <div class="modes-panel-top">
     <!-- Shuffle Mode (X) at the very top -->
     <button class="mode-card-x" id="btnModeX" title="RANDOM SHUFFLE MODE // Случайный режим">
       <div class="mode-card-x-title">X</div>
@@ -1087,6 +1165,8 @@
       </div>
       <div class="mode-card-h-name" id="lblModeHName">HYBRID</div>
     </button>
+  </div>
+  <div class="modes-variants-panel" id="modesVariantsPanel" aria-label="Visual variants"></div>
   </div>
 
   <!-- Top-right -->
@@ -1278,6 +1358,7 @@
       uniform float uParticleSize;
       uniform float uNoiseStrength;
       uniform float uVisualMode; // 0-19 visual modes
+      uniform float uVariant; // 0-11 sub-variation within mode family
       uniform float uHighlightComponent; // Interactive highlighting (0=none, 1=disk, 2=arches, 3=ring)
       uniform float uOnset;
       uniform float uLightTheme;
@@ -1389,7 +1470,7 @@
       }
 
       vec3 getGradientColor(float t, float amp) {
-        return paletteByTheme(mod(t + uTime * 0.02, 1.0), amp);
+        return paletteByTheme(mod(t + uTime * 0.02 + uVariant * 0.0833, 1.0), amp);
       }
 
       void main() {
@@ -1407,11 +1488,12 @@
           float gy = floor(aPositionSeed.y * 6.0);
           float gz = floor(aPositionSeed.z * 6.0);
           vec3 cell = vec3(gx, gy, gz) - 2.5;
-          float jit = snoise(cell * 0.8 + uTime * 0.04) * (0.35 + uMid * 0.55);
-          pos = cell * 1.65 + vec3(jit);
+          float lattice = 1.45 + mod(uVariant, 6.0) * 0.12;
+          float jit = snoise(cell * (0.65 + uVariant * 0.03) + uTime * 0.04 + uVariant * 0.08) * (0.35 + uMid * 0.55);
+          pos = cell * lattice + vec3(jit);
           pos += normalize(cell + 0.01) * amp * 1.4;
-          pos.y += sin(cell.x + cell.z + uTime * 0.3) * uBass * 0.5;
-          float rot = uTime * 0.12 + uBass * 0.35;
+          pos.y += sin(cell.x + cell.z + uTime * 0.3 + uVariant * 0.4) * uBass * 0.5;
+          float rot = uTime * 0.12 + uBass * 0.35 + uVariant * 0.18;
           pos.xz = mat2(cos(rot), -sin(rot), sin(rot), cos(rot)) * pos.xz;
 
           // Lock one single particle (the very first one) exactly at the origin
@@ -1422,9 +1504,9 @@
         
         // --- MODE 1: TORUS KNOT (Glowing 3D Energy Donut) ---
         else if (uVisualMode == 1.0) {
-          float p = 3.0; 
-          float q = 8.0;
-          float theta = aIndexSeed * 2.0 * PI + uTime * 0.04;
+          float p = 2.0 + mod(uVariant, 5.0);
+          float q = 5.0 + floor(uVariant / 4.0) * 2.0 + mod(uVariant, 4.0);
+          float theta = aIndexSeed * 2.0 * PI + uTime * 0.04 + uVariant * 0.12;
           
           float r = 2.5 + 0.6 * sin(q * theta) + amp * 0.8;
           pos.x = r * cos(p * theta);
@@ -1476,9 +1558,9 @@
           float depth = (aPositionSeed.z - 0.5) * 22.0;
           float flow = uTime * (0.42 + uMid * 0.25) + depth * 0.12;
           float funnel = 0.85 + abs(depth) * 0.11;
-          float ang = lane * 6283.18 + flow * 1.35;
+          float ang = lane * 6283.18 + flow * (1.15 + mod(uVariant, 6.0) * 0.08) + uVariant * 0.52;
 
-          float shell = pow(aPositionSeed.y, 0.62);
+          float shell = pow(aPositionSeed.y, 0.58 + mod(uVariant, 4.0) * 0.04);
           float r = funnel * (0.25 + shell * 2.4);
           r += snoise(vec3(ang * 0.04, depth * 0.18, uTime * 0.1)) * (0.55 + uBass * uSensitivity * 1.1);
           r += snoise(vec3(ang * 0.08 + seed, depth * 0.08, uTime * 0.22)) * 0.35 * uNoiseStrength;
@@ -1553,9 +1635,9 @@
 
         // --- MODE 8: GALAXY (Double Helix Swirling Spiral) ---
         else if (uVisualMode == 8.0) {
-          float radius = aPositionSeed.x * 6.5 + 0.8;
-          float arm = fract(aIndexSeed * 5.0) > 0.5 ? 0.0 : PI;
-          float angle = aIndexSeed * 25.0 + radius * 1.8 + uTime * 0.15 + arm;
+          float radius = aPositionSeed.x * (5.8 + mod(uVariant, 6.0) * 0.22) + 0.8;
+          float arm = fract(aIndexSeed * (4.0 + mod(uVariant, 5.0))) > 0.5 ? 0.0 : PI;
+          float angle = aIndexSeed * (18.0 + uVariant * 2.2) + radius * (1.5 + mod(uVariant, 4.0) * 0.15) + uTime * 0.15 + arm + uVariant * 0.35;
           
           float height = aPositionSeed.y * 0.6 + snoise(vec3(pos.x, pos.y, uTime * 0.2)) * 0.3;
           pos.x = radius * cos(angle);
@@ -1586,9 +1668,9 @@
           float expand = 1.0 + uBass * 0.75 + uEnergy * 0.55;
           float pulse = 0.92 + sin(uTime * 0.4 + uBass * 4.0) * 0.12;
 
-          if (role < 0.58) {
+          if (role < (0.52 + mod(uVariant, 5.0) * 0.03)) {
             // Hair-like filaments radiating from a fuzzy core
-            float strand = floor(aIndexSeed * 52.0);
+            float strand = floor(aIndexSeed * (40.0 + uVariant * 4.0));
             float along = aPositionSeed.x;
             float thick = aPositionSeed.z - 0.5;
 
@@ -1613,10 +1695,10 @@
             pos += dir * snoise(vec3(along * 6.0, strand, uTime * 0.35)) * amp * 0.4;
 
             frontFactor4 = along;
-          } else if (role < 0.84) {
+          } else if (role < (0.8 + mod(uVariant, 4.0) * 0.02)) {
             // Outer radial corona / lightning petals (expands on bass)
-            float ray = floor(aIndexSeed * 40.0);
-            float rayAng = ray * 0.15708 + snoise(vec3(ray * 0.27, uTime * 0.18, 0.0)) * 0.55;
+            float ray = floor(aIndexSeed * (32.0 + uVariant * 3.5));
+            float rayAng = ray * (0.12 + mod(uVariant, 6.0) * 0.008) + snoise(vec3(ray * 0.27, uTime * 0.18 + uVariant * 0.2, 0.0)) * 0.55;
             float alongRay = aPositionSeed.x;
             float spread = (aPositionSeed.z - 0.5) * 2.0;
 
@@ -2500,6 +2582,7 @@
         this.numParticles = 1000000;
         this.time = 0;
         this.visualMode = 0.0;
+        this.variantIdx = 0;
         this.themeIdx = 0.0;
         this.highlightComponent = 0.0;
         
@@ -2796,6 +2879,7 @@
         gl.uniform1f(gl.getUniformLocation(this.program, "uParticleSize"), particleSize);
         gl.uniform1f(gl.getUniformLocation(this.program, "uNoiseStrength"), noiseStrength);
         gl.uniform1f(gl.getUniformLocation(this.program, "uVisualMode"), this.visualMode);
+        gl.uniform1f(gl.getUniformLocation(this.program, "uVariant"), this.variantIdx || 0);
         gl.uniform1f(gl.getUniformLocation(this.program, "uPaletteTheme"), this.themeIdx);
         gl.uniform1f(gl.getUniformLocation(this.program, "uHighlightComponent"), this.highlightComponent || 0.0);
         gl.uniform1f(gl.getUniformLocation(this.program, "uOnset"), this.reactor.onset ? 1.0 : 0.0);
@@ -3043,6 +3127,35 @@
       setCinemaMode(!cinemaMode);
     }
 
+    const MAIN_VISUAL_MODES = new Set([0, 1, 4, 8, 10, 11, 12, 13, 14, 15, 16]);
+    let visualVariantIdx = 0;
+
+    function isMainVisualMode(modeIdx) {
+      return MAIN_VISUAL_MODES.has(modeIdx);
+    }
+
+    function setVisualVariant(variantIdx) {
+      if (variantIdx < 0 || variantIdx > 11) return;
+      visualVariantIdx = variantIdx;
+      if (engine) engine.variantIdx = variantIdx;
+      renderVariantCells();
+    }
+    window.setVisualVariant = setVisualVariant;
+
+    function renderVariantCells() {
+      const panel = document.getElementById('modesVariantsPanel');
+      if (!panel) return;
+      const mode = (engine && !modeXActive) ? Math.round(engine.visualMode) : -1;
+      const show = isMainVisualMode(mode);
+      panel.classList.toggle('visible', show);
+      if (!show) return;
+      const family = MODES[mode] ? (isRu ? MODES[mode].ru : MODES[mode].en) : '';
+      panel.innerHTML = Array.from({ length: 12 }, (_, i) => {
+        const label = isRu ? `Вариант ${i + 1}` : `Variant ${i + 1}`;
+        return `<button type="button" class="variant-cell${i === visualVariantIdx ? ' active' : ''}" data-variant="${i}" title="${family} — ${label}" onclick="setVisualVariant(${i})"></button>`;
+      }).join('');
+    }
+
         const MODES = [
       { en: 'Archetype', ru: 'архетип', svg: '<svg viewBox="0 0 24 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><polygon points="12,3 20,16 4,16"/><circle cx="12" cy="11.5" r="3" fill="currentColor" opacity="0.3"/></svg>' },
       { en: 'Ego', ru: 'эго', svg: '<svg viewBox="0 0 24 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="3" x2="12" y2="17"/><polyline points="7,12 12,17 17,12"/></svg>' },
@@ -3224,6 +3337,7 @@
       if (btnH) {
         btnH.classList.toggle('active', active === 16);
       }
+      renderVariantCells();
     }
 
     function showToast(msg, spin = true) {
@@ -3369,7 +3483,7 @@ class bI{constructor(t){this.use3d=!0,this.time=0,this.subScale=1,this.objScale=
       this.innerMesh.visible = false;
       this.outerMesh.visible = false;
 
-      const l=new _s({color:16777215,transparent:!0,opacity:.06,blending:Zn,side:Kn,depthWrite:!1});this.glow=new tn(new ds(2.5,32,32),l),this.glow.position.x=4.5,this.glow.visible=!1;const u=new _s({color:6184,transparent:!0,opacity:.03,side:Kn,depthWrite:!1});this.darkAura=new tn(new ds(2.6,32,32),u),this.darkAura.position.x=-4.5;const f=new jw(2236962,1);this.group.add(f);const h=new Af(8939263,.8);h.position.set(-5,3,2),this.group.add(h);const d=new Af(16777215,1.2);d.position.set(6,2,4),this.group.add(d),this.wLight=new o1(16777215,2,20),this.wLight.position.set(4.5,0,3),this.group.add(this.wLight),this.group.add(this.subject,this.object,this.glow,this.darkAura),this.orbitYaw=0,this.orbitPitch=0,this.leftOff={x:0,y:0,z:0},this.rightOff={x:0,y:0,z:0}}_buildStrings(t){this.strGroup&&(this.group.remove(this.strGroup),this.lines.forEach(o=>{o.geo.dispose(),o.mat.dispose()})),this.strGroup=new Yn,this.lines=[];const e=[16720486,16729088,16746496,16763904,4489215,52360,43775,8930559,15615231].map(o=>new de(o)),s=t;for(let o=0;o<s;o++){const l=o*2.3981+.5,u=28,f=new Tn;f.setAttribute("position",new ni(new Float32Array((u+1)*3),3)),f.setAttribute("color",new ni(new Float32Array((u+1)*3),3));const h=new Ia({vertexColors:!0,transparent:!0,opacity:.48+Math.random()*.28,blending:Zn,depthWrite:!1}),d=new Mr(f,h);this.lines.push({mesh:d,geo:f,mat:h,seed:l,SEGS:u,aaSub:l*Math.PI*2,aaObj:(l+.3+Math.sin(l*3)*.4)*Math.PI*2,aeSub:Math.sin(l*5.1)*.8,aeObj:Math.cos(l*4.7)*.8,phase:Math.random()*Math.PI*2,vf:.5+Math.random()*2,spectrum:e}),this.strGroup.add(d)}this.group.add(this.strGroup)}update(t,e,s,o){this.time+=t;const l=e.sBass*s.sensitivity,u=(e.sMid*.6+e.sHigh*.4)*s.sensitivity,f=Math.max(.5,Math.min(2.5,.68+l*2.1)),h=1;this.subScale+=(f-this.subScale)*.18,this.objScale+=(h-this.objScale)*.08,this.subject.scale.setScalar(this.subScale),this.darkAura.scale.setScalar(this.subScale),this.object.scale.setScalar(this.objScale),this.glow.scale.setScalar(this.objScale+.15);const camZ=s.cameraZoom||18;const d=4.5*(camZ/18)+Math.sin(this.time*.8)*.06;const M=Math.sin(this.time*.5)*.2;this.subject.position.set(-d+this.leftOff.x,M+this.leftOff.y,this.leftOff.z),this.darkAura.position.copy(this.subject.position),this.object.position.set(d+this.rightOff.x,-M*.7+this.rightOff.y,this.rightOff.z),this.glow.position.copy(this.object.position),this.wLight.position.x=this.object.position.x;const g=this.subject.material;g.uniforms.uTime.value+=t,g.uniforms.uBass.value+=(l-g.uniforms.uBass.value)*.1;
+      const l=new _s({color:16777215,transparent:!0,opacity:.06,blending:Zn,side:Kn,depthWrite:!1});this.glow=new tn(new ds(2.5,32,32),l),this.glow.position.x=4.5,this.glow.visible=!1;const u=new _s({color:6184,transparent:!0,opacity:.03,side:Kn,depthWrite:!1});this.darkAura=new tn(new ds(2.6,32,32),u),this.darkAura.position.x=-4.5;const f=new jw(2236962,1);this.group.add(f);const h=new Af(8939263,.8);h.position.set(-5,3,2),this.group.add(h);const d=new Af(16777215,1.2);d.position.set(6,2,4),this.group.add(d),this.wLight=new o1(16777215,2,20),this.wLight.position.set(4.5,0,3),this.group.add(this.wLight),this.group.add(this.subject,this.object,this.glow,this.darkAura),this.orbitYaw=0,this.orbitPitch=0,this.leftOff={x:0,y:0,z:0},this.rightOff={x:0,y:0,z:0}}_buildStrings(t){this.strGroup&&(this.group.remove(this.strGroup),this.lines.forEach(o=>{o.geo.dispose(),o.mat.dispose()})),this.strGroup=new Yn,this.lines=[];const e=[16720486,16729088,16746496,16763904,4489215,52360,43775,8930559,15615231].map(o=>new de(o)),s=t;for(let o=0;o<s;o++){const l=o*2.3981+.5,u=28,f=new Tn;f.setAttribute("position",new ni(new Float32Array((u+1)*3),3)),f.setAttribute("color",new ni(new Float32Array((u+1)*3),3));const h=new Ia({vertexColors:!0,transparent:!0,opacity:.48+Math.random()*.28,blending:Zn,depthWrite:!1}),d=new Mr(f,h);this.lines.push({mesh:d,geo:f,mat:h,seed:l,SEGS:u,aaSub:l*Math.PI*2,aaObj:(l+.3+Math.sin(l*3)*.4)*Math.PI*2,aeSub:Math.sin(l*5.1)*.8,aeObj:Math.cos(l*4.7)*.8,phase:Math.random()*Math.PI*2,vf:.5+Math.random()*2,spectrum:e}),this.strGroup.add(d)}this.group.add(this.strGroup)}update(t,e,s,o){this.time+=t;const variant=(s&&s.variantIdx!==undefined)?s.variantIdx:0;const l=e.sBass*s.sensitivity,u=(e.sMid*.6+e.sHigh*.4)*s.sensitivity,f=Math.max(.5,Math.min(2.5,.68+l*2.1)),h=1;this.subScale+=(f-this.subScale)*.18,this.objScale+=(h-this.objScale)*.08,this.subject.scale.setScalar(this.subScale),this.darkAura.scale.setScalar(this.subScale),this.object.scale.setScalar(this.objScale),this.glow.scale.setScalar(this.objScale+.15);const camZ=s.cameraZoom||18;const d=4.5*(camZ/18)+Math.sin(this.time*.8)*.06;const M=Math.sin(this.time*.5)*.2;this.subject.position.set(-d+this.leftOff.x,M+this.leftOff.y,this.leftOff.z),this.darkAura.position.copy(this.subject.position),this.object.position.set(d+this.rightOff.x,-M*.7+this.rightOff.y,this.rightOff.z),this.glow.position.copy(this.object.position),this.wLight.position.x=this.object.position.x;const g=this.subject.material;g.uniforms.uTime.value=this.time+variant*.42,g.uniforms.uBass.value+=(l-g.uniforms.uBass.value)*.1;
 
       const v=this.glow.material;v.opacity=0,this.wLight.intensity=0;const y=this.darkAura.material;y.opacity=.02+l*.03,this.subject.rotation.y-=t*.06*(1+e.sBass*.3),this.object.rotation.y+=t*.04*(1+e.sBass*.1),Math.abs(this.lines.length-s.strings)>4&&this._buildStrings(s.strings);this.flowTime=(this.flowTime||0)+t*(.28+e.sEnergy*s.sensitivity*.45);const wa=e.waveArray;const ra=s.screenAnchor,la=s.screenAnchorLeft,ac=s.attachCamera,av=s.attachCanvas;this.group.updateMatrixWorld(!0);this.subject.updateMatrix(),this.object.updateMatrix();const leftBase=2.2*(1+l*.28),rightBase=2*(s.rightVisualScale??.96),_pL=new q,_pR=new q,A=this.subject.position.x,S=this.object.position.x,refSpan=Math.max(2.5,2*d),span=Math.max(.8,Math.abs(S-A)),tension=Math.max(.32,Math.min(3.2,span/refSpan));this.lines.forEach(R=>{const{seed:C,SEGS:I,aaSub:P,aaObj:N,aeSub:E,aeObj:L,phase:z,vf:F,spectrum:X}=R,nt=e.sEnergy,et=(.12+nt*s.sensitivity*.65+e.sBass*.32+e.sHigh*.22)*s.turbulence*(.55+tension*.65),W=nt*s.sensitivity;let B,G,Z,ct,gt,V;if(ra&&la&&ac&&av){const rD=this._diskAttachGroupLocal(ac,av,ra,C,s.rightVisualScale??.96,this.object),lD=this._diskAttachGroupLocal(ac,av,la,C,s.leftVisualScale??.96,this.subject);if(lD){B=lD.x;G=lD.y;Z=lD.z}else{_pL.set(Math.cos(P)*Math.cos(E)*leftBase,Math.sin(E)*leftBase,Math.sin(P)*Math.cos(E)*leftBase);_pL.applyMatrix4(this.subject.matrix);B=_pL.x;G=_pL.y;Z=_pL.z}if(rD){ct=rD.x;gt=rD.y;V=rD.z}else{_pR.set(-Math.cos(N)*Math.cos(L)*rightBase,Math.sin(L)*rightBase,Math.sin(N)*Math.cos(L)*rightBase);_pR.applyMatrix4(this.object.matrix);ct=_pR.x;gt=_pR.y;V=_pR.z}}else{_pL.set(Math.cos(P)*Math.cos(E)*leftBase,Math.sin(E)*leftBase,Math.sin(P)*Math.cos(E)*leftBase);_pL.applyMatrix4(this.subject.matrix);B=_pL.x;G=_pL.y;Z=_pL.z;_pR.set(-Math.cos(N)*Math.cos(L)*rightBase,Math.sin(L)*rightBase,Math.sin(N)*Math.cos(L)*rightBase);_pR.applyMatrix4(this.object.matrix);ct=_pR.x;gt=_pR.y;V=_pR.z}const Q=R.geo.attributes.position.array,xt=R.geo.attributes.color.array,flowSpd=1.1+nt*s.sensitivity*1.6+l*1.1;for(let At=0;At<=I;At++){const Ct=At/I,tt=B+(ct-B)*Ct,yt=G+(gt-G)*Ct,bt=Z+(V-Z)*Ct,Ft=(1-W)*1.8*Math.sin(Ct*Math.PI)/tension,$t=Math.sin(Ct*Math.PI)*(1-W*.7)*.8*Math.sin(C*7.3)/Math.max(.7,tension*.85);let wv=0;if(wa&&wa.length){const wi=((Ct*.84-this.flowTime*.42+z*.07)%1+1)%1;const wIdx=Math.floor(wi*wa.length)%wa.length;wv=(wa[wIdx]-128)/128}const anchorFade=Math.sin(Ct*Math.PI),cinemaAmp=et*(.5+wv*(.9+l*.55)),be=(Math.sin(Ct*11.-this.flowTime*flowSpd+z)*cinemaAmp+Math.sin(Ct*17.-this.flowTime*flowSpd*1.12+z*1.3)*cinemaAmp*.42+wv*et*.85)*anchorFade,ce=(Math.sin(Ct*9.-this.flowTime*flowSpd*.88+z*1.1)*cinemaAmp*.5+wv*et*.32)*anchorFade,pe=e.onset?anchorFade*e.sBass*s.sensitivity*1.2:0;Q[At*3]=tt+$t*anchorFade;Q[At*3+1]=yt-Ft+be+pe;Q[At*3+2]=bt+ce+$t*.3*anchorFade;const ue=Math.max(0,Math.min(1,(tt-A)/Math.max(.1,S-A)))*(X.length-1),Ve=Math.floor(ue),It=Math.min(Ve+1,X.length-1),Zt=new de().lerpColors(X[Ve],X[It],ue-Ve);const k=Math.sin(Ct*Math.PI),fe=.6+nt*s.sensitivity*.8;xt[At*3]=Zt.r*k*fe,xt[At*3+1]=Zt.g*k*fe,xt[At*3+2]=Zt.b*k*fe}R.geo.attributes.position.needsUpdate=!0,R.geo.attributes.color.needsUpdate=!0,R.mat.opacity=(.28+tension*.42+e.sEnergy*s.sensitivity*.45)*(.65+.35*Math.sin(this.time*.5+C))})}_diskAttachGroupLocal(t,e,s,o,l,m){if(!s||!t||!e||!m)return null;const u=l??.96,f=Math.sqrt(Math.abs(Math.sin(o*12.9898+78.233)))*u,h=o*Math.PI*2,d=e.clientWidth||e.width,g=e.clientHeight||e.height,_=s.cx+Math.cos(h)*s.r*f,v=s.cy+Math.sin(h)*s.r*f,y=(_/d)*2-1,M=-(v/g)*2+1,b=new THREE.Raycaster;b.setFromCamera(new THREE.Vector2(y,M),t);const k=new q;m.getWorldPosition(k);const wr=(s.worldR||1)*(u),oc=b.ray.origin.clone().sub(k),a=b.ray.direction.dot(b.ray.direction),bb=2*oc.dot(b.ray.direction),cc=oc.dot(oc)-wr*wr,disc=bb*bb-4*a*cc;let R=null;if(disc>=0){const sq=Math.sqrt(disc),t1=(-bb-sq)/(2*a),t2=(-bb+sq)/(2*a),th=t1>.001?t1:t2;th>.001&&(R=b.ray.origin.clone().add(b.ray.direction.clone().multiplyScalar(th)))}if(!R){const mx=t.matrixWorld.elements,px=new q(mx[0],mx[1],mx[2]),py=new q(mx[4],mx[5],mx[6]),pz=new q(mx[8],mx[9],mx[10]),dir=px.clone().multiplyScalar(y).add(py.clone().multiplyScalar(M)).add(pz.clone().negate()).normalize();R=k.clone().add(dir.multiplyScalar(wr))}return this.group.updateMatrixWorld(!0),this.group.worldToLocal(R),R}_projAnchor(t,e,s,o){s.updateWorldMatrix(!0,!1);const l=new q;s.getWorldPosition(l);const u=l.clone();u.project(t);const f=e.clientWidth||e.width,h=e.clientHeight||e.height,d=(u.x*.5+.5)*f,g=(-u.y*.5+.5)*h,mx=t.matrixWorld.elements,R=new q(mx[0],mx[1],mx[2]),U=new q(mx[4],mx[5],mx[6]),wr=o*s.scale.x;let v=10;for(let i=0;i<12;i++){const a=i/12*Math.PI*2,T=l.clone().add(R.clone().multiplyScalar(Math.cos(a)*wr)).add(U.clone().multiplyScalar(Math.sin(a)*wr)),P=T.clone();P.project(t);v=Math.max(v,Math.hypot((P.x-u.x)*.5*f,(P.y-u.y)*.5*h))}return{cx:d,cy:g,r:v,worldR:wr}}getScreenAnchor(t,e){return this._projAnchor(t,e,this.object,2)}getScreenAnchorLeft(t,e){const p=1+(this.subject.material.uniforms.uBass.value||0)*.28;return this._projAnchor(t,e,this.subject,2.2*p)}hitTestScreen(t,e,s,o){const l=this.getScreenAnchorLeft(t,e),u=this.getScreenAnchor(t,e),f=Math.hypot(s-l.cx,o-l.cy),h=Math.hypot(s-u.cx,o-u.cy),d=l.r*1.2,g=u.r*1.2;return f<d&&f<=h?"left":h<g?"right":null}show(t){this.group.visible=t}destroy(){this.scene3d.remove(this.group),this.lines.forEach(t=>{t.geo.dispose(),t.mat.dispose()})}}
 
@@ -3582,16 +3696,26 @@ class FractalZoom4D {
 
     this.angle += (this.smMid * 0.12 - this.smHigh * 0.06) * dt;
 
+    const variant = (settings.variantIdx !== undefined) ? settings.variantIdx : 0;
+    const varBases = [
+      [-0.745, 0.113], [-0.7746809, 0.1374169], [-0.1592, 1.0317], [-0.12, 0.85],
+      [-0.7269, 0.1889], [-1.25066, 0.02012], [-0.8, 0.156], [-0.235125, 0.827215],
+      [-0.748, 0.1], [-0.1011, 0.9563], [-0.627, 0.327], [-0.4, 0.6]
+    ];
+    const vb = varBases[Math.min(11, Math.max(0, variant))];
+    const diveOffX = this.cx - (-0.745);
+    const diveOffY = this.cy - 0.113;
+
     const u = this.planeMat.uniforms;
     u.uTime.value = this.time;
-    u.uCenter.value.set(this.cx, this.cy);
+    u.uCenter.value.set(vb[0] + diveOffX, vb[1] + diveOffY);
     u.uScale.value = 2.0 * Math.exp(-(this.cycleLog % this.LOG_CYCLE) * this.SCALE_K);
     u.uBass.value = this.smBass;
     u.uMid.value = this.smMid;
     u.uHigh.value = this.smHigh;
     u.uEnergy.value = this.smEnergy;
     u.uPaletteTheme.value = (settings.themeIdx !== undefined) ? settings.themeIdx : 0;
-    u.uRot.value = this.angle * 0.08 + this.time * 0.004;
+    u.uRot.value = this.angle * 0.08 + this.time * 0.004 + variant * 0.12;
     u.uVisualDepth.value = this.visualDepth;
     u.uCyclePhase.value = cyclePhase;
     u.uMorphBurst.value = this.morphBurst;
@@ -4003,6 +4127,8 @@ class wI {
 
   update(t, e, s, o) {
     this.time += t;
+    const variant = (s && s.variantIdx !== undefined) ? s.variantIdx : 0;
+    const vSpin = 1 + variant * 0.07;
     const l = e.sBass * s.sensitivity,
           u = e.sMid * s.sensitivity,
           f = e.sHigh * s.sensitivity,
@@ -4015,11 +4141,11 @@ class wI {
     
     // Only apply automatic rotation when NOT dragging
     if (!this.isMouseDown) {
-      this.angles.xy += t * 0.12 * _;
-      this.angles.zw += t * 0.22 * _;
+      this.angles.xy += t * 0.12 * _ * vSpin;
+      this.angles.zw += t * (0.18 + (variant % 6) * 0.02) * _;
       this.angles.xz += t * 0.09 * _;
-      this.angles.xw += t * 0.28 * _;
-      this.angles.yw += t * 0.16 * _;
+      this.angles.xw += t * (0.22 + (variant % 5) * 0.03) * _;
+      this.angles.yw += t * 0.16 * _ * vSpin;
       this.angles.yz += t * 0.07 * _;
     }
 
@@ -4042,7 +4168,7 @@ class wI {
           x = S.array,
           T = this.edgesLine.material;
     T.opacity = (0.2 + h * 0.5) * (0.8 - this.insideFactor * 0.6) * s.brightness;
-    const R = (0.7 + this.time * 0.02 + l * 0.12) % 1,
+    const R = (0.7 + this.time * 0.02 + l * 0.12 + variant * 0.0833) % 1,
           C = new de().setHSL(R, 0.95, 0.5 + h * 0.2);
     this.edges.forEach(([N, E], L) => {
       const z = v[N],
@@ -4088,8 +4214,8 @@ class wI {
     this.group.rotation.z = this.time * 0.04;
 
     // Update Calabi-Yau coordinates
-    const cyScale = (1.35 + l * 0.45) * (1 + this.insideFactor * 1.2);
-    const alpha = this.time * 0.25 + h * 0.15;
+    const cyScale = (1.25 + (variant % 6) * 0.04 + l * 0.45) * (1 + this.insideFactor * 1.2);
+    const alpha = this.time * (0.2 + (variant % 5) * 0.02) + h * 0.15 + variant * 0.08;
     const cyPos = this.cyGeometry.attributes.position.array;
     const cyColors = this.cyGeometry.attributes.color.array;
     const n = this.nVal;
@@ -4258,6 +4384,9 @@ class RI {
 
   update(t, e, s, o) {
     this.time += t;
+    const variant = (s && s.variantIdx !== undefined) ? s.variantIdx : 0;
+    const vFreq = 1 + variant * 0.09;
+    const vPhase = variant * 0.52;
     const l = t * this.scrollSpeed * (1 + e.sBass * 1.5);
     this.scrollOffset += l;
     const u = new Float32Array(this.M);
@@ -4274,19 +4403,19 @@ class RI {
       const _ = g / (this.M - 1),
             v = -14 + _ * 28,
             y = Math.abs(_ - .5),
-            M = Math.exp(-y * y * 8),
+            M = Math.exp(-y * y * (7 + (variant % 4))),
             A = 1 - M,
-            S = Math.sin(v * .25 - this.time * 1.5) * (.3 + e.sBass * 1.2) * M;
+            S = Math.sin(v * (.22 + variant * 0.01) * vFreq - this.time * (1.35 + variant * 0.08) + vPhase) * (.3 + e.sBass * 1.2) * M;
       let x = 0;
       if (f && h) {
         const C = Math.floor(_ * 256),
               I = (h[C] || 0) / 255;
-        x = I * 3.5 * Math.sin(v * .5) * (.4 + M * .6);
+        x = I * 3.5 * Math.sin(v * (.45 + variant * 0.008) * vFreq + vPhase) * (.4 + M * .6);
       } else {
-        x = Math.sin(v * .6 - this.time * 3.5) * e.sBass * 2.8 * M;
+        x = Math.sin(v * (.55 + variant * 0.01) * vFreq - this.time * (3.2 + variant * 0.25) + vPhase) * e.sBass * 2.8 * M;
       }
-      const T = Math.cos(v * 1.6 + this.time * 6) * e.sMid * 1.2 * A,
-            R = (Math.sin(v * 6 - this.time * 16) * .5 + Math.sin(v * 13 + this.time * 24) * .3) * e.sHigh * .6;
+      const T = Math.cos(v * (1.45 + variant * 0.05) + this.time * (5.5 + variant * 0.4) + vPhase) * e.sMid * 1.2 * A,
+            R = (Math.sin(v * (5.5 + variant * 0.3) - this.time * (14 + variant)) * .5 + Math.sin(v * (12 + variant * 0.5) + this.time * (22 + variant * 1.5)) * .3) * e.sHigh * .6;
       u[g] = (S + x + T + R) * d;
     }
     this.liveHeights = u;
@@ -4310,7 +4439,7 @@ class RI {
         [1.0, 0.0, 0.5], [0.0, 0.15, 0.75], [0.08, 0.08, 0.08]
       ];
       if (ti === 0) {
-        const h = (performance.now() * 0.00008 + _ * 0.2) % 1;
+        const h = (performance.now() * 0.00008 + _ * 0.2 + variant * 0.0833) % 1;
         const c = new de().setHSL(h, 0.88, 0.5 + _ * 0.15);
         g.copy(c);
       } else {
@@ -4452,8 +4581,8 @@ class InkTrailsOrb {
 
   _bright(a) { return Math.min(1, a * 5); }
 
-  _drawMandalaCrown(ctx, cx, cy, r, mid, high, energy, t) {
-    const n = 96;
+  _drawMandalaCrown(ctx, cx, cy, r, mid, high, energy, t, nOverride) {
+    const n = nOverride || 96;
     const step = (Math.PI * 2) / n;
     const crownDepth = r * (0.9 + energy * 0.45 + mid * 0.38) * 2;
     const r1 = r;
@@ -4527,7 +4656,10 @@ class InkTrailsOrb {
     const mid = reactor.sMid * settings.sensitivity;
     const high = reactor.sHigh * settings.sensitivity;
     const energy = reactor.sEnergy * settings.sensitivity;
+    const variant = (settings.variantIdx !== undefined) ? settings.variantIdx : 0;
     const t = this.time;
+    const rayCount = 720 + variant * 24;
+    const mandalaN = 72 + (variant % 6) * 8;
 
     ctx.clearRect(0, 0, width, height);
 
@@ -4555,9 +4687,9 @@ class InkTrailsOrb {
       ctx.stroke();
     }
 
-    for (let i = 0; i < 960; i++) {
-      const ang = (i / 960) * Math.PI * 2 + t * (0.08 + mid * 0.12);
-      const len = r * (0.94 + Math.sin(t * 1.3 + i * 0.07) * 0.05);
+    for (let i = 0; i < rayCount; i++) {
+      const ang = (i / rayCount) * Math.PI * 2 + t * (0.06 + mid * 0.12 + variant * 0.008) + variant * 0.18;
+      const len = r * (0.92 + Math.sin(t * (1.1 + variant * 0.05) + i * (0.06 + variant * 0.003)) * 0.06);
       ctx.beginPath();
       ctx.moveTo(0, 0);
       ctx.lineTo(Math.cos(ang) * len, Math.sin(ang) * len);
@@ -4568,8 +4700,8 @@ class InkTrailsOrb {
 
     for (let i = 0; i < this.trails.length; i++) {
       const tr = this.trails[i];
-      const a = t * (0.55 + mid * 0.75) + tr.phase;
-      const spread = 0.97;
+      const a = t * (0.45 + mid * 0.75 + variant * 0.04) + tr.phase + variant * 0.31;
+      const spread = 0.94 + (variant % 5) * 0.012;
       const bx = Math.sin(a * 1.7 + i * 0.13) * r * spread;
       const by = Math.cos(a * 2.3 + i * 0.11) * r * spread;
       const x = bx + Math.sin(t * 3 + i * 0.05) * high * r * 0.1;
@@ -4591,7 +4723,7 @@ class InkTrailsOrb {
     ctx.strokeStyle = `rgba(255,255,255,${this._bright(0.55 + energy * 0.45)})`;
     ctx.lineWidth = 1.2 + mid * 0.6 + high * 0.4;
     ctx.stroke();
-    this._drawMandalaCrown(ctx, 0, 0, r, mid, high, energy, t);
+    this._drawMandalaCrown(ctx, 0, 0, r, mid, high, energy, t + variant * 0.35, mandalaN);
     ctx.restore();
   }
 
@@ -4632,8 +4764,10 @@ class CI {
     const energy = reactor.sEnergy * settings.sensitivity;
     const high = reactor.sHigh * settings.sensitivity;
     
+    const variant = (settings.variantIdx !== undefined) ? settings.variantIdx : 0;
+    const vTurb = 0.88 + (variant % 6) * 0.05;
     // Core displacement scale
-    const displaceScale = isParent ? (24 + energy * 72) * settings.turbulence : (12 + energy * 36) * settings.turbulence;
+    const displaceScale = isParent ? (24 + energy * 72) * settings.turbulence * vTurb : (12 + energy * 36) * settings.turbulence * vTurb;
     
     const points = [];
     points.push({ x: startX, y: startY });
@@ -4810,7 +4944,8 @@ class CI {
     const W = rX + Math.cos(oppositeAngle) * terminalWidth - Math.sin(oppositeAngle) * -terminalHeight;
     const B = rY + Math.sin(oppositeAngle) * terminalWidth + Math.cos(oppositeAngle) * -terminalHeight;
 
-    const hueCycle = (0.55 + this.time * 0.04 + bass * 0.08) % 1;
+    const variant = (settings.variantIdx !== undefined) ? settings.variantIdx : 0;
+    const hueCycle = (0.55 + this.time * 0.04 + bass * 0.08 + variant * 0.0833) % 1;
 
     // Spawn sparks/charge particles near electrode terminals
     if (Math.random() < 0.1 + energy * 0.45) {
@@ -5081,7 +5216,8 @@ class HybridRelation {
         uOnset: { value: 0 },
         uBrightness: { value: 1 },
         uTrail: { value: 0.9 },
-        uPaletteTheme: { value: 0 }
+        uPaletteTheme: { value: 0 },
+        uVariant: { value: 0 }
       },
       depthWrite: false,
       depthTest: false,
@@ -5106,12 +5242,18 @@ class HybridRelation {
         uniform float uBrightness;
         uniform float uTrail;
         uniform float uPaletteTheme;
+        uniform float uVariant;
 
         #define PI 3.14159265359
 
         vec3 hsl2rgb(vec3 c) {
           vec3 rgb = clamp(abs(mod(c.x * 6.0 + vec3(0.0, 4.0, 2.0), 6.0) - 3.0) - 1.0, 0.0, 1.0);
           return c.z + c.y * (rgb - 0.5) * (1.0 - abs(2.0 * c.z - 1.0));
+        }
+
+        float varPeak(float center) {
+          float d = abs(mod(uVariant - center + 6.0, 12.0) - 6.0);
+          return max(0.12, 1.0 - d / 2.2);
         }
 
         float themeHueBase() {
@@ -5152,10 +5294,11 @@ class HybridRelation {
         }
 
         vec2 foldSpace(vec2 p) {
+          float sect = 4.0 + floor(mod(uVariant, 6.0)) * 2.0;
           for (int i = 0; i < 4; i++) {
-            p = kaleidoSector(p, 8.0);
-            p = abs(p) - vec2(0.52, 0.14);
-            float ang = uPatternTime * (0.09 + float(i) * 0.03) + uMid * 0.35;
+            p = kaleidoSector(p, sect);
+            p = abs(p) - vec2(0.42 + mod(uVariant, 3.0) * 0.06, 0.1 + mod(uVariant, 4.0) * 0.03);
+            float ang = uPatternTime * (0.09 + float(i) * 0.03) + uMid * 0.35 + uVariant * 0.04;
             p = rot2(p, ang);
           }
           return p;
@@ -5215,27 +5358,28 @@ class HybridRelation {
           float zoom = 1.0 + uBass * 0.14 + beat * 0.1;
           p /= zoom;
 
-          vec2 k = foldSpace(p);
-          vec2 k6 = kaleidoSector(p, 6.0);
-          k6 = abs(k6) - vec2(0.38, 0.38);
-          k6 = rot2(k6, uPatternTime * 0.12);
+          vec2 k = foldSpace(p + rot2(vec2(sin(uVariant * 0.55), cos(uVariant * 0.71)), uVariant * 0.08) * 0.06);
+          float sect6 = 4.0 + floor(mod(uVariant + 2.0, 6.0)) * 2.0;
+          vec2 k6 = kaleidoSector(p, sect6);
+          k6 = abs(k6) - vec2(0.3 + mod(uVariant, 5.0) * 0.04, 0.3 + mod(uVariant, 3.0) * 0.05);
+          k6 = rot2(k6, uPatternTime * 0.12 + uVariant * 0.05);
 
           float w1 = 0.022 + uHigh * 0.012;
           float w2 = 0.016 + uMid * 0.008;
           float w3 = 0.012 + uHigh * 0.006;
 
-          float gridA = thinGrid(k, 5.5 + uEnergy * 2.0, w1);
-          float gridB = thinGrid(k * rot2(vec2(1.0), 0.785), 8.0 + uHigh * 3.0, w2);
+          float gridA = thinGrid(k, 5.5 + uEnergy * 2.0 + mod(uVariant, 4.0), w1);
+          float gridB = thinGrid(k * rot2(vec2(1.0), 0.785 + uVariant * 0.1), 8.0 + uHigh * 3.0, w2);
           float gridC = thinGrid(k, 11.0 + beat * 4.0, w3);
           float gridD = thinGrid(k6, 6.5 + uMid * 2.5, w2);
-          float rings = radialRings(k, 4.0 + uEnergy);
+          float rings = radialRings(k, 4.0 + uEnergy + mod(uVariant, 3.0));
           float tri = triWeave(k * rot2(vec2(1.0), uPatternTime * 0.08), w3);
-          float zig = chevrons(k * rot2(vec2(1.0), -0.6));
-          float gems = colorGems(k);
+          float zig = chevrons(k * rot2(vec2(1.0), -0.6 + uVariant * 0.12));
+          float gems = colorGems(k * rot2(vec2(1.0), uVariant * 0.18));
           float rays = starRays(p);
           float core = exp(-length(p) * (4.5 - uBass * 1.2)) * (0.35 + beat * 0.45);
 
-          float hueDrift = uPatternTime * 0.04 + uMid * 0.12 + beat * 0.06;
+          float hueDrift = uPatternTime * 0.04 + uMid * 0.12 + beat * 0.06 + uVariant * 0.04;
           vec3 c0 = themeCol(hueDrift);
           vec3 c1 = themeCol(hueDrift + 0.17);
           vec3 c2 = themeCol(hueDrift + 0.34);
@@ -5243,7 +5387,6 @@ class HybridRelation {
           vec3 c4 = themeCol(hueDrift + 0.68);
           vec3 c5 = themeCol(hueDrift + 0.85);
           vec3 hot = themeCol(hueDrift + 0.02);
-          vec3 gold = themeCol(hueDrift + 0.11);
           vec3 teal = themeCol(hueDrift + 0.48);
 
           vec3 col = vec3(0.004, 0.002, 0.018);
@@ -5251,17 +5394,20 @@ class HybridRelation {
 
           float glowAmt = uBrightness * (0.55 + uEnergy * 0.7 + beat * 0.28);
 
-          col += c0 * gridA * glowAmt * (0.9 + uTrail * 0.12);
-          col += c1 * gridB * glowAmt * 0.85;
-          col += c2 * gridC * glowAmt * 0.7;
-          col += c3 * gridD * glowAmt * 0.75;
-          col += c4 * rings * glowAmt * 0.55;
-          col += c5 * tri * glowAmt * 0.65;
-          col += hot * zig * glowAmt * 0.5;
+          col += c0 * gridA * glowAmt * (0.9 + uTrail * 0.12) * varPeak(0.0);
+          col += c1 * gridB * glowAmt * 0.85 * varPeak(1.0);
+          col += c2 * gridC * glowAmt * 0.7 * varPeak(2.0);
+          col += c3 * gridD * glowAmt * 0.75 * varPeak(3.0);
+          col += c4 * rings * glowAmt * 0.55 * varPeak(4.0);
+          col += c5 * tri * glowAmt * 0.65 * varPeak(5.0);
+          col += hot * zig * glowAmt * 0.5 * varPeak(6.0);
           vec3 gemCol = mix(mix(teal, c1, 0.5), mix(c3, hot, 0.6), fract(dot(k, vec2(4.7, 2.3)) + hueDrift));
-          col += gemCol * gems * glowAmt * (0.55 + uHigh);
-          col += mix(c0, c2, 0.5) * rays * glowAmt * 0.55;
-          col += vec3(1.0, 0.95, 1.0) * core * glowAmt * 0.38;
+          col += gemCol * gems * glowAmt * (0.55 + uHigh) * varPeak(7.0);
+          col += mix(c0, c2, 0.5) * rays * glowAmt * 0.55 * varPeak(8.0);
+          col += vec3(1.0, 0.95, 1.0) * core * glowAmt * 0.38 * varPeak(9.0);
+          col += mix(c2, c4, 0.5) * (gridA + rings) * glowAmt * 0.35 * varPeak(10.0);
+          col += mix(c1, c5, 0.5) * (tri + gems) * glowAmt * 0.32 * varPeak(11.0);
+          col += (c0 * gridA + c3 * gridD + c5 * tri) * glowAmt * 0.18;
 
           if (uPaletteTheme > 8.5) {
             float g = dot(col, vec3(0.299, 0.587, 0.114));
@@ -5325,6 +5471,7 @@ class HybridRelation {
     u.uBrightness.value = bright;
     u.uTrail.value = settings.trail != null ? settings.trail : 0.9;
     u.uPaletteTheme.value = (settings.themeIdx !== undefined) ? settings.themeIdx : 0;
+    u.uVariant.value = (settings.variantIdx !== undefined) ? settings.variantIdx : 0;
   }
 
   show(active) {
@@ -5604,7 +5751,8 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
             const hues = [(performance.now() * 0.02) % 360, 0, 30, 55, 120, 210, 275, 190, 165, 0];
             return hues[Math.min(9, Math.max(0, ti))] || 0;
           })(),
-          themeIdx: (engine && engine.themeIdx !== undefined) ? engine.themeIdx : 0
+          themeIdx: (engine && engine.themeIdx !== undefined) ? engine.themeIdx : 0,
+          variantIdx: (engine && engine.variantIdx !== undefined) ? engine.variantIdx : 0
         };
 
         const activeVis = this.visualizers[this.activeMode];
@@ -5716,7 +5864,8 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
           sensitivity: parseFloat(document.getElementById('paramSensitivity').value),
           brightness: parseFloat(document.getElementById('paramParticleSize').value),
           trail: parseFloat(document.getElementById('paramTrails').value),
-          turbulence: parseFloat(document.getElementById('paramNoise').value)
+          turbulence: parseFloat(document.getElementById('paramNoise').value),
+          variantIdx: (engine && engine.variantIdx !== undefined) ? engine.variantIdx : 0
         };
 
         const sBass = this.reactor.bass;
@@ -6633,6 +6782,10 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
 
       const prevVisualMode = engine ? engine.visualMode : -1;
       engine.visualMode = modeIdx;
+      if (prevVisualMode !== modeIdx && isMainVisualMode(modeIdx)) {
+        visualVariantIdx = 0;
+        engine.variantIdx = 0;
+      }
 
       if (modeIdx === 4) {
         engine.targetAngleX = 0.06;
