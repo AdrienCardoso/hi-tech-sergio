@@ -1,6 +1,5 @@
 /**
- * Aeon Web Engine — порт движка SoundSpectrum Aeon для браузера (WebGL / Three.js).
- * Сцены переносятся из Python 2 по алгоритму; полный паритет — поэтапно.
+ * Aeon Web Engine — порт SoundSpectrum Aeon для браузера (Three.js).
  */
 (function (global) {
   'use strict';
@@ -9,18 +8,25 @@
   const ss_PaletteFore = 2;
   const ss_PaletteFull = 0;
 
-  const PORTED_PATHS = new Set([
-    'Plasma/Plasma.py',
-    'Roaming/Roaming.py',
-  ]);
-
   const NAME_SCENE_OVERRIDES = {
     Roaming: { path: 'Roaming/Roaming.py', args: { style: 0 } },
+    'Roaming - Vuze': { path: 'Roaming/Roaming.py', args: { style: 1 } },
     Ripples: { path: 'Plasma/Plasma.py', args: { fore: 1 } },
     Electronica: { path: 'Plasma/Plasma.py', args: { fore: 0 } },
     Phosphor: { path: 'Plasma/Plasma.py', args: { fore: 0 } },
     'Sakura Branch': { path: 'Plasma/Plasma.py', args: { fore: 0 } },
   };
+
+  const PORTED_PATH_RE = [
+    /Plasma\/Plasma\.py/i,
+    /Roaming\/Roaming\.py/i,
+    /Aurora\/Aurora\.py/i,
+    /Forward\/Forward\.py/i,
+    /Alien Sine\.py/i,
+    /Neon Flow\/Neon Flow\.py/i,
+    /Audioscope\/Audioscope\.py/i,
+    /Alien Telephone\/Alien Telephone\.py/i,
+  ];
 
   function bezierPoint(p0, p1, p2, p3, t) {
     const u = 1 - t;
@@ -37,7 +43,8 @@
     const g = c.getContext('2d');
     const grd = g.createRadialGradient(size / 2, size / 2, 0, size / 2, size / 2, size / 2);
     grd.addColorStop(0, 'rgba(255,255,255,1)');
-    grd.addColorStop(0.35, 'rgba(255,255,255,0.85)');
+    grd.addColorStop(0.25, 'rgba(255,255,255,0.95)');
+    grd.addColorStop(0.6, 'rgba(255,255,255,0.35)');
     grd.addColorStop(1, 'rgba(255,255,255,0)');
     g.fillStyle = grd;
     g.fillRect(0, 0, size, size);
@@ -51,12 +58,12 @@
   function paletteHSL(band, lum, hueShift) {
     const l = Math.max(0, Math.min(1, lum));
     if (band === ss_PaletteBack) {
-      return new THREE.Color().setHSL(0.62 + l * 0.08, 0.55, 0.12 + l * 0.28);
+      return new THREE.Color().setHSL(0.62 + l * 0.08, 0.65, 0.2 + l * 0.35);
     }
     if (band === ss_PaletteFull) {
-      return new THREE.Color().setHSL((hueShift + l * 300) % 1, 0.75, 0.35 + l * 0.4);
+      return new THREE.Color().setHSL((hueShift + l * 0.85) % 1, 0.8, 0.4 + l * 0.45);
     }
-    return new THREE.Color().setHSL((hueShift + l * 0.75) % 1, 0.9, 0.32 + l * 0.45);
+    return new THREE.Color().setHSL((hueShift + l * 0.7) % 1, 0.92, 0.38 + l * 0.48);
   }
 
   class AeonAudioData {
@@ -73,9 +80,20 @@
       this._slowPrev = 0;
     }
 
-    /** Маппинг Web Audio → 64 бина Aeon (120–8000 Hz, логарифмически). */
-    updateFromReactor(reactor, sensitivity = 1) {
-      if (!reactor?.analyser) return;
+    updateFromReactor(reactor, sensitivity = 1, time = 0) {
+      if (!reactor?.analyser) {
+        for (let i = 0; i < 64; i++) {
+          const v = 0.12 + 0.18 * Math.abs(Math.sin(time * 1.7 + i * 0.31));
+          this.bins[i] = v;
+          this.fft1[i] = v;
+          this.fft2[i] = v * 0.85;
+        }
+        this.energy = 0.35;
+        this.impulseFast = 0.15 + 0.1 * Math.sin(time * 3.2);
+        this.impulseSlow = 0.2;
+        return;
+      }
+
       const analyser = reactor.analyser;
       const n = analyser.frequencyBinCount;
       const raw = reactor.dataArray;
@@ -85,8 +103,8 @@
       const maxHz = 8000;
       const sr = reactor.ctx?.sampleRate || 44100;
       const nyquist = sr / 2;
-
       let total = 0;
+
       for (let b = 0; b < 64; b++) {
         const t0 = b / 64;
         const t1 = (b + 1) / 64;
@@ -130,10 +148,9 @@
     constructor(args = {}) {
       this.fore = args.fore !== 0;
       this.count = this.fore ? 225 : 32;
-      const w = this.fore ? 0.26 : 0.5;
       this.audMod = this.fore ? 1 : 0.2;
       this.paletteBand = this.fore ? ss_PaletteFore : ss_PaletteBack;
-      this.widthScale = w;
+      this.widthScale = this.fore ? 0.26 : 0.5;
       this.curves = [];
       this.tOffset = new Float32Array(this.count);
       this.tOffSpeed = new Float32Array(this.count);
@@ -170,9 +187,7 @@
     draw(ctx, time, dt, audio) {
       const x = Math.sin(time * 0.1) * 0.9;
       const z = Math.cos(time * 0.1) * 0.9;
-      ctx.set3DCamera([x, 0, z], [0.1, 0, 0], [0, 1, 0], 0.785, 0.01, 5);
-      ctx.setBlendAdditive();
-
+      ctx.set3DCamera([x, 0, z], [0.1, 0, 0], [0, 1, 0], 0.785, 0.05, 8);
       const positions = [];
       const colors = [];
       const n = this.curves.length;
@@ -184,8 +199,8 @@
         }
         const p = this.curves[i].point(this.tOffset[i]);
         const bin = Math.floor((audio.bins.length * i) / n);
-        const alpha = 0.5 + 0.4 * Math.sin(0.2 * time + i + audio.bins[bin] * this.audMod);
-        const lum = 0.3;
+        const alpha = 0.55 + 0.45 * Math.sin(0.2 * time + i + audio.bins[bin] * this.audMod);
+        const lum = 0.45 + audio.bins[bin] * 0.35;
         const col = paletteHSL(this.paletteBand, lum, ctx.hueShift);
         positions.push(p[0], p[1], p[2]);
         colors.push(col.r * alpha, col.g * alpha, col.b * alpha);
@@ -210,19 +225,16 @@
       this.toff = Math.abs((Math.random() + Math.random() + Math.random() - 1.5) * 20);
       this.tcoef = (0.2 + Math.random() * 0.2) * (this.style ? 0.5 : 1);
       this.mvCoef = this.style ? 5 + Math.random() * 25 : 5;
-      this.lastUpdate = -1;
       this.baseX = new Float32Array(this.num);
       for (let i = 0; i < this.num; i++) {
-        this.baseX[i] = -0.05 + 3 * (i / this.num) + Math.random() * 0.05;
+        this.baseX[i] = -1.2 + 2.4 * (i / this.num) + Math.random() * 0.05;
       }
-      this.widthScale = 0.065 + Math.random() * 0.035;
+      this.widthScale = 0.08 + Math.random() * 0.04;
     }
 
     draw(ctx, time, dt, audio) {
       time += this.toff;
-      ctx.set3DCamera([0, 0, 4.5], [0, 0, 0], [0, 1, 0], 0.9, 0.1, 50);
-      ctx.setBlendAdditive();
-
+      ctx.set3DCamera([0, 0, 3.2], [0, 0, 0], [0, 1, 0], 1.05, 0.1, 40);
       const positions = [];
       const colors = [];
       const invN = 1 / this.num;
@@ -233,13 +245,142 @@
         const mv = 0.1 + 0.15 * Math.sin(time + this.mvCoef * pct);
         const sv = 0.7 + 1.25 * Math.sin(-time + 10 * pct);
         const z = mv * fftVal + Math.sin(t + pct * this.tAng) * this.range;
-        const lum = 0.6 + sv * fftVal;
-        const alpha = 0.5 + 0.45 * Math.sin(-0.3 * time + pct * 4 + this.toff) + 0.2 * fftVal;
-        const col = paletteHSL(this.style ? ss_PaletteFore : ss_PaletteFull, Math.min(1, lum * 0.55), ctx.hueShift);
+        const lum = Math.min(1, 0.55 + sv * fftVal * 0.4);
+        const alpha = 0.55 + 0.45 * Math.sin(-0.3 * time + pct * 4 + this.toff) + 0.35 * fftVal;
+        const col = paletteHSL(this.style ? ss_PaletteFore : ss_PaletteFull, lum, ctx.hueShift);
         positions.push(this.baseX[i], 0, z);
         colors.push(col.r * alpha, col.g * alpha, col.b * alpha);
       }
       ctx.drawBillboards(positions, colors, this.widthScale);
+    }
+  }
+
+  class AuroraScene {
+    draw(ctx, time, dt, audio) {
+      ctx.set3DCamera([0, -0.32, 0], [0, 0, 0], [0, 0, 1], 1.3, 0.05, 80);
+      const lines = [];
+      const colors = [];
+      const n = 9;
+      for (let i = 0; i < n; i++) {
+        const pct = i / n;
+        const idx = i * 4;
+        const aud = 1.5 * audio.fft1[idx % 64] + 0.7 * audio.fft2[idx % 64];
+        const rot = (i % 2 ? -1 : 1) * 0.2 * time * pct * pct + i;
+        const scale = 0.5 - 0.25 * pct;
+        const segs = 48;
+        for (let s = 0; s < segs; s++) {
+          const a0 = (s / segs) * Math.PI * 2 + rot;
+          const a1 = ((s + 1) / segs) * Math.PI * 2 + rot;
+          const r0 = scale * (1 + aud * 0.35);
+          const r1 = scale * (1 + aud * 0.35);
+          lines.push(
+            r0 * Math.cos(a0), r0 * Math.sin(a0), 0,
+            r1 * Math.cos(a1), r1 * Math.sin(a1), 0
+          );
+          const lum = 0.55 + 0.16 * Math.sin(time + i) + aud * 0.25;
+          const alpha = 0.65 + 0.3 * Math.sin(-0.3 * time + i);
+          const col = paletteHSL(ss_PaletteFore, lum, ctx.hueShift);
+          colors.push(col.r * alpha, col.g * alpha, col.b * alpha);
+          colors.push(col.r * alpha, col.g * alpha, col.b * alpha);
+        }
+      }
+      ctx.drawLines(lines, colors, 1.5);
+    }
+  }
+
+  class ForwardScene {
+    constructor() {
+      this.slats = [];
+      for (let i = 0; i < 80; i++) {
+        this.slats.push({
+          pct: Math.random(),
+          spd: 0.18 + Math.random() * 0.12,
+          bin: Math.floor(Math.random() * 64),
+          rot: Math.random() * Math.PI * 2,
+          scl: 0.02 + Math.random() * 0.15,
+        });
+      }
+    }
+
+    draw(ctx, time, dt, audio) {
+      ctx.set3DCamera([0, 0, 0.1], [0, 0, 1], [0, 1, 0], 1.2, 0.05, 20);
+      const lines = [];
+      const colors = [];
+      for (const sl of this.slats) {
+        sl.pct += dt * sl.spd * (0.7 + audio.energy);
+        if (sl.pct > 1) sl.pct -= 1;
+        const z = sl.pct * sl.pct * 8;
+        const aud = audio.fft1[sl.bin];
+        const w = sl.scl * (1 + aud * 2.5);
+        const x = Math.sin(sl.rot + time * 0.3) * w;
+        const y = Math.cos(sl.rot + time * 0.2) * w;
+        lines.push(x, y, z, x * 0.3, y * 0.3, z + 0.4 + aud);
+        const lum = 0.5 + aud * 0.5;
+        const alpha = 0.35 + aud * 0.45;
+        const col = paletteHSL(ss_PaletteFore, lum, ctx.hueShift);
+        colors.push(col.r * alpha, col.g * alpha, col.b * alpha);
+        colors.push(col.r * alpha * 0.6, col.g * alpha * 0.6, col.b * alpha * 0.6);
+      }
+      ctx.drawLines(lines, colors, 2);
+    }
+  }
+
+  class AlienSineScene {
+    constructor(args = {}) {
+      this.hyper = args.hyper || 0;
+      this.num = this.hyper ? 32 : 128;
+      this.aoff = Math.random() * Math.PI * 2;
+    }
+
+    draw(ctx, time, dt, audio) {
+      ctx.set3DCamera([0, 0, 2.8], [0, 0, 0], [0, 1, 0], 0.95, 0.05, 30);
+      const lines = [];
+      const colors = [];
+      const invN = 1 / this.num;
+      const aMod = 0.3 + (0.3 + 0.4 * audio.impulseSlow) * this.hyper;
+      for (let i = 0; i < this.num; i++) {
+        const pct = i * invN;
+        const audv = audio.fft2[i % 64];
+        const ang = Math.PI * 2 * pct + this.aoff + time * 0.05;
+        const r0 = 0.55 - audv * aMod;
+        const r1 = 0.72 + audv * 0.35;
+        const lum = 0.5 + 0.5 * Math.sin(ang) + audv * 0.2;
+        const col = paletteHSL(ss_PaletteFull, lum, ctx.hueShift);
+        const alpha = 0.5 + audv * 0.4;
+        lines.push(r0 * Math.cos(ang), r0 * Math.sin(ang), 0, r1 * Math.cos(ang), r1 * Math.sin(ang), 0);
+        colors.push(col.r * alpha, col.g * alpha, col.b * alpha);
+        colors.push(col.r * alpha * 0.7, col.g * alpha * 0.7, col.b * alpha * 0.7);
+      }
+      const ang0 = Math.PI * 2 * 0 + this.aoff + time * 0.05;
+      const aud0 = audio.fft2[0];
+      const r0a = 0.55 - aud0 * aMod;
+      const r1a = 0.72 + aud0 * 0.35;
+      const col0 = paletteHSL(ss_PaletteFull, 0.6, ctx.hueShift);
+      lines.push(r0a * Math.cos(ang0), r0a * Math.sin(ang0), 0, r1a * Math.cos(ang0), r1a * Math.sin(ang0), 0);
+      colors.push(col0.r * 0.5, col0.g * 0.5, col0.b * 0.5, col0.r * 0.35, col0.g * 0.35, col0.b * 0.35);
+      ctx.drawLines(lines, colors, 1.8);
+    }
+  }
+
+  class AudioscopeScene {
+    draw(ctx, time, dt, audio) {
+      ctx.set3DCamera([0, 0, 2.5], [0, 0, 0], [0, 1, 0], 1.0, 0.05, 20);
+      const positions = [];
+      const colors = [];
+      for (let i = 0; i < 64; i++) {
+        const ang = (i / 64) * Math.PI * 2 - Math.PI / 2;
+        const v = audio.fft1[i];
+        const r0 = 0.35;
+        const r1 = 0.35 + v * 1.1 + 0.05 * Math.sin(time * 2 + i * 0.2);
+        positions.push(r0 * Math.cos(ang), r0 * Math.sin(ang), 0);
+        positions.push(r1 * Math.cos(ang), r1 * Math.sin(ang), 0);
+        const lum = 0.4 + v * 0.55;
+        const col = paletteHSL(ss_PaletteFore, lum, ctx.hueShift + i / 64 * 0.15);
+        const a = 0.6 + v * 0.4;
+        colors.push(col.r * a, col.g * a, col.b * a);
+        colors.push(col.r, col.g, col.b);
+      }
+      ctx.drawLines(positions, colors, 2.5);
     }
   }
 
@@ -249,8 +390,11 @@
       this.scene = scene;
       this.hueShift = 0;
       this._points = null;
+      this._lines = null;
       this._geom = null;
+      this._lineGeom = null;
       this._mat = null;
+      this._lineMat = null;
       this.dotTex = createDotTexture();
     }
 
@@ -269,18 +413,19 @@
       cam.updateProjectionMatrix();
     }
 
-    setBlendAdditive() {
-      if (this._mat) this._mat.blending = THREE.AdditiveBlending;
+    _pointSize(scale) {
+      const dim = Math.min(this.renderer.width, this.renderer.height);
+      return Math.max(14, scale * dim * 0.22);
     }
 
     drawBillboards(positions, colors, scale) {
-      const n = positions.length / 3;
       if (!this._geom) {
         this._geom = new THREE.BufferGeometry();
         this._mat = new THREE.PointsMaterial({
           map: this.dotTex,
-          size: scale * 120,
+          size: this._pointSize(scale),
           transparent: true,
+          opacity: 1,
           depthWrite: false,
           blending: THREE.AdditiveBlending,
           vertexColors: true,
@@ -289,7 +434,7 @@
         this._points = new THREE.Points(this._geom, this._mat);
         this.scene.add(this._points);
       }
-      this._mat.size = scale * Math.min(this.renderer.width, this.renderer.height) * 0.08;
+      this._mat.size = this._pointSize(scale);
       this._geom.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
       this._geom.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
       this._geom.attributes.position.needsUpdate = true;
@@ -297,11 +442,40 @@
       this._geom.computeBoundingSphere();
     }
 
+    drawLines(positions, colors, width) {
+      if (!this._lineGeom) {
+        this._lineGeom = new THREE.BufferGeometry();
+        this._lineMat = new THREE.LineBasicMaterial({
+          vertexColors: true,
+          transparent: true,
+          blending: THREE.AdditiveBlending,
+          depthWrite: false,
+          linewidth: width,
+        });
+        this._lines = new THREE.LineSegments(this._lineGeom, this._lineMat);
+        this.scene.add(this._lines);
+      }
+      this._lineGeom.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
+      this._lineGeom.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
+      this._lineGeom.attributes.position.needsUpdate = true;
+      this._lineGeom.attributes.color.needsUpdate = true;
+      this._lineGeom.computeBoundingSphere();
+    }
+
     dispose() {
       if (this._points) this.scene.remove(this._points);
+      if (this._lines) this.scene.remove(this._lines);
       this.dotTex?.dispose();
       this._geom?.dispose();
+      this._lineGeom?.dispose();
       this._mat?.dispose();
+      this._lineMat?.dispose();
+      this._points = null;
+      this._lines = null;
+      this._geom = null;
+      this._lineGeom = null;
+      this._mat = null;
+      this._lineMat = null;
     }
   }
 
@@ -316,24 +490,21 @@
     const spec = resolveSceneSpec(entry);
     const path = spec.path;
     const args = spec.args;
-    if (path === 'Plasma/Plasma.py' || path.endsWith('Plasma/Plasma.py')) {
-      return new PlasmaScene(args);
-    }
-    if (path === 'Roaming/Roaming.py' || path.includes('Roaming/Roaming.py')) {
-      return new RoamingFFTScene({ style: args.style !== undefined ? args.style : 0 });
-    }
+    if (/Plasma\/Plasma\.py/i.test(path)) return new PlasmaScene(args);
+    if (/Roaming\/Roaming\.py/i.test(path)) return new RoamingFFTScene({ style: args.style !== undefined ? args.style : 0 });
+    if (/Aurora\/Aurora\.py/i.test(path)) return new AuroraScene();
+    if (/Forward\/Forward\.py/i.test(path)) return new ForwardScene();
+    if (/Alien Sine\.py/i.test(path)) return new AlienSineScene(args);
+    if (/Neon Flow\/Neon Flow\.py/i.test(path)) return new PlasmaScene({ fore: 1 });
+    if (/Audioscope\/Audioscope\.py/i.test(path)) return new AudioscopeScene();
+    if (/Alien Telephone\/Alien Telephone\.py/i.test(path)) return new AlienSineScene({ hyper: 0 });
     return null;
   }
 
   function isScenePorted(entry) {
     if (NAME_SCENE_OVERRIDES[entry.name]) return true;
-    const path = (entry.path || '').replace(/\\/g, '/');
-    if (PORTED_PATHS.has(path)) return true;
-    if (path.includes('Plasma/Plasma.py')) return true;
-    if (path === 'Roaming/Roaming.py' && (entry.args?.style === 0 || entry.args?.style === undefined)) {
-      return true;
-    }
-    return false;
+    const path = resolveSceneSpec(entry).path;
+    return PORTED_PATH_RE.some((re) => re.test(path));
   }
 
   class AeonEngine {
@@ -351,14 +522,14 @@
       this.placeholderEl = null;
       this.time = 0;
 
-      this.renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: false });
+      this.renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: false, powerPreference: 'high-performance' });
       this.renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
       this.threeScene = new THREE.Scene();
       this.threeScene.background = new THREE.Color(0x000000);
-      this.camera = new THREE.PerspectiveCamera(45, 1, 0.01, 1000);
+      this.camera = new THREE.PerspectiveCamera(50, 1, 0.05, 200);
       this.renderer.camera = this.camera;
-      this.width = 1;
-      this.height = 1;
+      this.width = window.innerWidth;
+      this.height = window.innerHeight;
     }
 
     async loadManifest() {
@@ -381,6 +552,10 @@
       return this.scenes.filter(isScenePorted).length;
     }
 
+    getFirstPortedIndex() {
+      return this.scenes.findIndex(isScenePorted);
+    }
+
     showsPlaceholder() {
       return !!this._placeholder && !this._sceneImpl;
     }
@@ -391,9 +566,17 @@
       this.sceneIndex = idx;
       const entry = this.scenes[idx];
       this._disposeScene();
+      this.time = 0;
 
       if (isScenePorted(entry)) {
         this._sceneImpl = createSceneFromEntry(entry);
+        if (!this._sceneImpl) {
+          console.warn('Aeon: не удалось создать сцену', entry.name);
+          this.activeScene = entry;
+          this._showPlaceholder(entry.name);
+          this.ready = true;
+          return;
+        }
         this._drawCtx = new AeonDrawContext(this.renderer, this.threeScene);
         this._placeholder = null;
         this._hidePlaceholder();
@@ -405,6 +588,7 @@
         this._showPlaceholder(entry.name);
       }
       this.ready = true;
+      this.resize();
     }
 
     setPlaceholderElement(el) {
@@ -448,7 +632,7 @@
       this.height = h;
       this.canvas.style.width = w + 'px';
       this.canvas.style.height = h + 'px';
-      this.renderer.setSize(w, h, false);
+      this.renderer.setSize(w, h, true);
       this.camera.aspect = w / h;
       this.camera.updateProjectionMatrix();
     }
@@ -456,10 +640,11 @@
     render(dt) {
       if (!this.ready) return;
       const sens = parseFloat(document.getElementById('paramSensitivity')?.value || '1');
-      this.audio.updateFromReactor(this.reactor, sens);
+      this.audio.updateFromReactor(this.reactor, sens, this.time);
       this.time += dt;
 
-      const themeIdx = (typeof global.engine !== 'undefined' && global.engine?.themeIdx) ? global.engine.themeIdx : 0;
+      const eng = global.engine;
+      const themeIdx = eng?.themeIdx !== undefined ? eng.themeIdx : 0;
       const hues = [0, 0, 30, 55, 120, 210, 275, 190, 165, 0];
       const hue = hues[Math.min(9, Math.max(0, themeIdx))] || 0;
 

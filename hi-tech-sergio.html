@@ -6266,6 +6266,16 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
       }
     }
 
+    function appendAeonOptions(parent, items) {
+      items.forEach(({ scene, i }) => {
+        const opt = document.createElement('option');
+        opt.value = String(i);
+        const name = scene.name.length > 50 ? scene.name.slice(0, 50) + '…' : scene.name;
+        opt.textContent = `${i + 1}. ${name}`;
+        parent.appendChild(opt);
+      });
+    }
+
     async function fillAeonSceneSelect() {
       const sel = document.getElementById('aeonSceneSelect');
       if (!sel || !aeonEngine) return;
@@ -6280,16 +6290,27 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
       }
       const placeholder = document.createElement('option');
       placeholder.value = '';
-      placeholder.textContent = '—';
+      placeholder.textContent = '— выберите сцену —';
       sel.appendChild(placeholder);
+
+      const ported = [];
+      const pending = [];
       aeonEngine.scenes.forEach((scene, i) => {
-        const opt = document.createElement('option');
-        opt.value = String(i);
-        const mark = (typeof isAeonScenePorted === 'function' && isAeonScenePorted(scene)) ? '● ' : '○ ';
-        const name = scene.name.length > 52 ? scene.name.slice(0, 52) + '…' : scene.name;
-        opt.textContent = `${mark}${i + 1}. ${name}`;
-        sel.appendChild(opt);
+        (typeof isAeonScenePorted === 'function' && isAeonScenePorted(scene) ? ported : pending).push({ scene, i });
       });
+
+      if (ported.length) {
+        const ogReady = document.createElement('optgroup');
+        ogReady.label = isRu ? `✓ Готовые (${ported.length})` : `✓ Ready (${ported.length})`;
+        appendAeonOptions(ogReady, ported);
+        sel.appendChild(ogReady);
+      }
+      if (pending.length) {
+        const ogWait = document.createElement('optgroup');
+        ogWait.label = isRu ? `○ В очереди (${pending.length})` : `○ Pending (${pending.length})`;
+        appendAeonOptions(ogWait, pending);
+        sel.appendChild(ogWait);
+      }
     }
 
     function tryLoadAeonSceneList(attempt = 0) {
@@ -6331,6 +6352,7 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
     window.addEventListener('DOMContentLoaded', () => {
       const canvas = document.getElementById('canvas');
       engine = new VisualizerEngine(canvas, reactor);
+      window.engine = engine;
       
       const tCanvas = document.getElementById('threeCanvas');
       threeEngine = new ThreeEngine(tCanvas, reactor);
@@ -6411,6 +6433,7 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
             if (engine) {
               engine.visualMode = 18;
               applyVisualCanvases();
+              if (aeonEngine) aeonEngine.resize();
             }
           });
         }
@@ -7062,6 +7085,7 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
         canvas2d.style.display = 'none';
         milkdropCanvas.style.display = 'none';
         aeonCanvas.style.display = 'block';
+        if (aeonEngine) aeonEngine.resize();
         if (aeonPlaceholder && aeonEngine && aeonEngine.showsPlaceholder()) {
           aeonPlaceholder.style.display = 'flex';
         } else if (aeonPlaceholder) {
