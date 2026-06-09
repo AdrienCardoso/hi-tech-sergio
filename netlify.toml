@@ -1,8 +1,7 @@
 # HI-TECH SERGIO — публичный деплой (Netlify, бесплатно)
 [build]
   publish = "."
-  # Статический сайт; команда всегда успешна (деплой не должен skip).
-  command = "echo deploy $(date -u +%Y%m%dT%H%M%SZ)"
+  command = "echo ok"
 
 [[headers]]
   for = "/*"
