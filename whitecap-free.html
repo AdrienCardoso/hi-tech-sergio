@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WhiteCap Free // аудиоспектр</title>
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #030308;
+      --panel: rgba(12, 12, 18, 0.92);
+      --border: rgba(255, 255, 255, 0.08);
+      --text: #f4f4f5;
+      --muted: #71717a;
+      --accent: #38bdf8;
+      --accent2: #a855f7;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; background: var(--bg); color: var(--text); font-family: Inter, sans-serif; overflow: hidden; }
+    #vis { position: fixed; inset: 0 0 120px 0; width: 100%; display: block; background: #000; }
+    #spectrum {
+      position: fixed; left: 0; right: 0; bottom: 52px; height: 68px;
+      background: linear-gradient(180deg, transparent, rgba(0,0,0,.85));
+      pointer-events: none;
+    }
+    .bar {
+      position: fixed; bottom: 52px; left: 0; right: 0; height: 68px;
+      display: flex; align-items: flex-end; gap: 1px; padding: 0 8px 4px;
+      pointer-events: none;
+    }
+    .bar i {
+      flex: 1; min-width: 2px; max-width: 8px;
+      background: linear-gradient(180deg, var(--accent), var(--accent2));
+      border-radius: 2px 2px 0 0; opacity: 0.85;
+      transform-origin: bottom;
+    }
+    .dock {
+      position: fixed; left: 0; right: 0; bottom: 0; z-index: 20;
+      display: flex; flex-wrap: wrap; gap: 8px; align-items: center;
+      padding: 10px 12px; background: var(--panel);
+      border-top: 1px solid var(--border); backdrop-filter: blur(16px);
+    }
+    .brand {
+      font-family: 'Share Tech Mono', monospace; font-size: 11px;
+      color: var(--accent); letter-spacing: 0.14em; margin-right: 4px;
+    }
+    .brand small { color: var(--muted); font-size: 9px; }
+    label {
+      display: flex; flex-direction: column; gap: 3px;
+      font-size: 9px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em;
+      min-width: 140px; flex: 1;
+    }
+    select, button, input[type=range] {
+      font-family: 'Share Tech Mono', monospace; font-size: 11px;
+      background: #111118; color: var(--text); border: 1px solid var(--border);
+      border-radius: 6px; padding: 6px 8px;
+    }
+    button { cursor: pointer; min-width: 72px; }
+    button:hover { border-color: var(--accent); color: var(--accent); }
+    button.on { border-color: var(--accent); color: var(--accent); background: rgba(56,189,248,.08); }
+    .range { min-width: 100px; flex: 0 1 120px; }
+    .range span { font-size: 9px; color: var(--accent); }
+    #status { flex: 1 1 100%; font-size: 10px; color: var(--muted); font-family: 'Share Tech Mono', monospace; }
+    #hint {
+      position: fixed; top: 12px; left: 12px; z-index: 5;
+      font-family: 'Share Tech Mono', monospace; font-size: 10px; color: rgba(255,255,255,.35);
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="vis"></canvas>
+  <div class="bar" id="bars"></div>
+  <div id="hint">WHITECAP FREE // оригинальные .txt WaveShape + ColorScheme</div>
+
+  <div class="dock">
+    <div class="brand">WHITECAP <small>FREE</small></div>
+
+    <label>WaveShape
+      <select id="waveSelect"><option>загрузка…</option></select>
+    </label>
+    <label>ColorScheme
+      <select id="colorSelect"><option>— по умолчанию —</option></select>
+    </label>
+
+    <button id="micBtn" title="Микрофон">MIC</button>
+    <button id="fileBtn" title="Файл">FILE</button>
+    <button id="playBtn" title="Демо-тон">DEMO</button>
+    <button id="shuffleBtn" title="Случайный пресет">⟳</button>
+    <button id="fsBtn" title="Полный экран">⛶</button>
+
+    <label class="range">Чувствительность <span id="sensVal">1.0</span>
+      <input type="range" id="sens" min="0.3" max="3" step="0.1" value="1">
+    </label>
+    <label class="range">Шлейф <span id="persistVal">0.88</span>
+      <input type="range" id="persist" min="0.5" max="0.98" step="0.01" value="0.88">
+    </label>
+
+    <input type="file" id="fileInput" accept="audio/*" hidden>
+    <div id="status">Локальный сервер + распакованный WhiteCap_696.pkg</div>
+  </div>
+
+  <script src="ss-lab/formula.js"></script>
+  <script src="ss-lab/whitecap-engine.js"></script>
+  <script>
+  (function () {
+    'use strict';
+
+    const vis = document.getElementById('vis');
+    const barsEl = document.getElementById('bars');
+    for (let i = 0; i < 64; i++) {
+      const b = document.createElement('i');
+      b.style.height = '2px';
+      barsEl.appendChild(b);
+    }
+
+    let engine = new WhiteCapEngine(vis);
+    let manifest = null;
+    let audioCtx = null, analyser = null, src = null, audioEl = null, demoOsc = null;
+    let slideshow = false;
+    let slideTimer = 0;
+
+    async function fetchText(path) {
+      const res = await fetch(encodeURI(path));
+      if (!res.ok) throw new Error(res.status + ' ' + path);
+      return res.text();
+    }
+
+    async function loadManifest() {
+      manifest = await fetch('ss-lab/manifests/whitecap.json').then(r => r.json());
+      const wSel = document.getElementById('waveSelect');
+      const cSel = document.getElementById('colorSelect');
+      wSel.innerHTML = '';
+      manifest.waveshapes.forEach((it, i) => {
+        const o = document.createElement('option');
+        o.value = String(i);
+        o.textContent = it.name;
+        wSel.appendChild(o);
+      });
+      cSel.innerHTML = '<option value="">— по умолчанию —</option>';
+      (manifest.colorschemes || []).forEach((it, i) => {
+        const o = document.createElement('option');
+        o.value = String(i);
+        o.textContent = it.name;
+        cSel.appendChild(o);
+      });
+      document.getElementById('status').textContent =
+        `WhiteCap Free: ${manifest.waveshapes.length} WaveShape, ${(manifest.colorschemes||[]).length} ColorScheme — все бесплатно`;
+      if (manifest.waveshapes.length) {
+        wSel.value = '0';
+        await loadWave(0);
+      }
+    }
+
+    async function loadWave(idx) {
+      const it = manifest.waveshapes[idx];
+      if (!it) return;
+      const text = await fetchText(it.path);
+      await engine.loadWaveText(text);
+      document.getElementById('status').textContent = 'WaveShape: ' + it.name;
+    }
+
+    async function loadColor(idx) {
+      if (idx === '' || idx === null) { engine._setDefaultColor(); return; }
+      const it = manifest.colorschemes[parseInt(idx, 10)];
+      if (!it) return;
+      const text = await fetchText(it.path);
+      await engine.loadColorText(text);
+      document.getElementById('status').textContent += ' · Color: ' + it.name;
+    }
+
+    async function ensureAudio() {
+      if (!audioCtx) {
+        audioCtx = new AudioContext();
+        analyser = audioCtx.createAnalyser();
+        analyser.fftSize = 2048;
+        analyser.smoothingTimeConstant = 0.8;
+        analyser.connect(audioCtx.destination);
+      }
+      if (audioCtx.state === 'suspended') await audioCtx.resume();
+    }
+
+    async function startMic() {
+      await ensureAudio();
+      stopSources();
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      src = audioCtx.createMediaStreamSource(stream);
+      src.connect(analyser);
+      document.getElementById('micBtn').classList.add('on');
+    }
+
+    function startDemo() {
+      ensureAudio().then(() => {
+        stopSources();
+        const g = audioCtx.createGain();
+        g.gain.value = 0.06;
+        demoOsc = audioCtx.createOscillator();
+        demoOsc.type = 'sawtooth';
+        demoOsc.frequency.value = 55;
+        const lfo = audioCtx.createOscillator();
+        lfo.frequency.value = 0.25;
+        const lg = audioCtx.createGain();
+        lg.gain.value = 30;
+        lfo.connect(lg); lg.connect(demoOsc.frequency);
+        demoOsc.connect(g); g.connect(analyser);
+        demoOsc.start(); lfo.start();
+        document.getElementById('playBtn').classList.add('on');
+      });
+    }
+
+    function playFile(file) {
+      ensureAudio().then(() => {
+        stopSources();
+        audioEl = new Audio(URL.createObjectURL(file));
+        audioEl.loop = true;
+        const node = audioCtx.createMediaElementSource(audioEl);
+        node.connect(analyser);
+        audioEl.play();
+        document.getElementById('fileBtn').classList.add('on');
+      });
+    }
+
+    function stopSources() {
+      ['micBtn', 'playBtn', 'fileBtn'].forEach(id => document.getElementById(id).classList.remove('on'));
+      if (demoOsc) { try { demoOsc.stop(); } catch (_) {} demoOsc = null; }
+      if (audioEl) { audioEl.pause(); audioEl = null; }
+      src = null;
+    }
+
+    function pumpAudio() {
+      if (!analyser) return;
+      const freq = new Uint8Array(analyser.frequencyBinCount);
+      const time = new Uint8Array(analyser.fftSize);
+      analyser.getByteFrequencyData(freq);
+      analyser.getByteTimeDomainData(time);
+      const fft = new Float32Array(64);
+      const mag = new Float32Array(512);
+      let bass = 0;
+      const bars = barsEl.children;
+      for (let i = 0; i < 64; i++) {
+        fft[i] = (freq[i] / 255) * engine.sensitivity;
+        if (i < 8) bass += fft[i];
+        if (bars[i]) bars[i].style.height = Math.max(2, fft[i] * 64) + 'px';
+      }
+      for (let i = 0; i < 512; i++) mag[i] = Math.abs(time[i] - 128) / 128;
+      engine.setAudio(fft, mag, bass / 8);
+    }
+
+    let last = performance.now();
+    function loop(now) {
+      const dt = Math.min(0.05, (now - last) / 1000);
+      last = now;
+      pumpAudio();
+      engine.render(dt);
+      if (slideshow) {
+        slideTimer += dt;
+        if (slideTimer > 12) {
+          slideTimer = 0;
+          const sel = document.getElementById('waveSelect');
+          const n = manifest.waveshapes.length;
+          sel.value = String(Math.floor(Math.random() * n));
+          loadWave(parseInt(sel.value, 10)).catch(console.warn);
+        }
+      }
+      requestAnimationFrame(loop);
+    }
+
+    document.getElementById('waveSelect').addEventListener('change', e => loadWave(parseInt(e.target.value, 10)).catch(err => {
+      document.getElementById('status').textContent = 'Ошибка: ' + err.message;
+    }));
+    document.getElementById('colorSelect').addEventListener('change', e => loadColor(e.target.value).catch(console.warn));
+    document.getElementById('micBtn').addEventListener('click', () => startMic().catch(err => alert(err.message)));
+    document.getElementById('playBtn').addEventListener('click', startDemo);
+    document.getElementById('fileBtn').addEventListener('click', () => document.getElementById('fileInput').click());
+    document.getElementById('fileInput').addEventListener('change', e => { if (e.target.files[0]) playFile(e.target.files[0]); });
+    document.getElementById('shuffleBtn').addEventListener('click', () => {
+      slideshow = !slideshow;
+      document.getElementById('shuffleBtn').classList.toggle('on', slideshow);
+      slideTimer = 0;
+    });
+    document.getElementById('fsBtn').addEventListener('click', () => {
+      if (!document.fullscreenElement) document.documentElement.requestFullscreen();
+      else document.exitFullscreen();
+    });
+    document.getElementById('sens').addEventListener('input', e => {
+      engine.sensitivity = parseFloat(e.target.value);
+      document.getElementById('sensVal').textContent = e.target.value;
+    });
+    document.getElementById('persist').addEventListener('input', e => {
+      engine.persist = parseFloat(e.target.value);
+      document.getElementById('persistVal').textContent = e.target.value;
+    });
+    window.addEventListener('resize', () => engine.resize());
+
+    loadManifest().then(() => {
+      startDemo();
+      requestAnimationFrame(loop);
+    }).catch(err => {
+      document.getElementById('status').textContent =
+        'Запустите: python3 -m http.server 8766 и распакуйте WhiteCap_696.pkg. ' + err.message;
+    });
+  })();
+  </script>
+</body>
+</html>

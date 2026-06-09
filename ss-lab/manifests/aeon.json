@@ -1,0 +1,390 @@
+{
+  "product": "Aeon 4.2.6",
+  "scenes": [
+    {
+      "name": "AbyssBGLines",
+      "path": ".aeon_extract/com.soundspectrum.Aeon.support.pkg/payload_out/Application Support/SoundSpectrum/Aeon/Packages/Aeon.Scene.package/Abyss/AbyssBGLines.py",
+      "type": "aeon-scene"
+    },
+    {
+      "name": "AbyssBGStars",
+      "path": ".aeon_extract/com.soundspectrum.Aeon.support.pkg/payload_out/Application Support/SoundSpectrum/Aeon/Packages/Aeon.Scene.package/Abyss/AbyssBGStars.py",
+      "type": "aeon-scene"
+    },
+    {
+      "name": "Alien Sine",
+      "path": ".aeon_extract/com.soundspectrum.Aeon.support.pkg/payload_out/Application Support/SoundSpectrum/Aeon/Packages/Aeon.Scene.package/Alien Telephone/Alien Sine.py",
+      "type": "aeon-scene"
+    },
+    {
+      "name": "Alien Telephone",
+      "path": ".aeon_extract/com.soundspectrum.Aeon.support.pkg/payload_out/Application Support/SoundSpectrum/Aeon/Packages/Aeon.Scene.package/Alien Telephone/Alien Telephone.py",
+      "type": "aeon-scene"
+    },
+    {
+      "name": "Alien Vector Hyper",
+      "path": ".aeon_extract/com.soundspectrum.Aeon.support.pkg/payload_out/Application Support/SoundSpectrum/Aeon/Packages/Aeon.Scene.package/Alien Telephone/Alien Vector Hyper.py",
+      "type": "aeon-scene"
+    },
+    {
+      "name": "Alien Vector",
+      "path": ".aeon_extract/com.soundspectrum.Aeon.support.pkg/payload_out/Application Support/SoundSpectrum/Aeon/Packages/Aeon.Scene.package/Alien Telephone/Alien Vector.py",
+      "type": "aeon-scene"
+    },
+    {
+      "name": "Alive",
+      "path": ".aeon_extract/com.soundspectrum.Aeon.support.pkg/payload_out/Application Support/SoundSpectrum/Aeon/Packages/Aeon.Scene.package/Alive/Alive.py",
+      "type": "aeon-scene"
+    },
+    {
+      "name": "Astral Bridge",
+      "path": ".aeon_extract/com.soundspectrum.Aeon.support.pkg/payload_out/Application Support/SoundSpectrum/Aeon/Packages/Aeon.Scene.package/Astral Bridge/Astral Bridge.py",
+      "type": "aeon-scene"
+    },
+    {
+      "name": "Aurora",
+      "path": ".aeon_extract/com.soundspectrum.Aeon.support.pkg/payload_out/Application Support/SoundSpectrum/Aeon/Packages/Aeon.Scene.package/Aurora/Aurora.py",
+      "type": "aeon-scene"
+    },
+    {
+      "name": "Grid",
+      "path": ".aeon_extract/com.soundspectrum.Aeon.support.pkg/payload_out/Application Support/SoundSpectrum/Aeon/Packages/Aeon.Scene.package/Backgrounds/Grid.py",
+      "type": "aeon-scene"
+    },
+    {
+      "name": "Bullet Blueprint",
+      "path": ".aeon_extract/com.soundspectrum.Aeon.support.pkg/payload_out/Application Support/SoundSpectrum/Aeon/Packages/Aeon.Scene.package/Bullet/Bullet Blueprint.py",
+      "type": "aeon-scene"
+    },
+    {
+      "name": "Hail of Bullets",
+      "path": ".aeon_extract/com.soundspectrum.Aeon.support.pkg/payload_out/Application Support/SoundSpectrum/Aeon/Packages/Aeon.Scene.package/Bullet/Hail of Bullets.py",
+      "type": "aeon-scene"
+    },
+    {
+      "name": "Point Blank",
+      "path": ".aeon_extract/com.soundspectrum.Aeon.support.pkg/payload_out/Application Support/SoundSpectrum/Aeon/Packages/Aeon.Scene.package/Bullet/Point Blank.py",
+      "type": "aeon-scene"
+    },
+    {
+      "name": "Color Fuze",
+      "path": ".aeon_extract/com.soundspectrum.Aeon.support.pkg/payload_out/Application Support/SoundSpectrum/Aeon/Packages/Aeon.Scene.package/Color Fuze/Color Fuze.py",
+      "type": "aeon-scene"
+    },
+    {
+      "name": "Corridor Sprite",
+      "path": ".aeon_extract/com.soundspectrum.Aeon.support.pkg/payload_out/Application Support/SoundSpectrum/Aeon/Packages/Aeon.Scene.package/Corridor Sprite/Corridor Sprite.py",
+      "type": "aeon-scene"
+    },
+    {
+      "name": "Cosmic Gate",
+      "path": ".aeon_extract/com.soundspectrum.Aeon.support.pkg/payload_out/Application Support/SoundSpectrum/Aeon/Packages/Aeon.Scene.package/Cosmic Gate/Cosmic Gate.py",
+      "type": "aeon-scene"
+    },
+    {
+      "name": "Cubes",
+      "path": ".aeon_extract/com.soundspectrum.Aeon.support.pkg/payload_out/Application Support/SoundSpectrum/Aeon/Packages/Aeon.Scene.package/Cubes/Cubes.py",
+      "type": "aeon-scene"
+    },
+    {
+      "name": "Cypher",
+      "path": ".aeon_extract/com.soundspectrum.Aeon.support.pkg/payload_out/Application Support/SoundSpectrum/Aeon/Packages/Aeon.Scene.package/Cypher/Cypher.py",
+      "type": "aeon-scene"
+    },
+    {
+      "name": "Destiny",
+      "path": ".aeon_extract/com.soundspectrum.Aeon.support.pkg/payload_out/Application Support/SoundSpectrum/Aeon/Packages/Aeon.Scene.package/Destiny/Destiny.py",
+      "type": "aeon-scene"
+    },
+    {
+      "name": "E8",
+      "path": ".aeon_extract/com.soundspectrum.Aeon.support.pkg/payload_out/Application Support/SoundSpectrum/Aeon/Packages/Aeon.Scene.package/E8/E8.py",
+      "type": "aeon-scene"
+    },
+    {
+      "name": "Electric Star Iced",
+      "path": ".aeon_extract/com.soundspectrum.Aeon.support.pkg/payload_out/Application Support/SoundSpectrum/Aeon/Packages/Aeon.Scene.package/Electric Star/Electric Star Iced.py",
+      "type": "aeon-scene"
+    },
+    {
+      "name": "Electric Star",
+      "path": ".aeon_extract/com.soundspectrum.Aeon.support.pkg/payload_out/Application Support/SoundSpectrum/Aeon/Packages/Aeon.Scene.package/Electric Star/Electric Star.py",
+      "type": "aeon-scene"
+    },
+    {
+      "name": "Electronica - Stasis",
+      "path": ".aeon_extract/com.soundspectrum.Aeon.support.pkg/payload_out/Application Support/SoundSpectrum/Aeon/Packages/Aeon.Scene.package/Electronica/Electronica - Stasis.py",
+      "type": "aeon-scene"
+    },
+    {
+      "name": "Electronica",
+      "path": ".aeon_extract/com.soundspectrum.Aeon.support.pkg/payload_out/Application Support/SoundSpectrum/Aeon/Packages/Aeon.Scene.package/Electronica/Electronica.py",
+      "type": "aeon-scene"
+    },
+    {
+      "name": "Electrons",
+      "path": ".aeon_extract/com.soundspectrum.Aeon.support.pkg/payload_out/Application Support/SoundSpectrum/Aeon/Packages/Aeon.Scene.package/Electrons/Electrons.py",
+      "type": "aeon-scene"
+    },
+    {
+      "name": "Energy Source",
+      "path": ".aeon_extract/com.soundspectrum.Aeon.support.pkg/payload_out/Application Support/SoundSpectrum/Aeon/Packages/Aeon.Scene.package/Energy Source/Energy Source.py",
+      "type": "aeon-scene"
+    },
+    {
+      "name": "Ether - Phaze",
+      "path": ".aeon_extract/com.soundspectrum.Aeon.support.pkg/payload_out/Application Support/SoundSpectrum/Aeon/Packages/Aeon.Scene.package/Ether/Ether - Phaze.py",
+      "type": "aeon-scene"
+    },
+    {
+      "name": "Ether",
+      "path": ".aeon_extract/com.soundspectrum.Aeon.support.pkg/payload_out/Application Support/SoundSpectrum/Aeon/Packages/Aeon.Scene.package/Ether/Ether.py",
+      "type": "aeon-scene"
+    },
+    {
+      "name": "Floral Element",
+      "path": ".aeon_extract/com.soundspectrum.Aeon.support.pkg/payload_out/Application Support/SoundSpectrum/Aeon/Packages/Aeon.Scene.package/Floral Element/Floral Element.py",
+      "type": "aeon-scene"
+    },
+    {
+      "name": "Formal Essence",
+      "path": ".aeon_extract/com.soundspectrum.Aeon.support.pkg/payload_out/Application Support/SoundSpectrum/Aeon/Packages/Aeon.Scene.package/Formal Essence/Formal Essence.py",
+      "type": "aeon-scene"
+    },
+    {
+      "name": "Forward",
+      "path": ".aeon_extract/com.soundspectrum.Aeon.support.pkg/payload_out/Application Support/SoundSpectrum/Aeon/Packages/Aeon.Scene.package/Forward/Forward.py",
+      "type": "aeon-scene"
+    },
+    {
+      "name": "Fusion",
+      "path": ".aeon_extract/com.soundspectrum.Aeon.support.pkg/payload_out/Application Support/SoundSpectrum/Aeon/Packages/Aeon.Scene.package/Fusion/Fusion.py",
+      "type": "aeon-scene"
+    },
+    {
+      "name": "Hieroglyph",
+      "path": ".aeon_extract/com.soundspectrum.Aeon.support.pkg/payload_out/Application Support/SoundSpectrum/Aeon/Packages/Aeon.Scene.package/Hieroglyph/Hieroglyph.py",
+      "type": "aeon-scene"
+    },
+    {
+      "name": "Honeycomb",
+      "path": ".aeon_extract/com.soundspectrum.Aeon.support.pkg/payload_out/Application Support/SoundSpectrum/Aeon/Packages/Aeon.Scene.package/Honeycomb/Honeycomb.py",
+      "type": "aeon-scene"
+    },
+    {
+      "name": "Insanity",
+      "path": ".aeon_extract/com.soundspectrum.Aeon.support.pkg/payload_out/Application Support/SoundSpectrum/Aeon/Packages/Aeon.Scene.package/Insanity/Insanity.py",
+      "type": "aeon-scene"
+    },
+    {
+      "name": "Inside Light",
+      "path": ".aeon_extract/com.soundspectrum.Aeon.support.pkg/payload_out/Application Support/SoundSpectrum/Aeon/Packages/Aeon.Scene.package/Inside Light/Inside Light.py",
+      "type": "aeon-scene"
+    },
+    {
+      "name": "Intelligence",
+      "path": ".aeon_extract/com.soundspectrum.Aeon.support.pkg/payload_out/Application Support/SoundSpectrum/Aeon/Packages/Aeon.Scene.package/Intelligence/Intelligence.py",
+      "type": "aeon-scene"
+    },
+    {
+      "name": "Iris",
+      "path": ".aeon_extract/com.soundspectrum.Aeon.support.pkg/payload_out/Application Support/SoundSpectrum/Aeon/Packages/Aeon.Scene.package/Iris/Iris.py",
+      "type": "aeon-scene"
+    },
+    {
+      "name": "Judge",
+      "path": ".aeon_extract/com.soundspectrum.Aeon.support.pkg/payload_out/Application Support/SoundSpectrum/Aeon/Packages/Aeon.Scene.package/Judge/Judge.py",
+      "type": "aeon-scene"
+    },
+    {
+      "name": "metatron",
+      "path": ".aeon_extract/com.soundspectrum.Aeon.support.pkg/payload_out/Application Support/SoundSpectrum/Aeon/Packages/Aeon.Scene.package/Metatron's Swarm/metatron.py",
+      "type": "aeon-scene"
+    },
+    {
+      "name": "Neon Flow",
+      "path": ".aeon_extract/com.soundspectrum.Aeon.support.pkg/payload_out/Application Support/SoundSpectrum/Aeon/Packages/Aeon.Scene.package/Neon Flow/Neon Flow.py",
+      "type": "aeon-scene"
+    },
+    {
+      "name": "Neuro Dance",
+      "path": ".aeon_extract/com.soundspectrum.Aeon.support.pkg/payload_out/Application Support/SoundSpectrum/Aeon/Packages/Aeon.Scene.package/Neuro Dance/Neuro Dance.py",
+      "type": "aeon-scene"
+    },
+    {
+      "name": "Noxious",
+      "path": ".aeon_extract/com.soundspectrum.Aeon.support.pkg/payload_out/Application Support/SoundSpectrum/Aeon/Packages/Aeon.Scene.package/Noxious/Noxious.py",
+      "type": "aeon-scene"
+    },
+    {
+      "name": "Overture",
+      "path": ".aeon_extract/com.soundspectrum.Aeon.support.pkg/payload_out/Application Support/SoundSpectrum/Aeon/Packages/Aeon.Scene.package/Overture/Overture.py",
+      "type": "aeon-scene"
+    },
+    {
+      "name": "Passive",
+      "path": ".aeon_extract/com.soundspectrum.Aeon.support.pkg/payload_out/Application Support/SoundSpectrum/Aeon/Packages/Aeon.Scene.package/Passive/Passive.py",
+      "type": "aeon-scene"
+    },
+    {
+      "name": "PassiveBG",
+      "path": ".aeon_extract/com.soundspectrum.Aeon.support.pkg/payload_out/Application Support/SoundSpectrum/Aeon/Packages/Aeon.Scene.package/Passive/PassiveBG.py",
+      "type": "aeon-scene"
+    },
+    {
+      "name": "Phaze Ray",
+      "path": ".aeon_extract/com.soundspectrum.Aeon.support.pkg/payload_out/Application Support/SoundSpectrum/Aeon/Packages/Aeon.Scene.package/Phaze Ray/Phaze Ray.py",
+      "type": "aeon-scene"
+    },
+    {
+      "name": "Phosphor",
+      "path": ".aeon_extract/com.soundspectrum.Aeon.support.pkg/payload_out/Application Support/SoundSpectrum/Aeon/Packages/Aeon.Scene.package/Phosphor/Phosphor.py",
+      "type": "aeon-scene"
+    },
+    {
+      "name": "Plasma",
+      "path": ".aeon_extract/com.soundspectrum.Aeon.support.pkg/payload_out/Application Support/SoundSpectrum/Aeon/Packages/Aeon.Scene.package/Plasma/Plasma.py",
+      "type": "aeon-scene"
+    },
+    {
+      "name": "Plasma Star",
+      "path": ".aeon_extract/com.soundspectrum.Aeon.support.pkg/payload_out/Application Support/SoundSpectrum/Aeon/Packages/Aeon.Scene.package/Plasma Star/Plasma Star.py",
+      "type": "aeon-scene"
+    },
+    {
+      "name": "Primitive - Radius Extended",
+      "path": ".aeon_extract/com.soundspectrum.Aeon.support.pkg/payload_out/Application Support/SoundSpectrum/Aeon/Packages/Aeon.Scene.package/Primitive/Primitive - Radius Extended.py",
+      "type": "aeon-scene"
+    },
+    {
+      "name": "Primitive - Radius",
+      "path": ".aeon_extract/com.soundspectrum.Aeon.support.pkg/payload_out/Application Support/SoundSpectrum/Aeon/Packages/Aeon.Scene.package/Primitive/Primitive - Radius.py",
+      "type": "aeon-scene"
+    },
+    {
+      "name": "Primitive Extended",
+      "path": ".aeon_extract/com.soundspectrum.Aeon.support.pkg/payload_out/Application Support/SoundSpectrum/Aeon/Packages/Aeon.Scene.package/Primitive/Primitive Extended.py",
+      "type": "aeon-scene"
+    },
+    {
+      "name": "Primitive",
+      "path": ".aeon_extract/com.soundspectrum.Aeon.support.pkg/payload_out/Application Support/SoundSpectrum/Aeon/Packages/Aeon.Scene.package/Primitive/Primitive.py",
+      "type": "aeon-scene"
+    },
+    {
+      "name": "Roaming",
+      "path": ".aeon_extract/com.soundspectrum.Aeon.support.pkg/payload_out/Application Support/SoundSpectrum/Aeon/Packages/Aeon.Scene.package/Roaming/Roaming.py",
+      "type": "aeon-scene"
+    },
+    {
+      "name": "RoamingBG",
+      "path": ".aeon_extract/com.soundspectrum.Aeon.support.pkg/payload_out/Application Support/SoundSpectrum/Aeon/Packages/Aeon.Scene.package/Roaming/RoamingBG.py",
+      "type": "aeon-scene"
+    },
+    {
+      "name": "Sakura Branch",
+      "path": ".aeon_extract/com.soundspectrum.Aeon.support.pkg/payload_out/Application Support/SoundSpectrum/Aeon/Packages/Aeon.Scene.package/Sakura Branch/Sakura Branch.py",
+      "type": "aeon-scene"
+    },
+    {
+      "name": "Sakura Panel",
+      "path": ".aeon_extract/com.soundspectrum.Aeon.support.pkg/payload_out/Application Support/SoundSpectrum/Aeon/Packages/Aeon.Scene.package/Sakura Panel/Sakura Panel.py",
+      "type": "aeon-scene"
+    },
+    {
+      "name": "Serene",
+      "path": ".aeon_extract/com.soundspectrum.Aeon.support.pkg/payload_out/Application Support/SoundSpectrum/Aeon/Packages/Aeon.Scene.package/Serene/Serene.py",
+      "type": "aeon-scene"
+    },
+    {
+      "name": "Serene Spirit",
+      "path": ".aeon_extract/com.soundspectrum.Aeon.support.pkg/payload_out/Application Support/SoundSpectrum/Aeon/Packages/Aeon.Scene.package/Serene Spirit/Serene Spirit.py",
+      "type": "aeon-scene"
+    },
+    {
+      "name": "Simply A Box",
+      "path": ".aeon_extract/com.soundspectrum.Aeon.support.pkg/payload_out/Application Support/SoundSpectrum/Aeon/Packages/Aeon.Scene.package/Simply A Box/Simply A Box.py",
+      "type": "aeon-scene"
+    },
+    {
+      "name": "Slats",
+      "path": ".aeon_extract/com.soundspectrum.Aeon.support.pkg/payload_out/Application Support/SoundSpectrum/Aeon/Packages/Aeon.Scene.package/Slats/Slats.py",
+      "type": "aeon-scene"
+    },
+    {
+      "name": "Slinky Twist",
+      "path": ".aeon_extract/com.soundspectrum.Aeon.support.pkg/payload_out/Application Support/SoundSpectrum/Aeon/Packages/Aeon.Scene.package/Slinky Twist/Slinky Twist.py",
+      "type": "aeon-scene"
+    },
+    {
+      "name": "Sol",
+      "path": ".aeon_extract/com.soundspectrum.Aeon.support.pkg/payload_out/Application Support/SoundSpectrum/Aeon/Packages/Aeon.Scene.package/Sol/Sol.py",
+      "type": "aeon-scene"
+    },
+    {
+      "name": "Spectacle",
+      "path": ".aeon_extract/com.soundspectrum.Aeon.support.pkg/payload_out/Application Support/SoundSpectrum/Aeon/Packages/Aeon.Scene.package/Spectacle/Spectacle.py",
+      "type": "aeon-scene"
+    },
+    {
+      "name": "Spiral Evolution",
+      "path": ".aeon_extract/com.soundspectrum.Aeon.support.pkg/payload_out/Application Support/SoundSpectrum/Aeon/Packages/Aeon.Scene.package/Spiral Evolution/Spiral Evolution.py",
+      "type": "aeon-scene"
+    },
+    {
+      "name": "Streamer",
+      "path": ".aeon_extract/com.soundspectrum.Aeon.support.pkg/payload_out/Application Support/SoundSpectrum/Aeon/Packages/Aeon.Scene.package/Streamer/Streamer.py",
+      "type": "aeon-scene"
+    },
+    {
+      "name": "Tesla Magi",
+      "path": ".aeon_extract/com.soundspectrum.Aeon.support.pkg/payload_out/Application Support/SoundSpectrum/Aeon/Packages/Aeon.Scene.package/Tesla Magi/Tesla Magi.py",
+      "type": "aeon-scene"
+    },
+    {
+      "name": "The Builders",
+      "path": ".aeon_extract/com.soundspectrum.Aeon.support.pkg/payload_out/Application Support/SoundSpectrum/Aeon/Packages/Aeon.Scene.package/The Builders/The Builders.py",
+      "type": "aeon-scene"
+    },
+    {
+      "name": "Transition Volumes Mystic",
+      "path": ".aeon_extract/com.soundspectrum.Aeon.support.pkg/payload_out/Application Support/SoundSpectrum/Aeon/Packages/Aeon.Scene.package/Transition Volumes/Transition Volumes Mystic.py",
+      "type": "aeon-scene"
+    },
+    {
+      "name": "Transition Volumes",
+      "path": ".aeon_extract/com.soundspectrum.Aeon.support.pkg/payload_out/Application Support/SoundSpectrum/Aeon/Packages/Aeon.Scene.package/Transition Volumes/Transition Volumes.py",
+      "type": "aeon-scene"
+    },
+    {
+      "name": "Twilight",
+      "path": ".aeon_extract/com.soundspectrum.Aeon.support.pkg/payload_out/Application Support/SoundSpectrum/Aeon/Packages/Aeon.Scene.package/Twilight/Twilight.py",
+      "type": "aeon-scene"
+    },
+    {
+      "name": "Volcanic",
+      "path": ".aeon_extract/com.soundspectrum.Aeon.support.pkg/payload_out/Application Support/SoundSpectrum/Aeon/Packages/Aeon.Scene.package/Volcanic/Volcanic.py",
+      "type": "aeon-scene"
+    },
+    {
+      "name": "Volume",
+      "path": ".aeon_extract/com.soundspectrum.Aeon.support.pkg/payload_out/Application Support/SoundSpectrum/Aeon/Packages/Aeon.Scene.package/Volume/Volume.py",
+      "type": "aeon-scene"
+    },
+    {
+      "name": "WebWork",
+      "path": ".aeon_extract/com.soundspectrum.Aeon.support.pkg/payload_out/Application Support/SoundSpectrum/Aeon/Packages/Aeon.Scene.package/WebWork/WebWork.py",
+      "type": "aeon-scene"
+    },
+    {
+      "name": "Wonder",
+      "path": ".aeon_extract/com.soundspectrum.Aeon.support.pkg/payload_out/Application Support/SoundSpectrum/Aeon/Packages/Aeon.Scene.package/Wonder/Wonder.py",
+      "type": "aeon-scene"
+    },
+    {
+      "name": "Zion",
+      "path": ".aeon_extract/com.soundspectrum.Aeon.support.pkg/payload_out/Application Support/SoundSpectrum/Aeon/Packages/Aeon.Scene.package/Zion/Zion.py",
+      "type": "aeon-scene"
+    }
+  ]
+}

@@ -718,8 +718,8 @@
         const sub = this.placeholderEl.querySelector('[data-aeon-ph-sub]');
         const stat = this.placeholderEl.querySelector('[data-aeon-ph-stat]');
         if (title) title.textContent = name;
-        if (sub) sub.textContent = 'Сцена в очереди на портирование';
-        if (stat) stat.textContent = `Портировано: ${this.getPortedCount()} / ${this.scenes.length || '…'}`;
+        if (sub) sub.textContent = 'Сцена ещё не реализована в браузере — выберите из группы «✓ Готовые»';
+        if (stat) stat.textContent = `Готово: ${this.getPortedCount()} из ${this.scenes.length || '…'} сцен`;
       }
     }
 
@@ -803,4 +803,4 @@
   global.AeonEngine = AeonEngine;
   global.isAeonScenePorted = isScenePorted;
   global.loadAeonScenes = loadAeonScenes;
-})();
+})(typeof window !== 'undefined' ? window : globalThis);

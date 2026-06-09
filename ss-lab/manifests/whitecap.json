@@ -1,0 +1,607 @@
+{
+  "product": "WhiteCap 6.9.6",
+  "waveshapes": [
+    {
+      "name": "(None)",
+      "path": ".whitecap_extract/com.soundspectrum.WhiteCap.support.pkg/payload_out/Application Support/SoundSpectrum/WhiteCap/Packages/WhiteCap.WaveShape.package/(None).txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "AKIRA Phase",
+      "path": ".whitecap_extract/com.soundspectrum.WhiteCap.support.pkg/payload_out/Application Support/SoundSpectrum/WhiteCap/Packages/WhiteCap.WaveShape.package/AKIRA Phase.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "AT Field",
+      "path": ".whitecap_extract/com.soundspectrum.WhiteCap.support.pkg/payload_out/Application Support/SoundSpectrum/WhiteCap/Packages/WhiteCap.WaveShape.package/AT Field.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "ArticFox Memories",
+      "path": ".whitecap_extract/com.soundspectrum.WhiteCap.support.pkg/payload_out/Application Support/SoundSpectrum/WhiteCap/Packages/WhiteCap.WaveShape.package/ArticFox Memories.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Avalanche",
+      "path": ".whitecap_extract/com.soundspectrum.WhiteCap.support.pkg/payload_out/Application Support/SoundSpectrum/WhiteCap/Packages/WhiteCap.WaveShape.package/Avalanche.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Bessel",
+      "path": ".whitecap_extract/com.soundspectrum.WhiteCap.support.pkg/payload_out/Application Support/SoundSpectrum/WhiteCap/Packages/WhiteCap.WaveShape.package/Bessel.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Biplane",
+      "path": ".whitecap_extract/com.soundspectrum.WhiteCap.support.pkg/payload_out/Application Support/SoundSpectrum/WhiteCap/Packages/WhiteCap.WaveShape.package/Biplane.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Bobsleigh",
+      "path": ".whitecap_extract/com.soundspectrum.WhiteCap.support.pkg/payload_out/Application Support/SoundSpectrum/WhiteCap/Packages/WhiteCap.WaveShape.package/Bobsleigh.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Body and Breath",
+      "path": ".whitecap_extract/com.soundspectrum.WhiteCap.support.pkg/payload_out/Application Support/SoundSpectrum/WhiteCap/Packages/WhiteCap.WaveShape.package/Body and Breath.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Canyon Chase",
+      "path": ".whitecap_extract/com.soundspectrum.WhiteCap.support.pkg/payload_out/Application Support/SoundSpectrum/WhiteCap/Packages/WhiteCap.WaveShape.package/Canyon Chase.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Centrifuge",
+      "path": ".whitecap_extract/com.soundspectrum.WhiteCap.support.pkg/payload_out/Application Support/SoundSpectrum/WhiteCap/Packages/WhiteCap.WaveShape.package/Centrifuge.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Chill Mesh",
+      "path": ".whitecap_extract/com.soundspectrum.WhiteCap.support.pkg/payload_out/Application Support/SoundSpectrum/WhiteCap/Packages/WhiteCap.WaveShape.package/Chill Mesh.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Circular Symmetry",
+      "path": ".whitecap_extract/com.soundspectrum.WhiteCap.support.pkg/payload_out/Application Support/SoundSpectrum/WhiteCap/Packages/WhiteCap.WaveShape.package/Circular Symmetry.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Closed Space",
+      "path": ".whitecap_extract/com.soundspectrum.WhiteCap.support.pkg/payload_out/Application Support/SoundSpectrum/WhiteCap/Packages/WhiteCap.WaveShape.package/Closed Space.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Converge",
+      "path": ".whitecap_extract/com.soundspectrum.WhiteCap.support.pkg/payload_out/Application Support/SoundSpectrum/WhiteCap/Packages/WhiteCap.WaveShape.package/Converge.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Cosine Classic",
+      "path": ".whitecap_extract/com.soundspectrum.WhiteCap.support.pkg/payload_out/Application Support/SoundSpectrum/WhiteCap/Packages/WhiteCap.WaveShape.package/Cosine Classic.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Crater Mountain at Midnight",
+      "path": ".whitecap_extract/com.soundspectrum.WhiteCap.support.pkg/payload_out/Application Support/SoundSpectrum/WhiteCap/Packages/WhiteCap.WaveShape.package/Crater Mountain at Midnight.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Cube",
+      "path": ".whitecap_extract/com.soundspectrum.WhiteCap.support.pkg/payload_out/Application Support/SoundSpectrum/WhiteCap/Packages/WhiteCap.WaveShape.package/Cube.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "DNA",
+      "path": ".whitecap_extract/com.soundspectrum.WhiteCap.support.pkg/payload_out/Application Support/SoundSpectrum/WhiteCap/Packages/WhiteCap.WaveShape.package/DNA.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "DTSD",
+      "path": ".whitecap_extract/com.soundspectrum.WhiteCap.support.pkg/payload_out/Application Support/SoundSpectrum/WhiteCap/Packages/WhiteCap.WaveShape.package/DTSD.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Damn Blue Scotts",
+      "path": ".whitecap_extract/com.soundspectrum.WhiteCap.support.pkg/payload_out/Application Support/SoundSpectrum/WhiteCap/Packages/WhiteCap.WaveShape.package/Damn Blue Scotts.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Daydreams At Zebo's",
+      "path": ".whitecap_extract/com.soundspectrum.WhiteCap.support.pkg/payload_out/Application Support/SoundSpectrum/WhiteCap/Packages/WhiteCap.WaveShape.package/Daydreams At Zebo's.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "ElectroScope",
+      "path": ".whitecap_extract/com.soundspectrum.WhiteCap.support.pkg/payload_out/Application Support/SoundSpectrum/WhiteCap/Packages/WhiteCap.WaveShape.package/ElectroScope.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Excitation",
+      "path": ".whitecap_extract/com.soundspectrum.WhiteCap.support.pkg/payload_out/Application Support/SoundSpectrum/WhiteCap/Packages/WhiteCap.WaveShape.package/Excitation.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Eye",
+      "path": ".whitecap_extract/com.soundspectrum.WhiteCap.support.pkg/payload_out/Application Support/SoundSpectrum/WhiteCap/Packages/WhiteCap.WaveShape.package/Eye.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Farewell 1999",
+      "path": ".whitecap_extract/com.soundspectrum.WhiteCap.support.pkg/payload_out/Application Support/SoundSpectrum/WhiteCap/Packages/WhiteCap.WaveShape.package/Farewell 1999.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Farewell 2005",
+      "path": ".whitecap_extract/com.soundspectrum.WhiteCap.support.pkg/payload_out/Application Support/SoundSpectrum/WhiteCap/Packages/WhiteCap.WaveShape.package/Farewell 2005.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Feed Me",
+      "path": ".whitecap_extract/com.soundspectrum.WhiteCap.support.pkg/payload_out/Application Support/SoundSpectrum/WhiteCap/Packages/WhiteCap.WaveShape.package/Feed Me.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Fission",
+      "path": ".whitecap_extract/com.soundspectrum.WhiteCap.support.pkg/payload_out/Application Support/SoundSpectrum/WhiteCap/Packages/WhiteCap.WaveShape.package/Fission.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Flame",
+      "path": ".whitecap_extract/com.soundspectrum.WhiteCap.support.pkg/payload_out/Application Support/SoundSpectrum/WhiteCap/Packages/WhiteCap.WaveShape.package/Flame.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Forespace (Hyperspace)",
+      "path": ".whitecap_extract/com.soundspectrum.WhiteCap.support.pkg/payload_out/Application Support/SoundSpectrum/WhiteCap/Packages/WhiteCap.WaveShape.package/Forespace (Hyperspace).txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Forespace",
+      "path": ".whitecap_extract/com.soundspectrum.WhiteCap.support.pkg/payload_out/Application Support/SoundSpectrum/WhiteCap/Packages/WhiteCap.WaveShape.package/Forespace.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Four Becomes One",
+      "path": ".whitecap_extract/com.soundspectrum.WhiteCap.support.pkg/payload_out/Application Support/SoundSpectrum/WhiteCap/Packages/WhiteCap.WaveShape.package/Four Becomes One.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "High Octane",
+      "path": ".whitecap_extract/com.soundspectrum.WhiteCap.support.pkg/payload_out/Application Support/SoundSpectrum/WhiteCap/Packages/WhiteCap.WaveShape.package/High Octane.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Holy Moments",
+      "path": ".whitecap_extract/com.soundspectrum.WhiteCap.support.pkg/payload_out/Application Support/SoundSpectrum/WhiteCap/Packages/WhiteCap.WaveShape.package/Holy Moments.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Iron Eagle",
+      "path": ".whitecap_extract/com.soundspectrum.WhiteCap.support.pkg/payload_out/Application Support/SoundSpectrum/WhiteCap/Packages/WhiteCap.WaveShape.package/Iron Eagle.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Jellyfish",
+      "path": ".whitecap_extract/com.soundspectrum.WhiteCap.support.pkg/payload_out/Application Support/SoundSpectrum/WhiteCap/Packages/WhiteCap.WaveShape.package/Jellyfish.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Lava Flow",
+      "path": ".whitecap_extract/com.soundspectrum.WhiteCap.support.pkg/payload_out/Application Support/SoundSpectrum/WhiteCap/Packages/WhiteCap.WaveShape.package/Lava Flow.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Lombrick",
+      "path": ".whitecap_extract/com.soundspectrum.WhiteCap.support.pkg/payload_out/Application Support/SoundSpectrum/WhiteCap/Packages/WhiteCap.WaveShape.package/Lombrick.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "LonComet",
+      "path": ".whitecap_extract/com.soundspectrum.WhiteCap.support.pkg/payload_out/Application Support/SoundSpectrum/WhiteCap/Packages/WhiteCap.WaveShape.package/LonComet.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "AT Spring",
+      "path": ".whitecap_extract/com.soundspectrum.WhiteCap.support.pkg/payload_out/Application Support/SoundSpectrum/WhiteCap/Packages/WhiteCap.WaveShape.package/Lord Yue/AT Spring.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Vortex",
+      "path": ".whitecap_extract/com.soundspectrum.WhiteCap.support.pkg/payload_out/Application Support/SoundSpectrum/WhiteCap/Packages/WhiteCap.WaveShape.package/Lord Yue/Vortex.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Lotus",
+      "path": ".whitecap_extract/com.soundspectrum.WhiteCap.support.pkg/payload_out/Application Support/SoundSpectrum/WhiteCap/Packages/WhiteCap.WaveShape.package/Lotus.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Maboroshi",
+      "path": ".whitecap_extract/com.soundspectrum.WhiteCap.support.pkg/payload_out/Application Support/SoundSpectrum/WhiteCap/Packages/WhiteCap.WaveShape.package/Maboroshi.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Magic Crown",
+      "path": ".whitecap_extract/com.soundspectrum.WhiteCap.support.pkg/payload_out/Application Support/SoundSpectrum/WhiteCap/Packages/WhiteCap.WaveShape.package/Magic Crown.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "My Malia",
+      "path": ".whitecap_extract/com.soundspectrum.WhiteCap.support.pkg/payload_out/Application Support/SoundSpectrum/WhiteCap/Packages/WhiteCap.WaveShape.package/My Malia.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Neptune Rising",
+      "path": ".whitecap_extract/com.soundspectrum.WhiteCap.support.pkg/payload_out/Application Support/SoundSpectrum/WhiteCap/Packages/WhiteCap.WaveShape.package/Neptune Rising.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Nexus",
+      "path": ".whitecap_extract/com.soundspectrum.WhiteCap.support.pkg/payload_out/Application Support/SoundSpectrum/WhiteCap/Packages/WhiteCap.WaveShape.package/Nexus.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Nuclear Power Blues",
+      "path": ".whitecap_extract/com.soundspectrum.WhiteCap.support.pkg/payload_out/Application Support/SoundSpectrum/WhiteCap/Packages/WhiteCap.WaveShape.package/Nuclear Power Blues.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Perturbed",
+      "path": ".whitecap_extract/com.soundspectrum.WhiteCap.support.pkg/payload_out/Application Support/SoundSpectrum/WhiteCap/Packages/WhiteCap.WaveShape.package/Perturbed.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Phantom",
+      "path": ".whitecap_extract/com.soundspectrum.WhiteCap.support.pkg/payload_out/Application Support/SoundSpectrum/WhiteCap/Packages/WhiteCap.WaveShape.package/Phantom.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Planet",
+      "path": ".whitecap_extract/com.soundspectrum.WhiteCap.support.pkg/payload_out/Application Support/SoundSpectrum/WhiteCap/Packages/WhiteCap.WaveShape.package/Planet.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Pool",
+      "path": ".whitecap_extract/com.soundspectrum.WhiteCap.support.pkg/payload_out/Application Support/SoundSpectrum/WhiteCap/Packages/WhiteCap.WaveShape.package/Pool.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Puddle",
+      "path": ".whitecap_extract/com.soundspectrum.WhiteCap.support.pkg/payload_out/Application Support/SoundSpectrum/WhiteCap/Packages/WhiteCap.WaveShape.package/Puddle.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Pulse Dome",
+      "path": ".whitecap_extract/com.soundspectrum.WhiteCap.support.pkg/payload_out/Application Support/SoundSpectrum/WhiteCap/Packages/WhiteCap.WaveShape.package/Pulse Dome.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "RPS Thunderdome",
+      "path": ".whitecap_extract/com.soundspectrum.WhiteCap.support.pkg/payload_out/Application Support/SoundSpectrum/WhiteCap/Packages/WhiteCap.WaveShape.package/RPS Thunderdome.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Radar",
+      "path": ".whitecap_extract/com.soundspectrum.WhiteCap.support.pkg/payload_out/Application Support/SoundSpectrum/WhiteCap/Packages/WhiteCap.WaveShape.package/Radar.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Radioactive",
+      "path": ".whitecap_extract/com.soundspectrum.WhiteCap.support.pkg/payload_out/Application Support/SoundSpectrum/WhiteCap/Packages/WhiteCap.WaveShape.package/Radioactive.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "ReefRide",
+      "path": ".whitecap_extract/com.soundspectrum.WhiteCap.support.pkg/payload_out/Application Support/SoundSpectrum/WhiteCap/Packages/WhiteCap.WaveShape.package/ReefRide.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "RetroJazz",
+      "path": ".whitecap_extract/com.soundspectrum.WhiteCap.support.pkg/payload_out/Application Support/SoundSpectrum/WhiteCap/Packages/WhiteCap.WaveShape.package/RetroJazz.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Ribbon",
+      "path": ".whitecap_extract/com.soundspectrum.WhiteCap.support.pkg/payload_out/Application Support/SoundSpectrum/WhiteCap/Packages/WhiteCap.WaveShape.package/Ribbon.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Ripple",
+      "path": ".whitecap_extract/com.soundspectrum.WhiteCap.support.pkg/payload_out/Application Support/SoundSpectrum/WhiteCap/Packages/WhiteCap.WaveShape.package/Ripple.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Rising Star",
+      "path": ".whitecap_extract/com.soundspectrum.WhiteCap.support.pkg/payload_out/Application Support/SoundSpectrum/WhiteCap/Packages/WhiteCap.WaveShape.package/Rising Star.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Row Response",
+      "path": ".whitecap_extract/com.soundspectrum.WhiteCap.support.pkg/payload_out/Application Support/SoundSpectrum/WhiteCap/Packages/WhiteCap.WaveShape.package/Row Response.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Short and Sweet",
+      "path": ".whitecap_extract/com.soundspectrum.WhiteCap.support.pkg/payload_out/Application Support/SoundSpectrum/WhiteCap/Packages/WhiteCap.WaveShape.package/Short and Sweet.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Sketch",
+      "path": ".whitecap_extract/com.soundspectrum.WhiteCap.support.pkg/payload_out/Application Support/SoundSpectrum/WhiteCap/Packages/WhiteCap.WaveShape.package/Sketch.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Slipstream",
+      "path": ".whitecap_extract/com.soundspectrum.WhiteCap.support.pkg/payload_out/Application Support/SoundSpectrum/WhiteCap/Packages/WhiteCap.WaveShape.package/Slipstream.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Solenoid",
+      "path": ".whitecap_extract/com.soundspectrum.WhiteCap.support.pkg/payload_out/Application Support/SoundSpectrum/WhiteCap/Packages/WhiteCap.WaveShape.package/Solenoid.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Spikes",
+      "path": ".whitecap_extract/com.soundspectrum.WhiteCap.support.pkg/payload_out/Application Support/SoundSpectrum/WhiteCap/Packages/WhiteCap.WaveShape.package/Spikes.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Spotlights",
+      "path": ".whitecap_extract/com.soundspectrum.WhiteCap.support.pkg/payload_out/Application Support/SoundSpectrum/WhiteCap/Packages/WhiteCap.WaveShape.package/Spotlights.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Swinger",
+      "path": ".whitecap_extract/com.soundspectrum.WhiteCap.support.pkg/payload_out/Application Support/SoundSpectrum/WhiteCap/Packages/WhiteCap.WaveShape.package/Swinger.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Temperature Rising",
+      "path": ".whitecap_extract/com.soundspectrum.WhiteCap.support.pkg/payload_out/Application Support/SoundSpectrum/WhiteCap/Packages/WhiteCap.WaveShape.package/Temperature Rising.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Tempest",
+      "path": ".whitecap_extract/com.soundspectrum.WhiteCap.support.pkg/payload_out/Application Support/SoundSpectrum/WhiteCap/Packages/WhiteCap.WaveShape.package/Tempest.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "The Wall",
+      "path": ".whitecap_extract/com.soundspectrum.WhiteCap.support.pkg/payload_out/Application Support/SoundSpectrum/WhiteCap/Packages/WhiteCap.WaveShape.package/The Wall.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Tri-Lobe",
+      "path": ".whitecap_extract/com.soundspectrum.WhiteCap.support.pkg/payload_out/Application Support/SoundSpectrum/WhiteCap/Packages/WhiteCap.WaveShape.package/Tri-Lobe.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "TriRave",
+      "path": ".whitecap_extract/com.soundspectrum.WhiteCap.support.pkg/payload_out/Application Support/SoundSpectrum/WhiteCap/Packages/WhiteCap.WaveShape.package/TriRave.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Tunnel Vision",
+      "path": ".whitecap_extract/com.soundspectrum.WhiteCap.support.pkg/payload_out/Application Support/SoundSpectrum/WhiteCap/Packages/WhiteCap.WaveShape.package/Tunnel Vision.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Vesica Piscis Pulse",
+      "path": ".whitecap_extract/com.soundspectrum.WhiteCap.support.pkg/payload_out/Application Support/SoundSpectrum/WhiteCap/Packages/WhiteCap.WaveShape.package/Vesica Piscis Pulse.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Vox",
+      "path": ".whitecap_extract/com.soundspectrum.WhiteCap.support.pkg/payload_out/Application Support/SoundSpectrum/WhiteCap/Packages/WhiteCap.WaveShape.package/Vox.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Warpo-Taurus",
+      "path": ".whitecap_extract/com.soundspectrum.WhiteCap.support.pkg/payload_out/Application Support/SoundSpectrum/WhiteCap/Packages/WhiteCap.WaveShape.package/Warpo-Taurus.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Wavy",
+      "path": ".whitecap_extract/com.soundspectrum.WhiteCap.support.pkg/payload_out/Application Support/SoundSpectrum/WhiteCap/Packages/WhiteCap.WaveShape.package/Wavy.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Wormhole",
+      "path": ".whitecap_extract/com.soundspectrum.WhiteCap.support.pkg/payload_out/Application Support/SoundSpectrum/WhiteCap/Packages/WhiteCap.WaveShape.package/Wormhole.txt",
+      "type": "waveshape"
+    }
+  ],
+  "colorschemes": [
+    {
+      "name": "(Black)",
+      "path": ".whitecap_extract/com.soundspectrum.WhiteCap.support.pkg/payload_out/Application Support/SoundSpectrum/WhiteCap/Packages/WhiteCap.ColorScheme.package/(Black).txt",
+      "type": "colormap"
+    },
+    {
+      "name": "Any Hue",
+      "path": ".whitecap_extract/com.soundspectrum.WhiteCap.support.pkg/payload_out/Application Support/SoundSpectrum/WhiteCap/Packages/WhiteCap.ColorScheme.package/Any Hue.txt",
+      "type": "colormap"
+    },
+    {
+      "name": "AquaPeak",
+      "path": ".whitecap_extract/com.soundspectrum.WhiteCap.support.pkg/payload_out/Application Support/SoundSpectrum/WhiteCap/Packages/WhiteCap.ColorScheme.package/AquaPeak.txt",
+      "type": "colormap"
+    },
+    {
+      "name": "BiColor",
+      "path": ".whitecap_extract/com.soundspectrum.WhiteCap.support.pkg/payload_out/Application Support/SoundSpectrum/WhiteCap/Packages/WhiteCap.ColorScheme.package/BiColor.txt",
+      "type": "colormap"
+    },
+    {
+      "name": "Blue Beat",
+      "path": ".whitecap_extract/com.soundspectrum.WhiteCap.support.pkg/payload_out/Application Support/SoundSpectrum/WhiteCap/Packages/WhiteCap.ColorScheme.package/Blue Beat.txt",
+      "type": "colormap"
+    },
+    {
+      "name": "Blue Rainbow",
+      "path": ".whitecap_extract/com.soundspectrum.WhiteCap.support.pkg/payload_out/Application Support/SoundSpectrum/WhiteCap/Packages/WhiteCap.ColorScheme.package/Blue Rainbow.txt",
+      "type": "colormap"
+    },
+    {
+      "name": "Blue and Pink Bands",
+      "path": ".whitecap_extract/com.soundspectrum.WhiteCap.support.pkg/payload_out/Application Support/SoundSpectrum/WhiteCap/Packages/WhiteCap.ColorScheme.package/Blue and Pink Bands.txt",
+      "type": "colormap"
+    },
+    {
+      "name": "Blues for Miriam",
+      "path": ".whitecap_extract/com.soundspectrum.WhiteCap.support.pkg/payload_out/Application Support/SoundSpectrum/WhiteCap/Packages/WhiteCap.ColorScheme.package/Blues for Miriam.txt",
+      "type": "colormap"
+    },
+    {
+      "name": "CRT Style",
+      "path": ".whitecap_extract/com.soundspectrum.WhiteCap.support.pkg/payload_out/Application Support/SoundSpectrum/WhiteCap/Packages/WhiteCap.ColorScheme.package/CRT Style.txt",
+      "type": "colormap"
+    },
+    {
+      "name": "Candy Apple",
+      "path": ".whitecap_extract/com.soundspectrum.WhiteCap.support.pkg/payload_out/Application Support/SoundSpectrum/WhiteCap/Packages/WhiteCap.ColorScheme.package/Candy Apple.txt",
+      "type": "colormap"
+    },
+    {
+      "name": "ChromaPeak",
+      "path": ".whitecap_extract/com.soundspectrum.WhiteCap.support.pkg/payload_out/Application Support/SoundSpectrum/WhiteCap/Packages/WhiteCap.ColorScheme.package/ChromaPeak.txt",
+      "type": "colormap"
+    },
+    {
+      "name": "Cyan Stripe",
+      "path": ".whitecap_extract/com.soundspectrum.WhiteCap.support.pkg/payload_out/Application Support/SoundSpectrum/WhiteCap/Packages/WhiteCap.ColorScheme.package/Cyan Stripe.txt",
+      "type": "colormap"
+    },
+    {
+      "name": "Cyano Grey",
+      "path": ".whitecap_extract/com.soundspectrum.WhiteCap.support.pkg/payload_out/Application Support/SoundSpectrum/WhiteCap/Packages/WhiteCap.ColorScheme.package/Cyano Grey.txt",
+      "type": "colormap"
+    },
+    {
+      "name": "Emerald",
+      "path": ".whitecap_extract/com.soundspectrum.WhiteCap.support.pkg/payload_out/Application Support/SoundSpectrum/WhiteCap/Packages/WhiteCap.ColorScheme.package/Emerald.txt",
+      "type": "colormap"
+    },
+    {
+      "name": "Grilled",
+      "path": ".whitecap_extract/com.soundspectrum.WhiteCap.support.pkg/payload_out/Application Support/SoundSpectrum/WhiteCap/Packages/WhiteCap.ColorScheme.package/Grilled.txt",
+      "type": "colormap"
+    },
+    {
+      "name": "Icy Tinge",
+      "path": ".whitecap_extract/com.soundspectrum.WhiteCap.support.pkg/payload_out/Application Support/SoundSpectrum/WhiteCap/Packages/WhiteCap.ColorScheme.package/Icy Tinge.txt",
+      "type": "colormap"
+    },
+    {
+      "name": "Laser Pure",
+      "path": ".whitecap_extract/com.soundspectrum.WhiteCap.support.pkg/payload_out/Application Support/SoundSpectrum/WhiteCap/Packages/WhiteCap.ColorScheme.package/Laser Pure.txt",
+      "type": "colormap"
+    },
+    {
+      "name": "Lightness",
+      "path": ".whitecap_extract/com.soundspectrum.WhiteCap.support.pkg/payload_out/Application Support/SoundSpectrum/WhiteCap/Packages/WhiteCap.ColorScheme.package/Lightness.txt",
+      "type": "colormap"
+    },
+    {
+      "name": "Lost in Love",
+      "path": ".whitecap_extract/com.soundspectrum.WhiteCap.support.pkg/payload_out/Application Support/SoundSpectrum/WhiteCap/Packages/WhiteCap.ColorScheme.package/Lost in Love.txt",
+      "type": "colormap"
+    },
+    {
+      "name": "Parchment",
+      "path": ".whitecap_extract/com.soundspectrum.WhiteCap.support.pkg/payload_out/Application Support/SoundSpectrum/WhiteCap/Packages/WhiteCap.ColorScheme.package/Parchment.txt",
+      "type": "colormap"
+    },
+    {
+      "name": "Passion",
+      "path": ".whitecap_extract/com.soundspectrum.WhiteCap.support.pkg/payload_out/Application Support/SoundSpectrum/WhiteCap/Packages/WhiteCap.ColorScheme.package/Passion.txt",
+      "type": "colormap"
+    },
+    {
+      "name": "Pastels",
+      "path": ".whitecap_extract/com.soundspectrum.WhiteCap.support.pkg/payload_out/Application Support/SoundSpectrum/WhiteCap/Packages/WhiteCap.ColorScheme.package/Pastels.txt",
+      "type": "colormap"
+    },
+    {
+      "name": "Peak Performance",
+      "path": ".whitecap_extract/com.soundspectrum.WhiteCap.support.pkg/payload_out/Application Support/SoundSpectrum/WhiteCap/Packages/WhiteCap.ColorScheme.package/Peak Performance.txt",
+      "type": "colormap"
+    },
+    {
+      "name": "Peppermint",
+      "path": ".whitecap_extract/com.soundspectrum.WhiteCap.support.pkg/payload_out/Application Support/SoundSpectrum/WhiteCap/Packages/WhiteCap.ColorScheme.package/Peppermint.txt",
+      "type": "colormap"
+    },
+    {
+      "name": "Plasticolor",
+      "path": ".whitecap_extract/com.soundspectrum.WhiteCap.support.pkg/payload_out/Application Support/SoundSpectrum/WhiteCap/Packages/WhiteCap.ColorScheme.package/Plasticolor.txt",
+      "type": "colormap"
+    },
+    {
+      "name": "Pure Primary",
+      "path": ".whitecap_extract/com.soundspectrum.WhiteCap.support.pkg/payload_out/Application Support/SoundSpectrum/WhiteCap/Packages/WhiteCap.ColorScheme.package/Pure Primary.txt",
+      "type": "colormap"
+    },
+    {
+      "name": "Purple Peak",
+      "path": ".whitecap_extract/com.soundspectrum.WhiteCap.support.pkg/payload_out/Application Support/SoundSpectrum/WhiteCap/Packages/WhiteCap.ColorScheme.package/Purple Peak.txt",
+      "type": "colormap"
+    },
+    {
+      "name": "Purples",
+      "path": ".whitecap_extract/com.soundspectrum.WhiteCap.support.pkg/payload_out/Application Support/SoundSpectrum/WhiteCap/Packages/WhiteCap.ColorScheme.package/Purples.txt",
+      "type": "colormap"
+    },
+    {
+      "name": "Rainbow (Rotating)",
+      "path": ".whitecap_extract/com.soundspectrum.WhiteCap.support.pkg/payload_out/Application Support/SoundSpectrum/WhiteCap/Packages/WhiteCap.ColorScheme.package/Rainbow (Rotating).txt",
+      "type": "colormap"
+    },
+    {
+      "name": "Rainbow (Symmetric)",
+      "path": ".whitecap_extract/com.soundspectrum.WhiteCap.support.pkg/payload_out/Application Support/SoundSpectrum/WhiteCap/Packages/WhiteCap.ColorScheme.package/Rainbow (Symmetric).txt",
+      "type": "colormap"
+    },
+    {
+      "name": "Rainbow Oddity",
+      "path": ".whitecap_extract/com.soundspectrum.WhiteCap.support.pkg/payload_out/Application Support/SoundSpectrum/WhiteCap/Packages/WhiteCap.ColorScheme.package/Rainbow Oddity.txt",
+      "type": "colormap"
+    },
+    {
+      "name": "Rainbow Revealed",
+      "path": ".whitecap_extract/com.soundspectrum.WhiteCap.support.pkg/payload_out/Application Support/SoundSpectrum/WhiteCap/Packages/WhiteCap.ColorScheme.package/Rainbow Revealed.txt",
+      "type": "colormap"
+    },
+    {
+      "name": "Red Planet",
+      "path": ".whitecap_extract/com.soundspectrum.WhiteCap.support.pkg/payload_out/Application Support/SoundSpectrum/WhiteCap/Packages/WhiteCap.ColorScheme.package/Red Planet.txt",
+      "type": "colormap"
+    },
+    {
+      "name": "Scorched",
+      "path": ".whitecap_extract/com.soundspectrum.WhiteCap.support.pkg/payload_out/Application Support/SoundSpectrum/WhiteCap/Packages/WhiteCap.ColorScheme.package/Scorched.txt",
+      "type": "colormap"
+    },
+    {
+      "name": "Stripes",
+      "path": ".whitecap_extract/com.soundspectrum.WhiteCap.support.pkg/payload_out/Application Support/SoundSpectrum/WhiteCap/Packages/WhiteCap.ColorScheme.package/Stripes.txt",
+      "type": "colormap"
+    },
+    {
+      "name": "Tri-Chroma",
+      "path": ".whitecap_extract/com.soundspectrum.WhiteCap.support.pkg/payload_out/Application Support/SoundSpectrum/WhiteCap/Packages/WhiteCap.ColorScheme.package/Tri-Chroma.txt",
+      "type": "colormap"
+    },
+    {
+      "name": "White Peak on Blue",
+      "path": ".whitecap_extract/com.soundspectrum.WhiteCap.support.pkg/payload_out/Application Support/SoundSpectrum/WhiteCap/Packages/WhiteCap.ColorScheme.package/White Peak on Blue.txt",
+      "type": "colormap"
+    },
+    {
+      "name": "Yellow Alert",
+      "path": ".whitecap_extract/com.soundspectrum.WhiteCap.support.pkg/payload_out/Application Support/SoundSpectrum/WhiteCap/Packages/WhiteCap.ColorScheme.package/Yellow Alert.txt",
+      "type": "colormap"
+    }
+  ]
+}

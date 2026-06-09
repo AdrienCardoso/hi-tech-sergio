@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SoundSpectrum Lab // Aeon · WhiteCap · G-Force</title>
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: #000; color: #e4e4e7; font-family: 'Share Tech Mono', monospace; height: 100vh; overflow: hidden; }
+    #canvas { position: fixed; inset: 0; width: 100%; height: 100%; display: block; }
+    .panel {
+      position: fixed; top: 12px; left: 12px; right: 12px; z-index: 10;
+      display: flex; flex-wrap: wrap; gap: 10px; align-items: center;
+      background: rgba(8,8,12,.88); border: 1px solid rgba(168,85,247,.35);
+      border-radius: 10px; padding: 12px 14px; backdrop-filter: blur(12px);
+    }
+    .brand { color: #a855f7; font-size: 11px; letter-spacing: .12em; margin-right: 8px; }
+    label { font-size: 10px; color: #71717a; display: flex; flex-direction: column; gap: 4px; min-width: 200px; flex: 1; }
+    select, button {
+      font-family: inherit; font-size: 11px; background: #111; color: #f4f4f5;
+      border: 1px solid #333; border-radius: 6px; padding: 7px 8px;
+    }
+    button { cursor: pointer; min-width: 90px; }
+    button:hover { border-color: #a855f7; color: #d8b4fe; }
+    button.active { border-color: #a855f7; color: #a855f7; }
+    #status { font-size: 10px; color: #71717a; flex: 1 1 100%; line-height: 1.5; }
+    #aeonNotice {
+      display: none; position: fixed; inset: 0; z-index: 20; background: rgba(0,0,0,.92);
+      align-items: center; justify-content: center; flex-direction: column; gap: 16px; padding: 24px; text-align: center;
+    }
+    #aeonNotice.visible { display: flex; }
+    #aeonNotice h2 { color: #a855f7; font-size: 14px; font-weight: 400; }
+    #aeonNotice p { max-width: 520px; font-size: 11px; color: #a1a1aa; line-height: 1.6; }
+  </style>
+</head>
+<body>
+  <canvas id="canvas"></canvas>
+  <div class="panel">
+    <span class="brand">SOUNDSPECTRUM LAB //</span>
+    <label>G-FORCE
+      <select id="gforceSelect"><option value="">загрузка…</option></select>
+    </label>
+    <label>WHITE CAP
+      <select id="whitecapSelect"><option value="">загрузка…</option></select>
+    </label>
+    <label>AEON
+      <select id="aeonSelect"><option value="">загрузка…</option></select>
+    </label>
+    <button id="audioBtn">AUDIO</button>
+    <button id="fileBtn">FILE</button>
+    <input type="file" id="fileInput" accept="audio/*" hidden>
+    <div id="status">Движок: оригинальные .txt конфиги + 8-bit pipeline SoundSpectrum. Выберите пресет G-Force или WhiteCap.</div>
+  </div>
+  <div id="aeonNotice">
+    <h2>AEON // нативный движок</h2>
+    <p id="aeonNoticeText"></p>
+    <button id="aeonClose">OK</button>
+  </div>
+
+  <script src="ss-lab/formula.js"></script>
+  <script src="ss-lab/colormap.js"></script>
+  <script src="ss-lab/gforce-engine.js"></script>
+  <script>
+  (function () {
+    'use strict';
+
+    const canvas = document.getElementById('canvas');
+    let engine = null;
+    let audioCtx = null, analyser = null, srcNode = null, audioEl = null;
+    let activeProduct = 'gforce';
+    let manifests = { gforce: null, whitecap: null, aeon: null };
+
+    const GF_BASE = '.gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages';
+    const DEFAULT_GF_WAVE = GF_BASE + '/G-Force.WaveShape.package/WaveShapes/Simple Horizontal.txt';
+    const DEFAULT_GF_COLOR = GF_BASE + '/G-Force.ColorMap.package/ColorWheel.txt';
+
+    async function fetchText(path) {
+      const res = await fetch(encodeURI(path));
+      if (!res.ok) throw new Error(path + ' → ' + res.status);
+      return res.text();
+    }
+
+    async function loadManifests() {
+      const [gf, wc, ae] = await Promise.all([
+        fetch('ss-lab/manifests/gforce.json').then(r => r.json()),
+        fetch('ss-lab/manifests/whitecap.json').then(r => r.json()),
+        fetch('ss-lab/manifests/aeon.json').then(r => r.json()),
+      ]);
+      manifests.gforce = gf;
+      manifests.whitecap = wc;
+      manifests.aeon = ae;
+      fillSelect('gforceSelect', gf.flowfields, '— G-Force FlowField —');
+      fillSelect('whitecapSelect', wc.waveshapes, '— WhiteCap WaveShape —');
+      fillSelect('aeonSelect', ae.scenes, '— Aeon Scene —');
+      document.getElementById('status').textContent =
+        `Манифест: G-Force ${gf.flowfields.length} FlowField, WhiteCap ${wc.waveshapes.length} WaveShape, Aeon ${ae.scenes.length} сцен (нативные).`;
+    }
+
+    function fillSelect(id, items, placeholder) {
+      const sel = document.getElementById(id);
+      sel.innerHTML = '';
+      const ph = document.createElement('option');
+      ph.value = ''; ph.textContent = placeholder;
+      sel.appendChild(ph);
+      items.forEach((it, i) => {
+        const o = document.createElement('option');
+        o.value = String(i);
+        o.textContent = it.name;
+        o.dataset.path = it.path;
+        sel.appendChild(o);
+      });
+    }
+
+    function ensureEngine() {
+      if (!engine) {
+        engine = new GForceEngine(canvas);
+        engine.resize();
+      }
+      return engine;
+    }
+
+    async function loadGForce(idx) {
+      const item = manifests.gforce.flowfields[idx];
+      if (!item) return;
+      const eng = ensureEngine();
+      const [flow, wave, color] = await Promise.all([
+        fetchText(item.path),
+        fetchText(DEFAULT_GF_WAVE),
+        fetchText(DEFAULT_GF_COLOR),
+      ]);
+      await eng.loadConfigText(flow, wave, color);
+      activeProduct = 'gforce';
+      document.getElementById('whitecapSelect').value = '';
+      document.getElementById('aeonSelect').value = '';
+      document.getElementById('status').textContent = `G-Force: ${item.name} + Simple Horizontal + ColorWheel`;
+    }
+
+    async function loadWhiteCap(idx) {
+      const item = manifests.whitecap.waveshapes[idx];
+      if (!item) return;
+      const eng = ensureEngine();
+      const wave = await fetchText(item.path);
+      await eng.loadConfigText(null, wave, null);
+      activeProduct = 'whitecap';
+      document.getElementById('gforceSelect').value = '';
+      document.getElementById('aeonSelect').value = '';
+      document.getElementById('status').textContent = `WhiteCap: ${item.name}`;
+    }
+
+    function showAeonNotice(scene) {
+      const el = document.getElementById('aeonNotice');
+      document.getElementById('aeonNoticeText').innerHTML =
+        `Сцена <b style="color:#e4e4e7">${scene.name}</b> — Python + Arcade.bundle (OpenGL).<br><br>` +
+        `Точный визуал Aeon <b>невозможно</b> воспроизвести в браузере без нативного движка SoundSpectrum. ` +
+        `Сцены — это скрипты для macOS-приложения Aeon, а не самодостаточная графика.<br><br>` +
+        `Для точного Aeon: запустите установленное приложение <b>Aeon</b> на Mac и выберите сцену там. ` +
+        `Файл сцены: <code style="color:#a855f7">${scene.path}</code>`;
+      el.classList.add('visible');
+      document.getElementById('gforceSelect').value = '';
+      document.getElementById('whitecapSelect').value = '';
+    }
+
+    async function startAudio() {
+      if (!audioCtx) {
+        audioCtx = new AudioContext();
+        analyser = audioCtx.createAnalyser();
+        analyser.fftSize = 2048;
+        analyser.smoothingTimeConstant = 0.75;
+        analyser.connect(audioCtx.destination);
+      }
+      if (audioCtx.state === 'suspended') await audioCtx.resume();
+      if (!srcNode) {
+        const osc = audioCtx.createOscillator();
+        const g = audioCtx.createGain();
+        g.gain.value = 0.08;
+        osc.frequency.value = 110;
+        osc.connect(g); g.connect(analyser);
+        osc.start();
+        srcNode = osc;
+      }
+      document.getElementById('audioBtn').classList.add('active');
+    }
+
+    function connectFile(file) {
+      if (!audioCtx) audioCtx = new AudioContext();
+      if (audioEl) { audioEl.pause(); audioEl = null; }
+      audioEl = new Audio(URL.createObjectURL(file));
+      audioEl.loop = true;
+      const node = audioCtx.createMediaElementSource(audioEl);
+      if (!analyser) {
+        analyser = audioCtx.createAnalyser();
+        analyser.fftSize = 2048;
+        analyser.connect(audioCtx.destination);
+      }
+      node.connect(analyser);
+      audioEl.play();
+      srcNode = node;
+    }
+
+    function pumpAudio() {
+      if (!analyser || !engine) return;
+      const freq = new Uint8Array(analyser.frequencyBinCount);
+      const time = new Uint8Array(analyser.fftSize);
+      analyser.getByteFrequencyData(freq);
+      analyser.getByteTimeDomainData(time);
+      const fft = new Float32Array(64);
+      const mag = new Float32Array(512);
+      for (let i = 0; i < 64; i++) fft[i] = freq[i] / 255;
+      for (let i = 0; i < 512; i++) mag[i] = Math.abs(time[i] - 128) / 128;
+      let bass = 0;
+      for (let i = 0; i < 8; i++) bass += fft[i];
+      engine.setAudio(fft, mag, bass / 8);
+    }
+
+    let last = performance.now();
+    function loop(now) {
+      const dt = Math.min(0.05, (now - last) / 1000);
+      last = now;
+      pumpAudio();
+      if (engine && activeProduct !== 'aeon') engine.render(dt);
+      requestAnimationFrame(loop);
+    }
+
+    document.getElementById('gforceSelect').addEventListener('change', async (e) => {
+      const v = e.target.value;
+      if (v === '') return;
+      try { await startAudio(); await loadGForce(parseInt(v, 10)); }
+      catch (err) { document.getElementById('status').textContent = 'Ошибка: ' + err.message; }
+    });
+    document.getElementById('whitecapSelect').addEventListener('change', async (e) => {
+      const v = e.target.value;
+      if (v === '') return;
+      try { await startAudio(); await loadWhiteCap(parseInt(v, 10)); }
+      catch (err) { document.getElementById('status').textContent = 'Ошибка: ' + err.message; }
+    });
+    document.getElementById('aeonSelect').addEventListener('change', (e) => {
+      const v = e.target.value;
+      if (v === '') return;
+      activeProduct = 'aeon';
+      showAeonNotice(manifests.aeon.scenes[parseInt(v, 10)]);
+    });
+    document.getElementById('audioBtn').addEventListener('click', () => startAudio().catch(console.warn));
+    document.getElementById('fileBtn').addEventListener('click', () => document.getElementById('fileInput').click());
+    document.getElementById('fileInput').addEventListener('change', (e) => {
+      const f = e.target.files?.[0];
+      if (f) connectFile(f);
+    });
+    document.getElementById('aeonClose').addEventListener('click', () => {
+      document.getElementById('aeonNotice').classList.remove('visible');
+      document.getElementById('aeonSelect').value = '';
+      activeProduct = 'gforce';
+    });
+    window.addEventListener('resize', () => engine?.resize());
+
+    loadManifests().catch(err => {
+      document.getElementById('status').textContent =
+        'Нужен локальный сервер из папки проекта + распакованные .pkg. ' + err.message;
+    });
+    requestAnimationFrame(loop);
+  })();
+  </script>
+</body>
+</html>

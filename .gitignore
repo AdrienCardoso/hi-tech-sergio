@@ -20,6 +20,10 @@ trinity/
 audio_visualizer*
 _shot_*.png
 
-# SoundSpectrum Aeon installer (локально, не для git)
+# SoundSpectrum installers (локально, не для git)
 .aeon_extract/
+.gforce_extract/
+.whitecap_extract/
 Aeon_426.pkg
+G-Force_595.pkg
+WhiteCap_696.pkg

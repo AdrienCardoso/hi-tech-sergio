@@ -1,0 +1,3581 @@
+{
+  "product": "G-Force 5.9.5",
+  "flowfields": [
+    {
+      "name": "G-Force.FlowField.package/(Empty)",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/(Empty).txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "G-Force.FlowField.package/Act Of Love",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Act Of Love.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "G-Force.FlowField.package/Angantyr Antigravity Well",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Angantyr Antigravity Well.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "G-Force.FlowField.package/Angel's Caress",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Angel's Caress.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "G-Force.FlowField.package/Birth of the Sea",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Birth of the Sea.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "G-Force.FlowField.package/Bits Between Bits - Horizontal",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Bits Between Bits - Horizontal.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "G-Force.FlowField.package/Bits Between Bits - Vertical",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Bits Between Bits - Vertical.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "G-Force.FlowField.package/Blaze",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Blaze.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "G-Force.FlowField.package/Claustrophobia",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Claustrophobia.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "G-Force.FlowField.package/Concentricity",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Concentricity.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "G-Force.FlowField.package/Constant Out",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Constant Out.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "DT/Boxes",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/DT/Boxes.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "DT/Chaos",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/DT/Chaos.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "DT/Horizon",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/DT/Horizon.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "DT/Swirl",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/DT/Swirl.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "DT/Tip",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/DT/Tip.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "DT/Water",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/DT/Water.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "DanPin/Lightspeed",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/DanPin/Lightspeed.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "DanPin/Mirrored Spaces",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/DanPin/Mirrored Spaces.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "DanPin/Rotating Eclipse",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/DanPin/Rotating Eclipse.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "DaveF/50's Wallpaper",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/DaveF/50's Wallpaper.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "DaveF/Acid Reflux",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/DaveF/Acid Reflux.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "DaveF/Blocked Escape",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/DaveF/Blocked Escape.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "DaveF/Cubist Daisy",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/DaveF/Cubist Daisy.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "DaveF/Cyclone Clouds",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/DaveF/Cyclone Clouds.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "DaveF/Diagonal Slice",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/DaveF/Diagonal Slice.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "DaveF/Evacuate",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/DaveF/Evacuate.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "DaveF/Eye of the Swarm",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/DaveF/Eye of the Swarm.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "DaveF/Hibiscus",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/DaveF/Hibiscus.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "DaveF/In the Ring",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/DaveF/In the Ring.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "DaveF/Lovely Darts",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/DaveF/Lovely Darts.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "DaveF/Mosaic Courtyard",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/DaveF/Mosaic Courtyard.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "DaveF/Nucleus",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/DaveF/Nucleus.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "DaveF/Rolling Hills",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/DaveF/Rolling Hills.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "DaveF/Smoke Tornado",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/DaveF/Smoke Tornado.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "DaveF/Swirlo",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/DaveF/Swirlo.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "DaveF/Wave World",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/DaveF/Wave World.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "DaveF/Weird Valleys",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/DaveF/Weird Valleys.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "DaveF/You Are Here",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/DaveF/You Are Here.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "G-Force.FlowField.package/Deep Zoom",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Deep Zoom.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "G-Force.FlowField.package/Diamond",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Diamond.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "G-Force.FlowField.package/Disco Ball",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Disco Ball.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "G-Force.FlowField.package/Do Not Adjust Your Set",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Do Not Adjust Your Set.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "G-Force.FlowField.package/Drawn and Quartered",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Drawn and Quartered.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "G-Force.FlowField.package/Dreamscape",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Dreamscape.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "EDP/Birth of the nG",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/EDP/Birth of the nG.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "EDP/Magic Mirror",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/EDP/Magic Mirror.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "EDP/Odai Plateau",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/EDP/Odai Plateau.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "ER/3 Scape",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/ER/3 Scape.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "ER/At the Oval Office",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/ER/At the Oval Office.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "ER/Caleidoscope",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/ER/Caleidoscope.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "ER/Circular Whoo-Whoo",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/ER/Circular Whoo-Whoo.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "ER/Expanding Spiral",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/ER/Expanding Spiral.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "ER/Eye",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/ER/Eye.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "ER/Honey Twist",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/ER/Honey Twist.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "ER/Honey-comb",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/ER/Honey-comb.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "ER/Mistify",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/ER/Mistify.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "ER/Radial Flows",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/ER/Radial Flows.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "ER/Radial Liquid",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/ER/Radial Liquid.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "ER/Radial Simplicity",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/ER/Radial Simplicity.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "ER/Sauron",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/ER/Sauron.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "ER/Sliced Rotation",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/ER/Sliced Rotation.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "ER/Slinky",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/ER/Slinky.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "ER/Spacy Flower",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/ER/Spacy Flower.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "ER/Spirals in Circles",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/ER/Spirals in Circles.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "ER/Spiritual",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/ER/Spiritual.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "ER/Square Trails",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/ER/Square Trails.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "ER/Sunscape Twist",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/ER/Sunscape Twist.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "ER/Sunshine",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/ER/Sunshine.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "ER/Vapourize",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/ER/Vapourize.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "G-Force.FlowField.package/Echo",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Echo.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "G-Force.FlowField.package/Escher Swirls",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Escher Swirls.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "G-Force.FlowField.package/Ether Leak",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Ether Leak.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "G-Force.FlowField.package/Event Horizon",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Event Horizon.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "G-Force.FlowField.package/Expand and Turn",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Expand and Turn.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "G-Force.FlowField.package/Eyes",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Eyes.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "G-Force.FlowField.package/Fiber Optic Nerve",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Fiber Optic Nerve.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "G-Force.FlowField.package/Five Hole",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Five Hole.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "G-Force.FlowField.package/Flamage",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Flamage.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "G-Force.FlowField.package/Flamin Ice Cubes",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Flamin Ice Cubes.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "G-Force.FlowField.package/Flee",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Flee.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "G-Force.FlowField.package/Flower Power Flow",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Flower Power Flow.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "G-Force.FlowField.package/Fractal Sweetness",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Fractal Sweetness.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "G-Force.FlowField.package/Fran 10a",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Fran 10a.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "G-Force.FlowField.package/Free Yourself",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Free Yourself.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "G-Force.FlowField.package/Freezymelt",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Freezymelt.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "G-Force.FlowField.package/Frontal Lobe",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Frontal Lobe.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "G-Force.FlowField.package/G-Life",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/G-Life.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "G-Force.FlowField.package/Gail Force Winds",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Gail Force Winds.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "G-Force.FlowField.package/Gedenghi",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Gedenghi.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "G-Force.FlowField.package/Get Smart",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Get Smart.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "G-Force.FlowField.package/Gevian Rage",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Gevian Rage.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "G-Force.FlowField.package/Glassfiber Realm",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Glassfiber Realm.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "G-Force.FlowField.package/Glassfiber Twist",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Glassfiber Twist.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "Gold/Beyond the Infinite",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Gold/Beyond the Infinite.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "Gold/Central Diffusion",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Gold/Central Diffusion.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "Gold/Cinnamon Roll",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Gold/Cinnamon Roll.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "Gold/Collapse and Turn",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Gold/Collapse and Turn.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "Gold/Contrail",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Gold/Contrail.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "Gold/Directed Spread",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Gold/Directed Spread.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "Gold/Directrix Expand - X",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Gold/Directrix Expand - X.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "Gold/Directrix Expand - Y",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Gold/Directrix Expand - Y.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "Gold/Directrix Expand II",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Gold/Directrix Expand II.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "Gold/Divine Feminine",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Gold/Divine Feminine.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "Gold/Donut",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Gold/Donut.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "Gold/Eclipse",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Gold/Eclipse.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "Gold/Equalateral Hyperbola",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Gold/Equalateral Hyperbola.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "Gold/Far Reaching",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Gold/Far Reaching.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "Gold/Gravity",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Gold/Gravity.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "Gold/Hyperbolic Dreams",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Gold/Hyperbolic Dreams.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "Gold/Noise Mosaic",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Gold/Noise Mosaic.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "Gold/Plasma Flow",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Gold/Plasma Flow.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "Gold/Sine Slide",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Gold/Sine Slide.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "Gold/Tan Turn",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Gold/Tan Turn.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "Gold/The Great Turning",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Gold/The Great Turning.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "Gold/Theta Divergence",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Gold/Theta Divergence.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "Gold/alan1",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Gold/alan1.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "G-Force.FlowField.package/Gravity Ball",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Gravity Ball.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "G-Force.FlowField.package/Great Minds",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Great Minds.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "HAL/Crop Circle",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/HAL/Crop Circle.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "HAL/Crop Spiral",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/HAL/Crop Spiral.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "HAL/Dynamic",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/HAL/Dynamic.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "HAL/Julia Seahorse",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/HAL/Julia Seahorse.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "HAL/LDZ-04+131",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/HAL/LDZ-04+131.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "HAL/Paint Spinner",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/HAL/Paint Spinner.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "HAL/Puddle Pie",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/HAL/Puddle Pie.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "HAL/R Chaos 2",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/HAL/R Chaos 2.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "HAL/Sublime",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/HAL/Sublime.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "HAL/Waves Of Grain",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/HAL/Waves Of Grain.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "HAL/Weierstrauss Spread",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/HAL/Weierstrauss Spread.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "G-Force.FlowField.package/HS101 Mess",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/HS101 Mess.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "G-Force.FlowField.package/Hip-no-Therapy",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Hip-no-Therapy.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "G-Force.FlowField.package/In Or Out, Inner Turn",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/In Or Out, Inner Turn.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "Jan Benz/Bizzare Star",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Jan Benz/Bizzare Star.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "Jan Benz/Bubble Tunnel",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Jan Benz/Bubble Tunnel.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "Jan Benz/Centrifugal",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Jan Benz/Centrifugal.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "Jan Benz/Crafty Spread",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Jan Benz/Crafty Spread.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "Jan Benz/Diamond Tiled Tunnel",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Jan Benz/Diamond Tiled Tunnel.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "Jan Benz/Diamonds",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Jan Benz/Diamonds.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "Jan Benz/Dual Spirals",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Jan Benz/Dual Spirals.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "Jan Benz/Evil Friends",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Jan Benz/Evil Friends.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "Jan Benz/Expand Your Mind",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Jan Benz/Expand Your Mind.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "Jan Benz/Frills",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Jan Benz/Frills.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "Jan Benz/I Love to Burn",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Jan Benz/I Love to Burn.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "Jan Benz/Journey Inward",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Jan Benz/Journey Inward.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "Jan Benz/Lake Placid",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Jan Benz/Lake Placid.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "Jan Benz/Organized Smoke",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Jan Benz/Organized Smoke.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "Jan Benz/Paranoia",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Jan Benz/Paranoia.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "Jan Benz/Quarters",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Jan Benz/Quarters.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "Jan Benz/Rite of Passage",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Jan Benz/Rite of Passage.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "Jan Benz/Sun Sine Ray",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Jan Benz/Sun Sine Ray.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "Jan Benz/Tetraminoes",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Jan Benz/Tetraminoes.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "Jan Benz/The Sun",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Jan Benz/The Sun.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "Jan Benz/Theta Collapse",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Jan Benz/Theta Collapse.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "Jan Benz/Waves",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Jan Benz/Waves.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "Jan Benz/Wavy Converge",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Jan Benz/Wavy Converge.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "Jan Benz/Wavy Diverge",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Jan Benz/Wavy Diverge.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "Jan Benz/Wide Eyed",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Jan Benz/Wide Eyed.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "G-Force.FlowField.package/Julia B",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Julia B.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "K0sMose/Behind Bars",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/K0sMose/Behind Bars.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "K0sMose/Bleedin",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/K0sMose/Bleedin.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "K0sMose/Cool S",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/K0sMose/Cool S.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "K0sMose/Galactic Spiral",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/K0sMose/Galactic Spiral.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "K0sMose/Melting With Style",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/K0sMose/Melting With Style.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "K0sMose/Shattered",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/K0sMose/Shattered.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "K0sMose/Watery Pipe",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/K0sMose/Watery Pipe.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "G-Force.FlowField.package/Lava Kava",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Lava Kava.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "G-Force.FlowField.package/Left Turn and Flow Out",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Left Turn and Flow Out.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "G-Force.FlowField.package/Lemming's Water",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Lemming's Water.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "G-Force.FlowField.package/Linear Spread",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Linear Spread.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "G-Force.FlowField.package/Lucretia",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Lucretia.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "G-Force.FlowField.package/Nexus-One",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Nexus-One.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "Nigel/Creds to Ted",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Nigel/Creds to Ted.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "Nigel/Gridwise",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Nigel/Gridwise.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "Nigel/Mind the Walls",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Nigel/Mind the Walls.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "Nigel/Sand",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Nigel/Sand.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "G-Force.FlowField.package/Noise",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Noise.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "G-Force.FlowField.package/Nowhere",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Nowhere.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "G-Force.FlowField.package/ONE",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/ONE.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "G-Force.FlowField.package/Once Upon A Time",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Once Upon A Time.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "G-Force.FlowField.package/Orchis",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Orchis.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "G-Force.FlowField.package/Out Of Control",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Out Of Control.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "G-Force.FlowField.package/Paint",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Paint.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "G-Force.FlowField.package/Phantom Flame",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Phantom Flame.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "G-Force.FlowField.package/Phantom Mist",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Phantom Mist.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "G-Force.FlowField.package/Physics Be Damned",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Physics Be Damned.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "G-Force.FlowField.package/PixelDream",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/PixelDream.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "G-Force.FlowField.package/Poinsetta",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Poinsetta.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "G-Force.FlowField.package/Portal",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Portal.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "G-Force.FlowField.package/Psilocybin Growth Formulae",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Psilocybin Growth Formulae.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "G-Force.FlowField.package/Psycho Disco Ball",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Psycho Disco Ball.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "G-Force.FlowField.package/Quadrophilia",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Quadrophilia.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "G-Force.FlowField.package/Quantum Ripple",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Quantum Ripple.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "G-Force.FlowField.package/Quantum Theta",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Quantum Theta.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "RE/Away from the Globe",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/RE/Away from the Globe.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "RE/Digital Staircase",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/RE/Digital Staircase.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "RE/Flamin",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/RE/Flamin.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "RE/Fountain",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/RE/Fountain.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "RE/Globe in the Middle",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/RE/Globe in the Middle.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "RE/Light Brush Strokes",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/RE/Light Brush Strokes.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "RE/Nebula",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/RE/Nebula.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "RE/Platforms of Heaven",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/RE/Platforms of Heaven.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "RE/Rolling Waves",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/RE/Rolling Waves.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "RE/Spider Web",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/RE/Spider Web.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "RE/Spiral",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/RE/Spiral.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "RE/That's Me",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/RE/That's Me.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "RE/Whirlpool",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/RE/Whirlpool.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "RG/CircleFlow",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/RG/CircleFlow.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "RG/Collection",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/RG/Collection.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "RG/Come Closer",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/RG/Come Closer.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "RG/Detour",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/RG/Detour.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "RG/Distorted",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/RG/Distorted.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "RG/Holodeck",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/RG/Holodeck.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "RG/In Motion",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/RG/In Motion.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "RG/Sharp",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/RG/Sharp.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "RG/Sitting Inside Looking Out",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/RG/Sitting Inside Looking Out.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "RG/Smart",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/RG/Smart.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "RG/Than Lonely Together",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/RG/Than Lonely Together.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "RG/The Force",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/RG/The Force.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "RG/Virgo",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/RG/Virgo.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "RG/Wish You Where Here",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/RG/Wish You Where Here.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "G-Force.FlowField.package/Radial Breakaway",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Radial Breakaway.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "G-Force.FlowField.package/Radial Madness",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Radial Madness.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "Roger Bigod/Checkerboard",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Roger Bigod/Checkerboard.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "Roger Bigod/Cube Grid",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Roger Bigod/Cube Grid.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "Roger Bigod/Cube Wallpaper",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Roger Bigod/Cube Wallpaper.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "Roger Bigod/Cubes",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Roger Bigod/Cubes.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "Roger Bigod/Cylinder Grid",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Roger Bigod/Cylinder Grid.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "Roger Bigod/Cylinder",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Roger Bigod/Cylinder.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "Roger Bigod/Dome",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Roger Bigod/Dome.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "Roger Bigod/HexFade",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Roger Bigod/HexFade.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "Roger Bigod/HexTilt",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Roger Bigod/HexTilt.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "Roger Bigod/Layers",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Roger Bigod/Layers.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "Roger Bigod/Sphere Grid",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Roger Bigod/Sphere Grid.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "Roger Bigod/Sphere Panes",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Roger Bigod/Sphere Panes.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "Roger Bigod/Sphere Turn",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Roger Bigod/Sphere Turn.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "Roger Bigod/Sphere Wall",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Roger Bigod/Sphere Wall.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "Roger Bigod/Stereographic",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Roger Bigod/Stereographic.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "Roger Bigod/TriFlow",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Roger Bigod/TriFlow.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "Roger Bigod/TriGrid",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Roger Bigod/TriGrid.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "Roger Bigod/TriLayers",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Roger Bigod/TriLayers.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "Roger Bigod/Triangles",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Roger Bigod/Triangles.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "Roger Bigod/Wallpaper 333",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Roger Bigod/Wallpaper 333.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "Roger Bigod/Wallpaper 442",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Roger Bigod/Wallpaper 442.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "Roger Bigod/Wallpaper 632",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Roger Bigod/Wallpaper 632.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "G-Force.FlowField.package/Rotating Blob",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Rotating Blob.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "G-Force.FlowField.package/Rotating Sun",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Rotating Sun.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "Rovastar/Altars Of Madness (Despair Flower Mix)",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Rovastar/Altars Of Madness (Despair Flower Mix).txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "Rovastar/Altars Of Madness (Simple Flower Mix)",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Rovastar/Altars Of Madness (Simple Flower Mix).txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "Rovastar/Altars Of Madness (Snowflake Mix)",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Rovastar/Altars Of Madness (Snowflake Mix).txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "Rovastar/Altars Of Madness (Swirling Divas Mix)",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Rovastar/Altars Of Madness (Swirling Divas Mix).txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "Rovastar/Cosmic Mosaic (Offset Mix)",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Rovastar/Cosmic Mosaic (Offset Mix).txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "Rovastar/Cosmic Mosaic",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Rovastar/Cosmic Mosaic.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "Rovastar/Creeping Death",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Rovastar/Creeping Death.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "Rovastar/CubeGrid (Lego Mix)",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Rovastar/CubeGrid (Lego Mix).txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "Rovastar/Cultural Starburst",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Rovastar/Cultural Starburst.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "Rovastar/Everflow Flower",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Rovastar/Everflow Flower.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "Rovastar/Evergrowing Wall (Halostar Mix)",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Rovastar/Evergrowing Wall (Halostar Mix).txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "Rovastar/Fragment Star",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Rovastar/Fragment Star.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "Rovastar/Halostar (Morph Mix)",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Rovastar/Halostar (Morph Mix).txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "Rovastar/Halostar (Mosaic History Mix)",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Rovastar/Halostar (Mosaic History Mix).txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "Rovastar/Halostar",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Rovastar/Halostar.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "Rovastar/Hope Shield",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Rovastar/Hope Shield.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "Rovastar/Intensive Fractals",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Rovastar/Intensive Fractals.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "Rovastar/More Frontal Lobes (16 Brains Mix)",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Rovastar/More Frontal Lobes (16 Brains Mix).txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "Rovastar/More Frontal Lobes (Multi Lobe Mix)",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Rovastar/More Frontal Lobes (Multi Lobe Mix).txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "Rovastar/More Frontal Lobes",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Rovastar/More Frontal Lobes.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "Rovastar/Mosaic History (Aztec Mix)",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Rovastar/Mosaic History (Aztec Mix).txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "Rovastar/Mosaic History (Lunatic Mix)",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Rovastar/Mosaic History (Lunatic Mix).txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "Rovastar/Mosaic History (Pre-historic Mix)",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Rovastar/Mosaic History (Pre-historic Mix).txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "Rovastar/Mosaic History",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Rovastar/Mosaic History.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "Rovastar/Mystical Cybernatica",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Rovastar/Mystical Cybernatica.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "Rovastar/Patchwork Candy (Surround Mix)",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Rovastar/Patchwork Candy (Surround Mix).txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "Rovastar/Patchwork Candy",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Rovastar/Patchwork Candy.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "Rovastar/Power Of Pi (Kaleidoscope Mix)",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Rovastar/Power Of Pi (Kaleidoscope Mix).txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "Rovastar/Quattro Panel",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Rovastar/Quattro Panel.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "Rovastar/Snowflake Squares (Circle Mix)",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Rovastar/Snowflake Squares (Circle Mix).txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "Rovastar/Unholy Ritual (Temple Mix)",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Rovastar/Unholy Ritual (Temple Mix).txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "Rovastar/Viral Infection (More Madness Mix)",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Rovastar/Viral Infection (More Madness Mix).txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "Rovastar/Viral Rose",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Rovastar/Viral Rose.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "G-Force.FlowField.package/SOLs Perspective",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/SOLs Perspective.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "G-Force.FlowField.package/SOLs Point and Hang",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/SOLs Point and Hang.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "G-Force.FlowField.package/SOLs Tinsle",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/SOLs Tinsle.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "G-Force.FlowField.package/Sandstorm",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Sandstorm.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "G-Force.FlowField.package/Scatter Burst",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Scatter Burst.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "G-Force.FlowField.package/Scattered Flow In",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Scattered Flow In.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "G-Force.FlowField.package/Scattered Flow Out",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Scattered Flow Out.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "G-Force.FlowField.package/Scattered Sunburst",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Scattered Sunburst.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "G-Force.FlowField.package/See Spot",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/See Spot.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "G-Force.FlowField.package/Serendipity",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Serendipity.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "G-Force.FlowField.package/Simple Sine - Sphere",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Simple Sine - Sphere.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "G-Force.FlowField.package/Sincos",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Sincos.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "G-Force.FlowField.package/Six Feet Under",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Six Feet Under.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "G-Force.FlowField.package/Smoke in the Mist",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Smoke in the Mist.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "G-Force.FlowField.package/Sparkle and Fade",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Sparkle and Fade.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "G-Force.FlowField.package/Sphere",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Sphere.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "G-Force.FlowField.package/St Elmo's Fire",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/St Elmo's Fire.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "G-Force.FlowField.package/Star of David",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Star of David.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "G-Force.FlowField.package/Star",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Star.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "G-Force.FlowField.package/Strangeitude",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Strangeitude.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "G-Force.FlowField.package/Sunburst",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Sunburst.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "G-Force.FlowField.package/Sunscape",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Sunscape.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "G-Force.FlowField.package/Swirly",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Swirly.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "Ted/Carnation",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Ted/Carnation.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "Ted/Chrysanthemum",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Ted/Chrysanthemum.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "Ted/Curls",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Ted/Curls.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "Ted/Feathery",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Ted/Feathery.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "Ted/Frosted",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Ted/Frosted.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "Ted/Glass Blocks",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Ted/Glass Blocks.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "Ted/Honeycomb Alpha",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Ted/Honeycomb Alpha.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "Ted/Hubcap",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Ted/Hubcap.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "Ted/Hurry Up and Wait",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Ted/Hurry Up and Wait.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "Ted/Hyperbia",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Ted/Hyperbia.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "Ted/Inca Turtles",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Ted/Inca Turtles.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "Ted/Interlock",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Ted/Interlock.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "Ted/Mitosis",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Ted/Mitosis.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "Ted/My Lost Marbles",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Ted/My Lost Marbles.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "Ted/Nautilus",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Ted/Nautilus.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "Ted/Polar Tiles",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Ted/Polar Tiles.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "Ted/Polygon",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Ted/Polygon.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "Ted/Spiral Shoals",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Ted/Spiral Shoals.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "Ted/Spiraling",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Ted/Spiraling.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "Ted/Split and Twist",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Ted/Split and Twist.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "Ted/Star Glass",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Ted/Star Glass.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "Ted/Tan Turn - Polar",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Ted/Tan Turn - Polar.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "Ted/Turbulence",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Ted/Turbulence.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "Ted/Twisted Tiles",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Ted/Twisted Tiles.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "Ted/Vaguely Chinese",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Ted/Vaguely Chinese.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "Ted/Walking Tiles Rotate",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Ted/Walking Tiles Rotate.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "G-Force.FlowField.package/The MAW",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/The MAW.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "G-Force.FlowField.package/Thick River",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Thick River.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "G-Force.FlowField.package/Time Portal",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Time Portal.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "G-Force.FlowField.package/Traffic Flow",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Traffic Flow.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "G-Force.FlowField.package/Transverse Ambit",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Transverse Ambit.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "G-Force.FlowField.package/Tripping Hard",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Tripping Hard.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "G-Force.FlowField.package/Tropic Of Capricorn",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Tropic Of Capricorn.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "G-Force.FlowField.package/Tunnel Vision",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Tunnel Vision.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "G-Force.FlowField.package/Twister",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Twister.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "G-Force.FlowField.package/UFO",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/UFO.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "G-Force.FlowField.package/Uber Concert",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Uber Concert.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "G-Force.FlowField.package/Uber Focus",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Uber Focus.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "G-Force.FlowField.package/Uber Incognito",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Uber Incognito.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "G-Force.FlowField.package/UnFocused",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/UnFocused.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "G-Force.FlowField.package/Vaporize",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Vaporize.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "G-Force.FlowField.package/Warpo Tunnel",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Warpo Tunnel.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "G-Force.FlowField.package/Waterfall of Life",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Waterfall of Life.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "G-Force.FlowField.package/Watery Ripples",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Watery Ripples.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "G-Force.FlowField.package/Whirlpool in the Waves",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Whirlpool in the Waves.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "G-Force.FlowField.package/Whoo-Whoo!!",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Whoo-Whoo!!.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "G-Force.FlowField.package/Wormhole",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Wormhole.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "G-Force.FlowField.package/Wrap Your Brain Around This",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Wrap Your Brain Around This.txt",
+      "type": "flowfield"
+    },
+    {
+      "name": "G-Force.FlowField.package/Yes",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.FlowField.package/Yes.txt",
+      "type": "flowfield"
+    }
+  ],
+  "waveshapes": [
+    {
+      "name": "(None)",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/(None).txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Abschied, Nadia",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/Abschied, Nadia.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Arena",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/Arena.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Bass Bars",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/Bass Bars.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Bat Signal",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/Bat Signal.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Boom Barrel",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/Boom Barrel.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Championship",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/Championship.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Clock",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/Clock.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Clovers",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/Clovers.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Colliding Sticks",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/Colliding Sticks.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Critters",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/Critters.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "CrossBall",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/CrossBall.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Cutters",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/Cutters.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Cylinder",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/Cylinder.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "DT/Bass Circle",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/DT/Bass Circle.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "DT/Border Thunder",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/DT/Border Thunder.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "DT/Circle",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/DT/Circle.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "DT/Sine",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/DT/Sine.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "DT/SineDot",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/DT/SineDot.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "DT/Spectrum",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/DT/Spectrum.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "DT/Wild",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/DT/Wild.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Dan's Furathama",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/Dan's Furathama.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Dancing Curls",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/Dancing Curls.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Darren/Doublehelix",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/Darren/Doublehelix.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Darren/Quadhelix",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/Darren/Quadhelix.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Darren/Stairway",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/Darren/Stairway.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Dense Spiral",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/Dense Spiral.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Ellipses",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/Ellipses.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Example Spectrum",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/Example Spectrum.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Father and Daughters",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/Father and Daughters.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Flower Power - Erie Atom",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/Flower Power - Erie Atom.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Flower Power - Spinner",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/Flower Power - Spinner.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Flower of Life",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/Flower of Life.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Generator",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/Generator.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Genesis Device",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/Genesis Device.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Gold/A New Hope",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/Gold/A New Hope.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Gold/Align",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/Gold/Align.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Gold/Beat Bounce",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/Gold/Beat Bounce.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Gold/Big and Banded",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/Gold/Big and Banded.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Gold/Box Beat",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/Gold/Box Beat.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Gold/Caterpillar",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/Gold/Caterpillar.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Gold/Circle Dance",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/Gold/Circle Dance.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Gold/Circle of Three",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/Gold/Circle of Three.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Gold/Circular Union (Fire)",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/Gold/Circular Union (Fire).txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Gold/Circular Union (Power)",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/Gold/Circular Union (Power).txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Gold/Curve Into You",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/Gold/Curve Into You.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Gold/DNA",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/Gold/DNA.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Gold/Edgy Circle",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/Gold/Edgy Circle.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Gold/God is a Circle",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/Gold/God is a Circle.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Gold/Helix",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/Gold/Helix.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Gold/Hexashift",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/Gold/Hexashift.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Gold/Hollow Horizontal",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/Gold/Hollow Horizontal.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Gold/I Declare",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/Gold/I Declare.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Gold/Interlocking Scope",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/Gold/Interlocking Scope.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Gold/Mavelick Salute",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/Gold/Mavelick Salute.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Gold/N-Cycle",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/Gold/N-Cycle.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Gold/Nexus 7",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/Gold/Nexus 7.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Gold/Null",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/Gold/Null.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Gold/Predator Vision",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/Gold/Predator Vision.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Gold/Pulsesphere",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/Gold/Pulsesphere.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Gold/Rays of Light (JLG Remix)",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/Gold/Rays of Light (JLG Remix).txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Gold/Ripples",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/Gold/Ripples.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Gold/Solenoid",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/Gold/Solenoid.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Gold/Spectroglobe",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/Gold/Spectroglobe.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Gold/Spectrum 55",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/Gold/Spectrum 55.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Gold/Spirograph",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/Gold/Spirograph.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Gold/Through the Mist",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/Gold/Through the Mist.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Gold/Travel Without Moving",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/Gold/Travel Without Moving.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Gold/Tri-Horizontal",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/Gold/Tri-Horizontal.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Gold/Twin Falls",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/Gold/Twin Falls.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Gold/Universe-Sized",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/Gold/Universe-Sized.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Gold/Vertical Simplicity II",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/Gold/Vertical Simplicity II.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Gold/Vertical Simplicity",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/Gold/Vertical Simplicity.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Gold/Vesica Vibrations",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/Gold/Vesica Vibrations.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Gold/Vinyl Spectroscope",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/Gold/Vinyl Spectroscope.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Gold/Workaholic",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/Gold/Workaholic.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Gold/Wright Consciousness",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/Gold/Wright Consciousness.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Heart of the Beast",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/Heart of the Beast.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Hollow Circle",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/Hollow Circle.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Horizontal Corridor",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/Horizontal Corridor.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Horzonal Sweep",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/Horzonal Sweep.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Hourglass",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/Hourglass.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Interlace",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/Interlace.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "JRM/Adapter",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/JRM/Adapter.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "JRM/Audio Orbs",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/JRM/Audio Orbs.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "JRM/Bearings",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/JRM/Bearings.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "JRM/Block",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/JRM/Block.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "JRM/Carrier",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/JRM/Carrier.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "JRM/Dendrite",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/JRM/Dendrite.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "JRM/Dodecahedron",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/JRM/Dodecahedron.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "JRM/Flakes",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/JRM/Flakes.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "JRM/Four Eighths",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/JRM/Four Eighths.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "JRM/Gears",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/JRM/Gears.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "JRM/GeoWarp",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/JRM/GeoWarp.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "JRM/Good Vibrations",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/JRM/Good Vibrations.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "JRM/Ice Qubes",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/JRM/Ice Qubes.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "JRM/Jacob's Ladder",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/JRM/Jacob's Ladder.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "JRM/Shattered",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/JRM/Shattered.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "JRM/Slither",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/JRM/Slither.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "JRM/SpectroCapacity",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/JRM/SpectroCapacity.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "JRM/Spring Ball",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/JRM/Spring Ball.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "JRM/Step Sine",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/JRM/Step Sine.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "JRM/Toroid",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/JRM/Toroid.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "JRM/Triskele",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/JRM/Triskele.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "JRM/Vane",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/JRM/Vane.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Junkie",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/Junkie.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "K0sMose/Atom",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/K0sMose/Atom.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "K0sMose/Barreled",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/K0sMose/Barreled.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "K0sMose/Clockwork",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/K0sMose/Clockwork.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "K0sMose/Dance Of The Lily Pads",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/K0sMose/Dance Of The Lily Pads.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "K0sMose/Hypnobloom",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/K0sMose/Hypnobloom.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "K0sMose/Kana Kone",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/K0sMose/Kana Kone.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "K0sMose/Mandala - Clubs",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/K0sMose/Mandala - Clubs.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "K0sMose/Naka Geki",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/K0sMose/Naka Geki.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "K0sMose/Planetary",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/K0sMose/Planetary.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "K0sMose/Sake Aron",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/K0sMose/Sake Aron.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "K0sMose/Sakura",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/K0sMose/Sakura.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "K0sMose/Seamless",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/K0sMose/Seamless.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "K0sMose/Sensei",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/K0sMose/Sensei.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "K0sMose/Shape Sweep",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/K0sMose/Shape Sweep.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "K0sMose/Sling Star",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/K0sMose/Sling Star.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "K0sMose/Slipstreamer II",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/K0sMose/Slipstreamer II.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "K0sMose/Solid Star",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/K0sMose/Solid Star.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "K0sMose/Sparkles",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/K0sMose/Sparkles.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "K0sMose/Spectra Circle",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/K0sMose/Spectra Circle.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "K0sMose/Spectral Disc",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/K0sMose/Spectral Disc.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "K0sMose/Sunflower Particles",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/K0sMose/Sunflower Particles.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "K0sMose/Throned",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/K0sMose/Throned.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "K0sMose/Twisted Sunshine",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/K0sMose/Twisted Sunshine.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "K0sMose/Twisted Tornado",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/K0sMose/Twisted Tornado.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "K0sMose/Z!",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/K0sMose/Z!.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Kaleidoscope",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/Kaleidoscope.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Lifeshift",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/Lifeshift.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Lightning Strikes",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/Lightning Strikes.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "MCP",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/MCP.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Magnum",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/Magnum.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Meet the Zipperheads",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/Meet the Zipperheads.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Melt O Rama",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/Melt O Rama.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Mother and Daughters",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/Mother and Daughters.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Moving",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/Moving.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "NPTU Squared",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/NPTU Squared.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Parkening Power",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/Parkening Power.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Quad-Circle",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/Quad-Circle.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Radar Sweep",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/Radar Sweep.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Random Corridor",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/Random Corridor.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Resonate",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/Resonate.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Revolve",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/Revolve.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Rhythm is Deified",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/Rhythm is Deified.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Rotating Arcs",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/Rotating Arcs.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Rotating Bars",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/Rotating Bars.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Rotating Corridor",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/Rotating Corridor.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Rotating Pulsating Oval",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/Rotating Pulsating Oval.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Rotating X",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/Rotating X.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "SOLs Vinyl",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/SOLs Vinyl.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Short on Gold",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/Short on Gold.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Simon Says",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/Simon Says.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Simple Horizontal",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/Simple Horizontal.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Simple Vertical",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/Simple Vertical.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Sing Me to Sleep",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/Sing Me to Sleep.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Snake Pit",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/Snake Pit.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Spectagon",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/Spectagon.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Spectrometer Bar",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/Spectrometer Bar.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Spectrum 55 (Radial)",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/Spectrum 55 (Radial).txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Spin Doctor II",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/Spin Doctor II.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Spin Doctor",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/Spin Doctor.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Spin Grow",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/Spin Grow.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "SpinIt",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/SpinIt.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Splashy Scope",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/Splashy Scope.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Spyroid",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/Spyroid.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Ted/Box Spectrogram",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/Ted/Box Spectrogram.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Ted/Boxed In",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/Ted/Boxed In.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Ted/Chi",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/Ted/Chi.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Ted/Corona",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/Ted/Corona.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Ted/Cylinder Crown",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/Ted/Cylinder Crown.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Ted/Grapefruit",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/Ted/Grapefruit.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Ted/Inner Spikes",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/Ted/Inner Spikes.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Ted/Morphagon",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/Ted/Morphagon.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Ted/Orbiting Stars",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/Ted/Orbiting Stars.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Ted/Outer Spikes",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/Ted/Outer Spikes.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Ted/Pinwheel",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/Ted/Pinwheel.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Ted/Psychloids",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/Ted/Psychloids.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Ted/Rosette",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/Ted/Rosette.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Ted/Sci-Fi Expander",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/Ted/Sci-Fi Expander.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Ted/Shivering Weave",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/Ted/Shivering Weave.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Ted/Simple Sine",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/Ted/Simple Sine.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Ted/Tension I",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/Ted/Tension I.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Ted/Tension II",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/Ted/Tension II.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Ted/Twizzler",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/Ted/Twizzler.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Ted/Walls of Sound",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/Ted/Walls of Sound.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "The Eye",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/The Eye.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "The Juggler",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/The Juggler.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "The Road More Traveled",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/The Road More Traveled.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Three Dance",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/Three Dance.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Three's A Crowd",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/Three's A Crowd.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Thunderation",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/Thunderation.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Tri-Cycle",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/Tri-Cycle.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Tri-Vertical",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/Tri-Vertical.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Uber Aurora",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/Uber Aurora.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Uber Disco Lights (Dual)",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/Uber Disco Lights (Dual).txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Uber Disco Lights",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/Uber Disco Lights.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Up Like A Cup",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/Up Like A Cup.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Vertical Corridor",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/Vertical Corridor.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Voice Print",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/Voice Print.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Wave",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/Wave.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Wind Mill",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/Wind Mill.txt",
+      "type": "waveshape"
+    },
+    {
+      "name": "Zoomed Square",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/WaveShapes/Zoomed Square.txt",
+      "type": "waveshape"
+    }
+  ],
+  "particles": [
+    {
+      "name": "Airport",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/Particles/Airport.txt",
+      "type": "particle"
+    },
+    {
+      "name": "Attack",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/Particles/Attack.txt",
+      "type": "particle"
+    },
+    {
+      "name": "Attitude",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/Particles/Attitude.txt",
+      "type": "particle"
+    },
+    {
+      "name": "Blades",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/Particles/Blades.txt",
+      "type": "particle"
+    },
+    {
+      "name": "Box Spectrogram - Radial",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/Particles/Box Spectrogram - Radial.txt",
+      "type": "particle"
+    },
+    {
+      "name": "Bunch",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/Particles/Bunch.txt",
+      "type": "particle"
+    },
+    {
+      "name": "Centipede",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/Particles/Centipede.txt",
+      "type": "particle"
+    },
+    {
+      "name": "CircWarp",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/Particles/CircWarp.txt",
+      "type": "particle"
+    },
+    {
+      "name": "Converge - Circle",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/Particles/Converge - Circle.txt",
+      "type": "particle"
+    },
+    {
+      "name": "Converge II",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/Particles/Converge II.txt",
+      "type": "particle"
+    },
+    {
+      "name": "Converge",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/Particles/Converge.txt",
+      "type": "particle"
+    },
+    {
+      "name": "Cotillion",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/Particles/Cotillion.txt",
+      "type": "particle"
+    },
+    {
+      "name": "Cross",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/Particles/Cross.txt",
+      "type": "particle"
+    },
+    {
+      "name": "Crosshairs",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/Particles/Crosshairs.txt",
+      "type": "particle"
+    },
+    {
+      "name": "DNA String",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/Particles/DNA String.txt",
+      "type": "particle"
+    },
+    {
+      "name": "DT/Bhujangasana",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/Particles/DT/Bhujangasana.txt",
+      "type": "particle"
+    },
+    {
+      "name": "DT/Birds",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/Particles/DT/Birds.txt",
+      "type": "particle"
+    },
+    {
+      "name": "DT/Galaxy",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/Particles/DT/Galaxy.txt",
+      "type": "particle"
+    },
+    {
+      "name": "DT/Mysko",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/Particles/DT/Mysko.txt",
+      "type": "particle"
+    },
+    {
+      "name": "DT/ZoomPlanet",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/Particles/DT/ZoomPlanet.txt",
+      "type": "particle"
+    },
+    {
+      "name": "Dense Spiral II",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/Particles/Dense Spiral II.txt",
+      "type": "particle"
+    },
+    {
+      "name": "Dot Grid",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/Particles/Dot Grid.txt",
+      "type": "particle"
+    },
+    {
+      "name": "Engage",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/Particles/Engage.txt",
+      "type": "particle"
+    },
+    {
+      "name": "Explosion",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/Particles/Explosion.txt",
+      "type": "particle"
+    },
+    {
+      "name": "Flower Power",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/Particles/Flower Power.txt",
+      "type": "particle"
+    },
+    {
+      "name": "Flying Bassheadz",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/Particles/Flying Bassheadz.txt",
+      "type": "particle"
+    },
+    {
+      "name": "Gold/2001",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/Particles/Gold/2001.txt",
+      "type": "particle"
+    },
+    {
+      "name": "Gold/Axle",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/Particles/Gold/Axle.txt",
+      "type": "particle"
+    },
+    {
+      "name": "Gold/Curvature",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/Particles/Gold/Curvature.txt",
+      "type": "particle"
+    },
+    {
+      "name": "Gold/Falling Orbs III",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/Particles/Gold/Falling Orbs III.txt",
+      "type": "particle"
+    },
+    {
+      "name": "Gold/Frame Fall",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/Particles/Gold/Frame Fall.txt",
+      "type": "particle"
+    },
+    {
+      "name": "Gold/Helopad",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/Particles/Gold/Helopad.txt",
+      "type": "particle"
+    },
+    {
+      "name": "Gold/Lattice",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/Particles/Gold/Lattice.txt",
+      "type": "particle"
+    },
+    {
+      "name": "Gold/Lunar Landing",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/Particles/Gold/Lunar Landing.txt",
+      "type": "particle"
+    },
+    {
+      "name": "Gold/Now Playing",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/Particles/Gold/Now Playing.txt",
+      "type": "particle"
+    },
+    {
+      "name": "Gold/One Moon Circling",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/Particles/Gold/One Moon Circling.txt",
+      "type": "particle"
+    },
+    {
+      "name": "Gold/Pillar Walk",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/Particles/Gold/Pillar Walk.txt",
+      "type": "particle"
+    },
+    {
+      "name": "Gold/Prophesy",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/Particles/Gold/Prophesy.txt",
+      "type": "particle"
+    },
+    {
+      "name": "Gold/Radar Sweep",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/Particles/Gold/Radar Sweep.txt",
+      "type": "particle"
+    },
+    {
+      "name": "Gold/Raining Oscilliscopes",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/Particles/Gold/Raining Oscilliscopes.txt",
+      "type": "particle"
+    },
+    {
+      "name": "Gold/Rays of Light",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/Particles/Gold/Rays of Light.txt",
+      "type": "particle"
+    },
+    {
+      "name": "Gold/Ring",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/Particles/Gold/Ring.txt",
+      "type": "particle"
+    },
+    {
+      "name": "Gold/Sectors",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/Particles/Gold/Sectors.txt",
+      "type": "particle"
+    },
+    {
+      "name": "Gold/Self Destruct",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/Particles/Gold/Self Destruct.txt",
+      "type": "particle"
+    },
+    {
+      "name": "Gold/Sparks",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/Particles/Gold/Sparks.txt",
+      "type": "particle"
+    },
+    {
+      "name": "Gold/Spin Me",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/Particles/Gold/Spin Me.txt",
+      "type": "particle"
+    },
+    {
+      "name": "Gold/Spinners II",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/Particles/Gold/Spinners II.txt",
+      "type": "particle"
+    },
+    {
+      "name": "Gold/Storm Beat",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/Particles/Gold/Storm Beat.txt",
+      "type": "particle"
+    },
+    {
+      "name": "Gold/Tango Particles",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/Particles/Gold/Tango Particles.txt",
+      "type": "particle"
+    },
+    {
+      "name": "Gold/Two Worlds",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/Particles/Gold/Two Worlds.txt",
+      "type": "particle"
+    },
+    {
+      "name": "Gold/Warp Me Away",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/Particles/Gold/Warp Me Away.txt",
+      "type": "particle"
+    },
+    {
+      "name": "JRM/Divisions",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/Particles/JRM/Divisions.txt",
+      "type": "particle"
+    },
+    {
+      "name": "JRM/Dots",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/Particles/JRM/Dots.txt",
+      "type": "particle"
+    },
+    {
+      "name": "JRM/Laurel",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/Particles/JRM/Laurel.txt",
+      "type": "particle"
+    },
+    {
+      "name": "JRM/PatchWork",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/Particles/JRM/PatchWork.txt",
+      "type": "particle"
+    },
+    {
+      "name": "JRM/Punch Card",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/Particles/JRM/Punch Card.txt",
+      "type": "particle"
+    },
+    {
+      "name": "JRM/Rex",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/Particles/JRM/Rex.txt",
+      "type": "particle"
+    },
+    {
+      "name": "JRM/Saturn",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/Particles/JRM/Saturn.txt",
+      "type": "particle"
+    },
+    {
+      "name": "JRM/Shifting Squares",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/Particles/JRM/Shifting Squares.txt",
+      "type": "particle"
+    },
+    {
+      "name": "JRM/Step Sine Particles",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/Particles/JRM/Step Sine Particles.txt",
+      "type": "particle"
+    },
+    {
+      "name": "JRM/Tossed Solids",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/Particles/JRM/Tossed Solids.txt",
+      "type": "particle"
+    },
+    {
+      "name": "JRM/Yellow Brick Road",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/Particles/JRM/Yellow Brick Road.txt",
+      "type": "particle"
+    },
+    {
+      "name": "K0sMose/Hexa",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/Particles/K0sMose/Hexa.txt",
+      "type": "particle"
+    },
+    {
+      "name": "K0sMose/Peacock",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/Particles/K0sMose/Peacock.txt",
+      "type": "particle"
+    },
+    {
+      "name": "Lizy's Starry Night",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/Particles/Lizy's Starry Night.txt",
+      "type": "particle"
+    },
+    {
+      "name": "Meteors",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/Particles/Meteors.txt",
+      "type": "particle"
+    },
+    {
+      "name": "Moon and Sun",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/Particles/Moon and Sun.txt",
+      "type": "particle"
+    },
+    {
+      "name": "Orbiting Rods - N Sticks",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/Particles/Orbiting Rods - N Sticks.txt",
+      "type": "particle"
+    },
+    {
+      "name": "Orbiting Rods",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/Particles/Orbiting Rods.txt",
+      "type": "particle"
+    },
+    {
+      "name": "Pair",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/Particles/Pair.txt",
+      "type": "particle"
+    },
+    {
+      "name": "Pearl",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/Particles/Pearl.txt",
+      "type": "particle"
+    },
+    {
+      "name": "Planets Align",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/Particles/Planets Align.txt",
+      "type": "particle"
+    },
+    {
+      "name": "Pollock Dots",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/Particles/Pollock Dots.txt",
+      "type": "particle"
+    },
+    {
+      "name": "Pop Circles",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/Particles/Pop Circles.txt",
+      "type": "particle"
+    },
+    {
+      "name": "Protozoan Lovers",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/Particles/Protozoan Lovers.txt",
+      "type": "particle"
+    },
+    {
+      "name": "Pulsing Oval",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/Particles/Pulsing Oval.txt",
+      "type": "particle"
+    },
+    {
+      "name": "Pyramidion Particle",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/Particles/Pyramidion Particle.txt",
+      "type": "particle"
+    },
+    {
+      "name": "Qvark",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/Particles/Qvark.txt",
+      "type": "particle"
+    },
+    {
+      "name": "Raindrops",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/Particles/Raindrops.txt",
+      "type": "particle"
+    },
+    {
+      "name": "Rippling Spiral",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/Particles/Rippling Spiral.txt",
+      "type": "particle"
+    },
+    {
+      "name": "Robox",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/Particles/Robox.txt",
+      "type": "particle"
+    },
+    {
+      "name": "Sea Surface",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/Particles/Sea Surface.txt",
+      "type": "particle"
+    },
+    {
+      "name": "Sine",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/Particles/Sine.txt",
+      "type": "particle"
+    },
+    {
+      "name": "Snake",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/Particles/Snake.txt",
+      "type": "particle"
+    },
+    {
+      "name": "Snakes",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/Particles/Snakes.txt",
+      "type": "particle"
+    },
+    {
+      "name": "Solala",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/Particles/Solala.txt",
+      "type": "particle"
+    },
+    {
+      "name": "Sparkling Table Water",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/Particles/Sparkling Table Water.txt",
+      "type": "particle"
+    },
+    {
+      "name": "Spinners",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/Particles/Spinners.txt",
+      "type": "particle"
+    },
+    {
+      "name": "Spinning Cube",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/Particles/Spinning Cube.txt",
+      "type": "particle"
+    },
+    {
+      "name": "Spinning Plane",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/Particles/Spinning Plane.txt",
+      "type": "particle"
+    },
+    {
+      "name": "Spinning Tetra",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/Particles/Spinning Tetra.txt",
+      "type": "particle"
+    },
+    {
+      "name": "Spinning Tetraeder",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/Particles/Spinning Tetraeder.txt",
+      "type": "particle"
+    },
+    {
+      "name": "Spiral",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/Particles/Spiral.txt",
+      "type": "particle"
+    },
+    {
+      "name": "Splutterbug",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/Particles/Splutterbug.txt",
+      "type": "particle"
+    },
+    {
+      "name": "Sprinkles",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/Particles/Sprinkles.txt",
+      "type": "particle"
+    },
+    {
+      "name": "Square Wheel",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/Particles/Square Wheel.txt",
+      "type": "particle"
+    },
+    {
+      "name": "Starsweep",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/Particles/Starsweep.txt",
+      "type": "particle"
+    },
+    {
+      "name": "Ted/Crosshatch",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/Particles/Ted/Crosshatch.txt",
+      "type": "particle"
+    },
+    {
+      "name": "Ted/Drop and Scatter",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/Particles/Ted/Drop and Scatter.txt",
+      "type": "particle"
+    },
+    {
+      "name": "Ted/Fern",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/Particles/Ted/Fern.txt",
+      "type": "particle"
+    },
+    {
+      "name": "Ted/Fireflies",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/Particles/Ted/Fireflies.txt",
+      "type": "particle"
+    },
+    {
+      "name": "Ted/Flower Magnum",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/Particles/Ted/Flower Magnum.txt",
+      "type": "particle"
+    },
+    {
+      "name": "Ted/Hexed II",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/Particles/Ted/Hexed II.txt",
+      "type": "particle"
+    },
+    {
+      "name": "Ted/Hexed",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/Particles/Ted/Hexed.txt",
+      "type": "particle"
+    },
+    {
+      "name": "Ted/Juggler",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/Particles/Ted/Juggler.txt",
+      "type": "particle"
+    },
+    {
+      "name": "Ted/Quadrapinski",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/Particles/Ted/Quadrapinski.txt",
+      "type": "particle"
+    },
+    {
+      "name": "Ted/Rhythm Guppies",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/Particles/Ted/Rhythm Guppies.txt",
+      "type": "particle"
+    },
+    {
+      "name": "Ted/Sierpinski",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/Particles/Ted/Sierpinski.txt",
+      "type": "particle"
+    },
+    {
+      "name": "Ted/Sine Blend",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/Particles/Ted/Sine Blend.txt",
+      "type": "particle"
+    },
+    {
+      "name": "Ted/Spectra-Twist",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/Particles/Ted/Spectra-Twist.txt",
+      "type": "particle"
+    },
+    {
+      "name": "Ted/Square Dance",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/Particles/Ted/Square Dance.txt",
+      "type": "particle"
+    },
+    {
+      "name": "Ted/Trance Snap",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/Particles/Ted/Trance Snap.txt",
+      "type": "particle"
+    },
+    {
+      "name": "Tosser",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/Particles/Tosser.txt",
+      "type": "particle"
+    },
+    {
+      "name": "Tri-Cycling Dots",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/Particles/Tri-Cycling Dots.txt",
+      "type": "particle"
+    },
+    {
+      "name": "Triangle Warp",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/Particles/Triangle Warp.txt",
+      "type": "particle"
+    },
+    {
+      "name": "Typhoon",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/Particles/Typhoon.txt",
+      "type": "particle"
+    },
+    {
+      "name": "Uber Twin Snake",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/Particles/Uber Twin Snake.txt",
+      "type": "particle"
+    },
+    {
+      "name": "Waves",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/Particles/Waves.txt",
+      "type": "particle"
+    },
+    {
+      "name": "Yearmix Box",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.WaveShape.package/Particles/Yearmix Box.txt",
+      "type": "particle"
+    }
+  ],
+  "colormaps": [
+    {
+      "name": "G-Force.ColorMap.package/Acid Gap",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.ColorMap.package/Acid Gap.txt",
+      "type": "colormap"
+    },
+    {
+      "name": "G-Force.ColorMap.package/Bizarro-ColorWheel",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.ColorMap.package/Bizarro-ColorWheel.txt",
+      "type": "colormap"
+    },
+    {
+      "name": "G-Force.ColorMap.package/Candlelight Pilgrimage",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.ColorMap.package/Candlelight Pilgrimage.txt",
+      "type": "colormap"
+    },
+    {
+      "name": "G-Force.ColorMap.package/Clear Blue Water",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.ColorMap.package/Clear Blue Water.txt",
+      "type": "colormap"
+    },
+    {
+      "name": "G-Force.ColorMap.package/ColorWheel",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.ColorMap.package/ColorWheel.txt",
+      "type": "colormap"
+    },
+    {
+      "name": "DT/Metal",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.ColorMap.package/DT/Metal.txt",
+      "type": "colormap"
+    },
+    {
+      "name": "G-Force.ColorMap.package/Fall Of The House Of Usher",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.ColorMap.package/Fall Of The House Of Usher.txt",
+      "type": "colormap"
+    },
+    {
+      "name": "Gold/Acid Gap - Purity",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.ColorMap.package/Gold/Acid Gap - Purity.txt",
+      "type": "colormap"
+    },
+    {
+      "name": "Gold/Acid Gap - Sunshine",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.ColorMap.package/Gold/Acid Gap - Sunshine.txt",
+      "type": "colormap"
+    },
+    {
+      "name": "Gold/Charleston Nights",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.ColorMap.package/Gold/Charleston Nights.txt",
+      "type": "colormap"
+    },
+    {
+      "name": "Gold/CyanoChroma",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.ColorMap.package/Gold/CyanoChroma.txt",
+      "type": "colormap"
+    },
+    {
+      "name": "Gold/ElectroVista",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.ColorMap.package/Gold/ElectroVista.txt",
+      "type": "colormap"
+    },
+    {
+      "name": "Gold/Hero 3",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.ColorMap.package/Gold/Hero 3.txt",
+      "type": "colormap"
+    },
+    {
+      "name": "Gold/Jellyfish",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.ColorMap.package/Gold/Jellyfish.txt",
+      "type": "colormap"
+    },
+    {
+      "name": "Gold/Lust",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.ColorMap.package/Gold/Lust.txt",
+      "type": "colormap"
+    },
+    {
+      "name": "Gold/Muted Middle",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.ColorMap.package/Gold/Muted Middle.txt",
+      "type": "colormap"
+    },
+    {
+      "name": "Gold/Mystery Unveiled",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.ColorMap.package/Gold/Mystery Unveiled.txt",
+      "type": "colormap"
+    },
+    {
+      "name": "Gold/Return to Aqua",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.ColorMap.package/Gold/Return to Aqua.txt",
+      "type": "colormap"
+    },
+    {
+      "name": "Gold/Saturate Me",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.ColorMap.package/Gold/Saturate Me.txt",
+      "type": "colormap"
+    },
+    {
+      "name": "Gold/Strawberry Dreams",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.ColorMap.package/Gold/Strawberry Dreams.txt",
+      "type": "colormap"
+    },
+    {
+      "name": "Gold/Vivid",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.ColorMap.package/Gold/Vivid.txt",
+      "type": "colormap"
+    },
+    {
+      "name": "G-Force.ColorMap.package/Logistics",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.ColorMap.package/Logistics.txt",
+      "type": "colormap"
+    },
+    {
+      "name": "G-Force.ColorMap.package/Machina - Call To War",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.ColorMap.package/Machina - Call To War.txt",
+      "type": "colormap"
+    },
+    {
+      "name": "G-Force.ColorMap.package/Nice Acid Gap",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.ColorMap.package/Nice Acid Gap.txt",
+      "type": "colormap"
+    },
+    {
+      "name": "G-Force.ColorMap.package/Quick Silver - Ice",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.ColorMap.package/Quick Silver - Ice.txt",
+      "type": "colormap"
+    },
+    {
+      "name": "G-Force.ColorMap.package/Room With A Vista",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.ColorMap.package/Room With A Vista.txt",
+      "type": "colormap"
+    },
+    {
+      "name": "G-Force.ColorMap.package/Spectrologist's Assistant",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.ColorMap.package/Spectrologist's Assistant.txt",
+      "type": "colormap"
+    },
+    {
+      "name": "G-Force.ColorMap.package/Sunchemicals From A Bee",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.ColorMap.package/Sunchemicals From A Bee.txt",
+      "type": "colormap"
+    },
+    {
+      "name": "Ted/Book of Changes",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.ColorMap.package/Ted/Book of Changes.txt",
+      "type": "colormap"
+    },
+    {
+      "name": "Ted/Faberge",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.ColorMap.package/Ted/Faberge.txt",
+      "type": "colormap"
+    },
+    {
+      "name": "Ted/Heavenly Glow",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.ColorMap.package/Ted/Heavenly Glow.txt",
+      "type": "colormap"
+    },
+    {
+      "name": "Ted/Light and Airy",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.ColorMap.package/Ted/Light and Airy.txt",
+      "type": "colormap"
+    },
+    {
+      "name": "Ted/Neon II",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.ColorMap.package/Ted/Neon II.txt",
+      "type": "colormap"
+    },
+    {
+      "name": "Ted/RGB Sine Wheel",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.ColorMap.package/Ted/RGB Sine Wheel.txt",
+      "type": "colormap"
+    },
+    {
+      "name": "Ted/Tri-Chroma",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.ColorMap.package/Ted/Tri-Chroma.txt",
+      "type": "colormap"
+    },
+    {
+      "name": "Ted/Willy Wonka",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.ColorMap.package/Ted/Willy Wonka.txt",
+      "type": "colormap"
+    },
+    {
+      "name": "G-Force.ColorMap.package/Wades Constant Change",
+      "path": ".gforce_extract/com.soundspectrum.G-Force.support.pkg/payload_out/Application Support/SoundSpectrum/G-Force/Packages/G-Force.ColorMap.package/Wades Constant Change.txt",
+      "type": "colormap"
+    }
+  ]
+}
