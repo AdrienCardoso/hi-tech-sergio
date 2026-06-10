@@ -10,8 +10,6 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
   <script src="https://unpkg.com/butterchurn-presets@3.0.0-beta.4/dist/base.min.js"></script>
   <script src="https://unpkg.com/butterchurn-presets@3.0.0-beta.4/dist/extra.min.js"></script>
-  <script src="aeon/aeon-scenes-builtin.js?v=42"></script>
-  <script src="aeon/aeon-engine.js?v=42"></script>
 
   <style>
     :root {
@@ -46,31 +44,12 @@
       font-family: var(--font-mono);
     }
 
-    #canvas, #threeCanvas, #canvas2d, #milkdropCanvas, #aeonCanvas {
+    #canvas, #threeCanvas, #canvas2d, #milkdropCanvas {
       position: fixed; inset: 0;
       width: 100vw; height: 100vh;
       z-index: 1; display: block;
     }
-    #threeCanvas, #canvas2d, #milkdropCanvas, #aeonCanvas { display: none; }
-    #aeonPlaceholder {
-      position: fixed; inset: 0; z-index: 2;
-      display: none; align-items: center; justify-content: center;
-      flex-direction: column; gap: 10px;
-      background: rgba(0, 0, 0, 0.55);
-      pointer-events: none;
-      font-family: var(--font-sans);
-    }
-    #aeonPlaceholder .aeon-ph-brand {
-      font-family: var(--font-mono);
-      font-size: 11px; letter-spacing: 0.2em; color: var(--purple);
-    }
-    #aeonPlaceholder .aeon-ph-title {
-      font-size: 18px; font-weight: 600; color: var(--text);
-    }
-    #aeonPlaceholder .aeon-ph-sub, #aeonPlaceholder .aeon-ph-stat {
-      font-size: 12px; color: var(--text-muted);
-      font-family: var(--font-mono);
-    }
+    #threeCanvas, #canvas2d, #milkdropCanvas { display: none; }
     #canvas2d.hybrid-overlay {
       z-index: 2;
       pointer-events: none;
@@ -966,28 +945,83 @@
       }
     }
 
-    /* ── Loading overlay ── */
-    .loading-overlay {
-      position: absolute; inset: 0; background: var(--bg); z-index: 99;
-      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 20px;
-      transition: opacity 0.8s, visibility 0.8s;
+    /* ── Intro splash ── */
+    .intro-overlay {
+      position: fixed; inset: 0; z-index: 99;
+      background: #000; overflow: hidden;
+      transition: opacity 0.85s ease, visibility 0.85s ease;
     }
-    .loading-overlay.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
-    .spinner {
-      width: 50px; height: 50px;
-      border: 3px solid rgba(168,85,247,0.1); border-top-color: var(--purple);
-      border-radius: 50%; animation: spin 1s linear infinite;
+    .intro-overlay.hidden {
+      opacity: 0; visibility: hidden; pointer-events: none;
     }
-    .loading-text {
-      font-family: var(--font-mono); letter-spacing: 0.15em; font-size: 12px;
-      color: var(--purple);
+    #introCanvas {
+      position: absolute; inset: 0; width: 100%; height: 100%;
+      display: block; pointer-events: none;
     }
-    .click-anywhere {
-      font-size: 11px; color: #737373; cursor: pointer;
-      border: 1px solid #262626; padding: 10px 20px; border-radius: 30px;
-      transition: all 0.25s; font-family: var(--font-mono); letter-spacing: 0.05em;
+    .intro-ui {
+      position: absolute; inset: 0; z-index: 2;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      gap: 18px; pointer-events: none; padding: 24px;
     }
-    .click-anywhere:hover { background: rgba(255,255,255,0.05); color: #fff; border-color: var(--purple); }
+    .intro-brand {
+      display: flex; flex-direction: column; align-items: center; gap: 6px;
+      opacity: 0; transform: translateY(12px) scale(0.96);
+      transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .intro-overlay.ready .intro-brand {
+      opacity: 1; transform: translateY(0) scale(1);
+    }
+    .intro-brand-main {
+      font-size: clamp(18px, 4vw, 28px); font-weight: 700;
+      letter-spacing: 0.32em; color: #f4f4f5;
+      text-shadow: 0 0 24px rgba(168,85,247,0.35);
+    }
+    .intro-brand-sub {
+      font-size: clamp(9px, 2vw, 11px); letter-spacing: 0.42em;
+      color: var(--purple); text-transform: uppercase;
+    }
+    .intro-boot {
+      font-size: 10px; letter-spacing: 0.14em; color: #525252;
+      min-height: 14px; text-align: center;
+      transition: color 0.4s ease;
+    }
+    .intro-overlay.ready .intro-boot { color: #737373; }
+    .intro-enter {
+      position: relative; pointer-events: auto; cursor: pointer;
+      border: 1px solid rgba(168,85,247,0.35);
+      background: rgba(10,10,10,0.55); backdrop-filter: blur(8px);
+      color: #e9d5ff; font-family: var(--font-mono);
+      font-size: 10px; font-weight: 700; letter-spacing: 0.18em;
+      text-transform: uppercase; padding: 14px 28px; border-radius: 999px;
+      opacity: 0; transform: translateY(8px) scale(0.92);
+      transition: opacity 0.55s ease, transform 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+                  border-color 0.2s, box-shadow 0.2s, color 0.2s;
+    }
+    .intro-overlay.ready .intro-enter {
+      opacity: 1; transform: translateY(0) scale(1);
+    }
+    .intro-enter:hover {
+      border-color: rgba(192,132,252,0.75);
+      box-shadow: 0 0 28px rgba(168,85,247,0.25);
+      color: #fff;
+    }
+    .intro-enter-ring {
+      position: absolute; inset: -6px; border-radius: 999px;
+      border: 1px solid rgba(168,85,247,0.22);
+      animation: introRingPulse 2.4s ease-in-out infinite;
+      pointer-events: none;
+    }
+    @keyframes introRingPulse {
+      0%, 100% { transform: scale(1); opacity: 0.55; }
+      50% { transform: scale(1.08); opacity: 1; }
+    }
+    .intro-hint {
+      font-size: 9px; letter-spacing: 0.12em; color: #404040;
+      text-transform: uppercase; margin: 0;
+      opacity: 0; transition: opacity 0.6s ease 0.25s;
+    }
+    .intro-overlay.ready .intro-hint { opacity: 1; }
+    .intro-overlay.ready { cursor: pointer; }
 
 
     /* ── Light theme overrides ── */
@@ -1270,10 +1304,20 @@
 </head>
 <body id="appRoot">
 
-  <div class="loading-overlay" id="loadingOverlay">
-    <div class="spinner" id="loadingSpinner"></div>
-    <div class="loading-text" id="loadingText">INITIALIZING SHADERS...</div>
-    <div class="click-anywhere" id="startBtn" style="display:none;">ENTER EXPERIENCE</div>
+  <div class="intro-overlay" id="introOverlay">
+    <canvas id="introCanvas"></canvas>
+    <div class="intro-ui">
+      <div class="intro-brand">
+        <span class="intro-brand-main">HI-TECH SERGIO</span>
+        <span class="intro-brand-sub">AUDIO MEASURE</span>
+      </div>
+      <div class="intro-boot" id="introBoot">INITIALIZING SHADERS…</div>
+      <button type="button" class="intro-enter" id="introEnter" hidden>
+        <span class="intro-enter-ring"></span>
+        <span id="introEnterText">ENTER EXPERIENCE</span>
+      </button>
+      <p class="intro-hint" id="introHint">Move mouse · click to enter</p>
+    </div>
   </div>
 
   <audio id="neoMainAudio" preload="auto" playsinline hidden></audio>
@@ -1282,13 +1326,6 @@
   <canvas id="threeCanvas"></canvas>
   <canvas id="canvas2d"></canvas>
   <canvas id="milkdropCanvas"></canvas>
-  <canvas id="aeonCanvas"></canvas>
-  <div id="aeonPlaceholder" aria-hidden="true">
-    <span class="aeon-ph-brand">AEON //</span>
-    <span class="aeon-ph-title" data-aeon-ph-title>…</span>
-    <span class="aeon-ph-sub" data-aeon-ph-sub>Сцена в очереди на портирование</span>
-    <span class="aeon-ph-stat" data-aeon-ph-stat></span>
-  </div>
 
   <!-- Drag & Drop overlay -->
   <div class="drag-overlay" id="dragOverlay">
@@ -1488,12 +1525,7 @@
         <option value="">…</option>
       </select>
     </div>
-    <div class="param-group" id="aeonParamGroup">
-      <div class="param-labels"><span id="lblAeon">AEON SCENES //</span></div>
-      <select class="param-select" id="aeonSceneSelect" title="Aeon visualisations">
-        <option value="">…</option>
-      </select>
-    </div>
+
   </div>
   </div>
 
@@ -3964,9 +3996,6 @@
       milkdrop: ['ДРУГИЕ ВИЗУАЛИЗАЦИИ //', 'OTHER VISUALISATIONS //'],
       milkdropLoading: ['Загрузка пресетов…', 'Loading presets…'],
       milkdropEmpty: ['Пресеты не загрузились (нужен интернет)', 'Presets not loaded (internet required)'],
-      aeon: ['AEON SCENES //', 'AEON SCENES //'],
-      aeonLoading: ['Загрузка сцен Aeon…', 'Loading Aeon scenes…'],
-      aeonEmpty: ['Сцены Aeon не загрузились', 'Aeon scenes failed to load'],
       cinemaEnter: ['Полный экран без панелей', 'Fullscreen without panels'],
       cinemaExit: ['Выйти из полного экрана (Esc)', 'Exit fullscreen (Esc)'],
       donateBtnTitle: ['Поддержать проект (донат)', 'Support the project (donate)'],
@@ -3990,6 +4019,10 @@
       mic: ['МИК', 'MIC'], file: ['ФАЙЛ', 'FILE'], synth: ['СИНТЕЗ', 'SYNTH'],
       procSynth: ['NEO DRIFT', 'NEO DRIFT'],
       enter: ['НАЧАТЬ', 'ENTER EXPERIENCE'],
+      introHint: ['Двигай мышью · клик для входа', 'Move mouse · click to enter'],
+      introBoot1: ['ИНИЦИАЛИЗАЦИЯ ШЕЙДЕРОВ…', 'INITIALIZING SHADERS…'],
+      introBoot2: ['СБОРКА GPU-ПРОГРАММ…', 'LINKING GPU PROGRAMS…'],
+      introBoot3: ['КОМПИЛЯЦИЯ ЯДЕР…', 'COMPILING GPU KERNELS…'],
       gpuReady: ['GPU ГОТОВ.', 'GPU COMPILATION COMPLETE.'],
       gpuErr: ['ОШИБКА WEBGL2', 'FATAL WEBGL2 ERR: Check Browser console.'],
       modesTitle: ['ВИЗУАЛИЗАТОРЫ //', 'VISUALIZERS //'],
@@ -4027,8 +4060,6 @@
       document.getElementById('lblColor').textContent = t('color');
       const lblMd = document.getElementById('lblMilkdrop');
       if (lblMd) lblMd.textContent = t('milkdrop');
-      const lblAeon = document.getElementById('lblAeon');
-      if (lblAeon) lblAeon.textContent = t('aeon');
       document.getElementById('dragTitle').textContent = t('dragTitle');
       document.getElementById('dragHint').textContent = t('dragHint');
       document.getElementById('timeLoop').textContent = t('loop');
@@ -4067,6 +4098,11 @@
       const elDonateHintEth = document.getElementById('donateHintEth');
       if (elDonateHintEth) elDonateHintEth.textContent = t('donateHintEth');
       document.querySelectorAll('.donate-copy-btn').forEach(btn => { btn.textContent = t('donateCopy'); });
+      const introEnterText = document.getElementById('introEnterText');
+      if (introEnterText) introEnterText.textContent = t('enter');
+      const introHint = document.getElementById('introHint');
+      if (introHint) introHint.textContent = t('introHint');
+      if (introSplash) introSplash.applyLang();
 
       // Black Hole info panel translations:
       const elTitle = document.getElementById('bhPanelTitle');
@@ -6703,7 +6739,7 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
     let threeEngine = null;
     let canvas2dEngine = null;
     let milkdropEngine = null;
-    let aeonEngine = null;
+    let introSplash = null;
     let resizeVisualsRaf = 0;
 
     function resizeAllVisuals() {
@@ -6711,7 +6747,6 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
       if (threeEngine) threeEngine.resize();
       if (canvas2dEngine) canvas2dEngine.resize();
       if (milkdropEngine) milkdropEngine.resize();
-      if (aeonEngine) aeonEngine.resize();
     }
 
     function scheduleResizeVisuals() {
@@ -6948,76 +6983,207 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
       }
     }
 
-    let aeonScenesCache = [];
-
-    async function fillAeonSceneSelect() {
-      const sel = document.getElementById('aeonSceneSelect');
-      if (!sel) return;
-      const loader = typeof loadAeonScenes === 'function' ? loadAeonScenes : null;
-      if (loader) {
-        aeonScenesCache = await loader();
-      } else if (window.AEON_SCENES_BUILTIN?.scenes?.length) {
-        aeonScenesCache = window.AEON_SCENES_BUILTIN.scenes;
-      } else if (aeonEngine) {
-        aeonScenesCache = await aeonEngine.loadManifest();
+    class IntroSplash {
+      constructor(overlay, canvas, bootEl, enterBtn) {
+        this.overlay = overlay;
+        this.canvas = canvas;
+        this.ctx = canvas.getContext('2d');
+        this.bootEl = bootEl;
+        this.enterBtn = enterBtn;
+        this.particles = [];
+        this.mouse = { x: 0, y: 0, active: false };
+        this.ready = false;
+        this.exiting = false;
+        this.time = 0;
+        this.bootIdx = 0;
+        this.bootTimer = 0;
+        this.raf = 0;
+        this.last = performance.now();
+        this._spawnParticles();
+        this._bind();
+        this.resize();
+        this.setBootMessage(typeof t === 'function' ? t('introBoot1') : 'INITIALIZING SHADERS…');
+        this._loop();
       }
-      if (aeonEngine && aeonScenesCache.length) aeonEngine.scenes = aeonScenesCache;
 
-      sel.innerHTML = '';
-      if (!aeonScenesCache.length) {
-        const opt = document.createElement('option');
-        opt.value = '';
-        opt.textContent = typeof t === 'function' ? t('aeonEmpty') : 'Сцены не загрузились';
-        sel.appendChild(opt);
-        return;
+      _bootMessages() {
+        return typeof t === 'function'
+          ? [t('introBoot1'), t('introBoot2'), t('introBoot3'), t('gpuReady')]
+          : ['INITIALIZING SHADERS…', 'LINKING GPU PROGRAMS…', 'COMPILING GPU KERNELS…', 'GPU COMPILATION COMPLETE.'];
       }
-      const placeholder = document.createElement('option');
-      placeholder.value = '';
-      placeholder.textContent = isRu ? '— выберите сцену с ✓ —' : '— pick a ✓ scene —';
-      sel.appendChild(placeholder);
 
-      const readyGrp = document.createElement('optgroup');
-      readyGrp.label = isRu ? '✓ Готовые (работают)' : '✓ Ready (working)';
-      const queueGrp = document.createElement('optgroup');
-      queueGrp.label = isRu ? 'В очереди (заглушка)' : 'Queued (placeholder)';
-
-      aeonScenesCache.forEach((scene, i) => {
-        const opt = document.createElement('option');
-        opt.value = String(i);
-        const ready = typeof isAeonScenePorted === 'function' && isAeonScenePorted(scene);
-        const name = scene.name.length > 48 ? scene.name.slice(0, 48) + '…' : scene.name;
-        opt.textContent = ready ? `${name}` : `${name}`;
-        (ready ? readyGrp : queueGrp).appendChild(opt);
-      });
-      if (readyGrp.children.length) sel.appendChild(readyGrp);
-      if (queueGrp.children.length) sel.appendChild(queueGrp);
-      sel.title = isRu
-        ? 'Aeon: только сцены из группы «Готовые» показывают визуал'
-        : 'Aeon: only scenes in «Ready» group render visuals';
-    }
-
-    function tryLoadAeonSceneList() {
-      fillAeonSceneSelect().catch((err) => console.warn('Aeon scene list:', err));
-    }
-
-    function ensureAeonEngine() {
-      if (aeonEngine) return aeonEngine;
-      const aeonCanvas = document.getElementById('aeonCanvas');
-      const aeonPh = document.getElementById('aeonPlaceholder');
-      if (typeof AeonEngine !== 'function') {
-        console.warn('AeonEngine: скрипт не загрузился — откройте через локальный сервер (см. README) или проверьте консоль');
-        return null;
+      applyLang() {
+        if (this.enterBtn) {
+          const txt = document.getElementById('introEnterText');
+          if (txt) txt.textContent = t('enter');
+        }
+        const hint = document.getElementById('introHint');
+        if (hint) hint.textContent = t('introHint');
+        if (!this.ready) this.setBootMessage(this._bootMessages()[this.bootIdx] || t('introBoot1'));
+        else this.setBootMessage(t('gpuReady'));
       }
-      try {
-        aeonEngine = new AeonEngine(reactor, threeEngine, aeonCanvas);
-        if (!aeonEngine.getGLRenderer() && aeonEngine.ctx2d) aeonEngine.uses2d = true;
-        aeonEngine.setPlaceholderElement(aeonPh);
-        if (aeonScenesCache.length) aeonEngine.scenes = aeonScenesCache;
-        aeonEngine.resize();
-        return aeonEngine;
-      } catch (err) {
-        console.warn('AeonEngine init failed:', err);
-        return null;
+
+      _spawnParticles() {
+        this.particles = [];
+        const n = Math.min(200, Math.floor((window.innerWidth * window.innerHeight) / 5500));
+        for (let i = 0; i < n; i++) {
+          this.particles.push({
+            x: Math.random() * window.innerWidth,
+            y: Math.random() * window.innerHeight,
+            vx: (Math.random() - 0.5) * 0.35,
+            vy: (Math.random() - 0.5) * 0.35,
+            r: 0.6 + Math.random() * 1.6,
+            hue: 260 + Math.random() * 40
+          });
+        }
+      }
+
+      _bind() {
+        const onMove = (e) => {
+          const rect = this.canvas.getBoundingClientRect();
+          this.mouse.x = e.clientX - rect.left;
+          this.mouse.y = e.clientY - rect.top;
+          this.mouse.active = true;
+        };
+        window.addEventListener('mousemove', onMove);
+        window.addEventListener('mouseleave', () => { this.mouse.active = false; });
+        window.addEventListener('resize', () => this.resize());
+        const enter = () => { if (this.ready && !this.exiting) this._onEnter(); };
+        if (this.enterBtn) this.enterBtn.addEventListener('click', (e) => { e.stopPropagation(); enter(); });
+        this.overlay.addEventListener('click', enter);
+      }
+
+      resize() {
+        const dpr = Math.min(window.devicePixelRatio || 1, 2);
+        this.w = window.innerWidth;
+        this.h = window.innerHeight;
+        this.canvas.width = Math.floor(this.w * dpr);
+        this.canvas.height = Math.floor(this.h * dpr);
+        this.canvas.style.width = this.w + 'px';
+        this.canvas.style.height = this.h + 'px';
+        this.ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        if (this.particles.length < 80) this._spawnParticles();
+      }
+
+      setBootMessage(msg) {
+        if (this.bootEl) this.bootEl.textContent = msg;
+      }
+
+      tickBoot(dt) {
+        if (this.ready) return;
+        this.bootTimer += dt;
+        const msgs = this._bootMessages();
+        if (this.bootTimer > 0.85 && this.bootIdx < msgs.length - 1) {
+          this.bootTimer = 0;
+          this.bootIdx++;
+          this.setBootMessage(msgs[this.bootIdx]);
+        }
+      }
+
+      setReady() {
+        if (this.ready) return;
+        this.ready = true;
+        this.setBootMessage(typeof t === 'function' ? t('gpuReady') : 'GPU COMPILATION COMPLETE.');
+        this.overlay.classList.add('ready');
+        if (this.enterBtn) this.enterBtn.hidden = false;
+      }
+
+      setError(msg) {
+        this.setBootMessage(msg);
+      }
+
+      _onEnter() {
+        if (this.exiting) return;
+        this.exiting = true;
+        this.overlay.classList.add('hidden');
+        if (typeof this.onEnter === 'function') this.onEnter();
+      }
+
+      _loop() {
+        const now = performance.now();
+        const dt = Math.min((now - this.last) / 1000, 0.05);
+        this.last = now;
+        if (!this.exiting) {
+          this.time += dt;
+          this.tickBoot(dt);
+          this._draw(dt);
+        }
+        this.raf = requestAnimationFrame(() => this._loop());
+      }
+
+      _draw(dt) {
+        const { ctx, w, h, particles: pts, mouse } = this;
+        if (this.time < 0.08) {
+          ctx.fillStyle = '#000';
+          ctx.fillRect(0, 0, w, h);
+        } else {
+          ctx.fillStyle = 'rgba(0,0,0,0.22)';
+          ctx.fillRect(0, 0, w, h);
+        }
+        const cx = w * 0.5;
+        const cy = h * 0.5;
+        const pull = this.ready ? 0.018 : 0.004;
+        const maxLink = this.ready ? 110 : 85;
+
+        for (const p of pts) {
+          if (mouse.active) {
+            const dx = p.x - mouse.x;
+            const dy = p.y - mouse.y;
+            const dist = Math.hypot(dx, dy) || 1;
+            if (dist < 140) {
+              const f = (140 - dist) / 140;
+              p.vx += (dx / dist) * f * 0.08;
+              p.vy += (dy / dist) * f * 0.08;
+            }
+          }
+          p.vx += (cx - p.x) * pull * 0.001;
+          p.vy += (cy - p.y) * pull * 0.001;
+          p.vx *= 0.985;
+          p.vy *= 0.985;
+          p.x += p.vx * (1 + dt * 60);
+          p.y += p.vy * (1 + dt * 60);
+          if (p.x < -20) p.x = w + 20;
+          if (p.x > w + 20) p.x = -20;
+          if (p.y < -20) p.y = h + 20;
+          if (p.y > h + 20) p.y = -20;
+        }
+
+        ctx.lineWidth = 0.6;
+        for (let i = 0; i < pts.length; i++) {
+          for (let j = i + 1; j < pts.length; j++) {
+            const dx = pts[i].x - pts[j].x;
+            const dy = pts[i].y - pts[j].y;
+            const d = dx * dx + dy * dy;
+            if (d > maxLink * maxLink) continue;
+            const a = 1 - Math.sqrt(d) / maxLink;
+            ctx.strokeStyle = `rgba(168,85,247,${a * (this.ready ? 0.35 : 0.18)})`;
+            ctx.beginPath();
+            ctx.moveTo(pts[i].x, pts[i].y);
+            ctx.lineTo(pts[j].x, pts[j].y);
+            ctx.stroke();
+          }
+        }
+
+        for (const p of pts) {
+          const glow = this.ready ? 0.85 : 0.55;
+          ctx.fillStyle = `hsla(${p.hue}, 90%, 72%, ${glow})`;
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.r * (this.ready ? 1.15 : 1), 0, Math.PI * 2);
+          ctx.fill();
+        }
+
+        if (this.ready) {
+          const pulse = 0.5 + Math.sin(this.time * 2.2) * 0.5;
+          ctx.strokeStyle = `rgba(168,85,247,${0.12 + pulse * 0.18})`;
+          ctx.lineWidth = 1;
+          ctx.beginPath();
+          ctx.arc(cx, cy, 90 + pulse * 12, 0, Math.PI * 2);
+          ctx.stroke();
+        }
+
+        const scanY = (this.time * 40) % h;
+        ctx.fillStyle = 'rgba(168,85,247,0.03)';
+        ctx.fillRect(0, scanY, w, 2);
       }
     }
 
@@ -7050,6 +7216,14 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
     let fpsTimer = 0;
 
     window.addEventListener('DOMContentLoaded', () => {
+      introSplash = new IntroSplash(
+        document.getElementById('introOverlay'),
+        document.getElementById('introCanvas'),
+        document.getElementById('introBoot'),
+        document.getElementById('introEnter')
+      );
+      introSplash.onEnter = () => { startAudioContext(); };
+
       const canvas = document.getElementById('canvas');
       engine = new VisualizerEngine(canvas, reactor);
       window.engine = engine;
@@ -7062,7 +7236,6 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
 
       const mdCanvas = document.getElementById('milkdropCanvas');
       milkdropEngine = new MilkDropEngine(mdCanvas, reactor);
-      tryLoadAeonSceneList();
       tryLoadMilkdropPresetList();
 
       try {
@@ -7102,56 +7275,11 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
             if (Number.isNaN(idx)) return;
             if (!isAudioCtxStarted) await startAudioContext();
             await milkdropEngine.init();
-            const aeonSel = document.getElementById('aeonSceneSelect');
-            if (aeonSel) aeonSel.value = '';
             if (engine && Math.round(engine.visualMode) !== 17) setVisualMode(17);
             milkdropEngine.loadPresetByIndex(idx, 5.7);
           });
         }
 
-        const aeonSceneSelect = document.getElementById('aeonSceneSelect');
-        if (aeonSceneSelect) {
-          aeonSceneSelect.addEventListener('focus', () => {
-            if (aeonScenesCache.length < 2) tryLoadAeonSceneList();
-          });
-          aeonSceneSelect.addEventListener('change', async () => {
-            const raw = aeonSceneSelect.value;
-            if (raw === '') {
-              if (engine && Math.round(engine.visualMode) === 18) setVisualMode(0);
-              return;
-            }
-            const idx = parseInt(raw, 10);
-            if (Number.isNaN(idx)) return;
-            hideToast();
-            const eng = ensureAeonEngine();
-            if (!eng) {
-              showToast(isRu ? 'Aeon: движок не загрузился (обновите страницу)' : 'Aeon: engine failed to load (refresh)', false);
-              return;
-            }
-            if (!isAudioCtxStarted) await startAudioContext(true);
-            const mdSel = document.getElementById('milkdropPresetSelect');
-            if (mdSel) mdSel.value = '';
-            await eng.loadSceneByIndex(idx);
-            if (engine) {
-              engine.visualMode = 18;
-              applyVisualCanvases();
-              eng.resize();
-            }
-            const scene = aeonScenesCache[idx];
-            const ported = scene && typeof isAeonScenePorted === 'function' && isAeonScenePorted(scene);
-            if (!ported) {
-              showToast(
-                isRu
-                  ? `«${scene?.name || '?'}» ещё не портирована — выберите сцену из «✓ Готовые»`
-                  : `«${scene?.name || '?'}» not ported yet — pick from «✓ Ready»`,
-                false
-              );
-            } else {
-              hideToast();
-            }
-          });
-        }
-        
         window.addEventListener('wheel', e => {
           if (engine && engine.visualMode < 11) {
             // WebGL2 Particle modes (0-10): zoom range 3.0 to 30.0
@@ -7410,10 +7538,7 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
         renderModeCards();
         applyLang();
         
-        document.getElementById('loadingSpinner').style.display = 'none';
-        document.getElementById('loadingText').innerText = t('gpuReady');
-        document.getElementById('startBtn').style.display = 'block';
-        document.getElementById('startBtn').innerText = t('enter');
+        if (introSplash) introSplash.setReady();
 
         setVisualMode(11);
         scheduleResizeVisuals();
@@ -7424,7 +7549,7 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
         }
 
       } catch (err) {
-        document.getElementById('loadingText').innerText = t('gpuErr');
+        if (introSplash) introSplash.setError(t('gpuErr'));
         console.error(err);
       }
 
@@ -7574,13 +7699,6 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
       });
     });
 
-    // Enter experience interaction handler
-    document.getElementById('startBtn').addEventListener('click', async (ev) => {
-      ev.preventDefault();
-      document.getElementById('loadingOverlay').classList.add('hidden');
-      await startAudioContext();
-    });
-
     async function startAudioContext(keepCurrentMode = false) {
       if (isAudioCtxStarted) return;
       isAudioCtxStarted = true;
@@ -7657,8 +7775,6 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
         if (canvas2dEngine) canvas2dEngine.render(dt);
       } else if (renderedIdx === 17) {
         if (milkdropEngine) milkdropEngine.render();
-      } else if (renderedIdx === 18) {
-        if (aeonEngine) aeonEngine.render(dt);
       }
     }
 
@@ -7807,7 +7923,6 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
     function getRenderedMode(modeIdx) {
       if (modeIdx === 12) return 15;
       if (modeIdx === 15) return 12;
-      if (modeIdx === 18) return 18;
       return modeIdx;
     }
 
@@ -7822,29 +7937,9 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
       const threeCanvas = document.getElementById('threeCanvas');
       const canvas2d = document.getElementById('canvas2d');
       const milkdropCanvas = document.getElementById('milkdropCanvas');
-      const aeonCanvas = document.getElementById('aeonCanvas');
-      const aeonPlaceholder = document.getElementById('aeonPlaceholder');
-      if (!particleCanvas || !threeCanvas || !canvas2d || !milkdropCanvas || !aeonCanvas) return;
+      if (!particleCanvas || !threeCanvas || !canvas2d || !milkdropCanvas) return;
 
       canvas2d.classList.remove('hybrid-overlay');
-
-      if (modeIdx === 18) {
-        particleCanvas.style.display = 'none';
-        canvas2d.style.display = 'none';
-        milkdropCanvas.style.display = 'none';
-        const aeon2d = aeonEngine?.uses2d;
-        threeCanvas.style.display = aeon2d ? 'none' : 'block';
-        aeonCanvas.style.display = aeon2d ? 'block' : 'none';
-        if (aeonEngine) aeonEngine.resize();
-        if (aeonPlaceholder && aeonEngine && aeonEngine.showsPlaceholder()) {
-          aeonPlaceholder.style.display = 'flex';
-        } else if (aeonPlaceholder) {
-          aeonPlaceholder.style.display = 'none';
-        }
-        return;
-      }
-      if (aeonPlaceholder) aeonPlaceholder.style.display = 'none';
-      aeonCanvas.style.display = 'none';
 
       if (dir?.type === 'milkdrop') {
         particleCanvas.style.display = 'none';
@@ -7914,12 +8009,7 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
 
     function setVisualMode(modeIdx, isAuto = false) {
       if (!engine || modeIdx < 0) return;
-      if (modeIdx >= MODES.length && modeIdx !== 18) return;
-
-      if (modeIdx !== 18) {
-        const aeonSel = document.getElementById('aeonSceneSelect');
-        if (aeonSel) aeonSel.value = '';
-      }
+      if (modeIdx >= MODES.length) return;
       
       if (!isAuto) {
         disableModeX();
