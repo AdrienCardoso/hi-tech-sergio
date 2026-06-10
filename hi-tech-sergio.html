@@ -711,9 +711,12 @@
       opacity: 1; pointer-events: auto;
     }
     .bottom-right-ctrls {
-      position: fixed; bottom: 20px; right: 20px; z-index: 30;
+      position: fixed; bottom: 20px; right: 20px; z-index: 40;
       display: flex; flex-direction: column; align-items: flex-end; gap: 10px;
       pointer-events: none;
+    }
+    .bottom-right-ctrls:has(.donate-panel.open) {
+      z-index: 50;
     }
     .bottom-right-ctrls-row {
       display: flex; align-items: center; gap: 8px;
@@ -747,12 +750,15 @@
       max-height: 0; opacity: 0; overflow: hidden; pointer-events: none;
       transform: translateY(10px) scale(0.97);
       transform-origin: bottom right;
+      position: relative;
+      z-index: 2;
       transition: max-height 0.45s cubic-bezier(0.22, 1, 0.36, 1),
                   opacity 0.32s ease, transform 0.38s cubic-bezier(0.22, 1, 0.36, 1);
     }
     .donate-panel.open {
       max-height: min(88vh, 720px); opacity: 1; pointer-events: auto;
       transform: translateY(0) scale(1);
+      z-index: 50;
     }
     .donate-panel-inner {
       background: linear-gradient(145deg, rgba(18,12,28,0.97) 0%, rgba(10,10,14,0.98) 100%);
@@ -914,21 +920,21 @@
       box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
     }
     .track-row {
-      display: flex; align-items: center; justify-content: space-between; gap: 16px;
+      display: flex; flex-wrap: wrap; align-items: flex-start; justify-content: space-between; gap: 4px 12px;
       font-size: 11px;
     }
     .track-name-wrap {
-      display: flex; align-items: center; gap: 6px; min-width: 0; flex: 1;
+      display: flex; align-items: flex-start; gap: 6px; min-width: 0; flex: 1 1 100%;
     }
     .track-pulse { width: 14px; height: 14px; flex-shrink: 0; color: var(--purple); }
     .track-pulse.paused { color: #52525b; animation: none; }
     .track-pulse.playing { animation: pulse 2s ease-in-out infinite; }
     .track-name {
-      font-size: 10px; font-weight: 700; letter-spacing: 0.1em;
-      text-transform: uppercase; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+      font-size: 10px; font-weight: 700; letter-spacing: 0.04em;
+      line-height: 1.3; white-space: normal; overflow: visible;
       color: #f4f4f5;
     }
-    .track-source { font-size: 11px; color: #52525b; flex-shrink: 0; }
+    .track-source { font-size: 10px; color: #52525b; flex-shrink: 0; margin-left: auto; }
 
     .timeline-row { display: flex; align-items: center; gap: 8px; }
     .timeline-time { font-size: 9px; color: #52525b; flex-shrink: 0; min-width: 28px; }
@@ -3632,12 +3638,13 @@
     let playlistIndex = -1;
     let fileEventsBound = false;
 
+    const DEMO_TRACK_VERSION = 'system-glitch-1';
     const DEMO_TRACK = {
       urls: [
-        'assets/demo.mp3',
-        'https://hitechsergio.github.io/hi-tech-sergio/assets/demo.mp3'
+        `assets/demo.mp3?v=${DEMO_TRACK_VERSION}`,
+        `https://hitechsergio.github.io/hi-tech-sergio/assets/demo.mp3?v=${DEMO_TRACK_VERSION}`
       ],
-      title: ['System Glitch', 'System Glitch']
+      title: ['Technical Hitch — System Glitch', 'Technical Hitch — System Glitch']
     };
 
     async function loadDemoIntoElement() {
@@ -4236,7 +4243,7 @@
       playlistDrop: ['Перетащите сюда несколько треков', 'Drop multiple tracks here'],
       playlistEmpty: ['Плейлист пуст', 'Playlist is empty'],
       demoSource: ['ДЕМО // TECHNICAL HITCH', 'DEMO // TECHNICAL HITCH'],
-      demoTitle: ['System Glitch', 'System Glitch'],
+      demoTitle: ['Technical Hitch — System Glitch', 'Technical Hitch — System Glitch'],
       demoLoad: ['Загрузка демо…', 'Loading demo…'],
       demoMissing: ['Демо-файл не найден', 'Demo file not found'],
       synthSource: ['СИНТЕЗАТОР', 'SYNTH PROSTHETIC'],
