@@ -287,6 +287,14 @@
       flex-direction: column;
       gap: 8px;
     }
+    .modes-variants-wrap {
+      display: none;
+      flex-direction: row;
+      gap: 3px;
+      flex-shrink: 0;
+      align-items: stretch;
+    }
+    .modes-variants-wrap.visible { display: flex; }
     .modes-variants-panel {
       width: 30px;
       display: none;
@@ -301,7 +309,15 @@
       justify-content: space-between;
       flex-shrink: 0;
     }
-    .modes-variants-panel.visible { display: flex; }
+    .modes-variants-wrap.visible > .modes-variants-panel { display: flex; }
+    .modes-variants-panel--extra-col {
+      justify-content: flex-start;
+    }
+    .modes-variants-panel--extra-col .variant-cell {
+      flex: 0 0 auto;
+      height: calc((100% - 33px) / 12);
+      min-height: 16px;
+    }
     .variant-cell {
       flex: 1 1 0;
       min-height: 0;
@@ -326,6 +342,14 @@
       letter-spacing: -0.03em;
       pointer-events: none;
       user-select: none;
+    }
+    .variant-cell-num.wide {
+      font-size: 6px;
+      letter-spacing: -0.05em;
+    }
+    .variant-cell-num.wider {
+      font-size: 5px;
+      letter-spacing: -0.06em;
     }
     .variant-cell:hover {
       border-color: rgba(80, 80, 88, 0.95);
@@ -641,7 +665,136 @@
     }
     .bottom-right-ctrls {
       position: fixed; bottom: 20px; right: 20px; z-index: 30;
+      display: flex; flex-direction: column; align-items: flex-end; gap: 10px;
+    }
+    .bottom-right-ctrls-row {
       display: flex; align-items: center; gap: 8px;
+    }
+
+    /* ── Donate panel (donut button) ── */
+    .donate-btn {
+      width: 44px; height: 44px; padding: 0; border-radius: 50%;
+      border: 2px solid rgba(168,85,247,0.35);
+      background: radial-gradient(circle at 30% 25%, rgba(88,28,135,0.45), rgba(10,10,10,0.92));
+      box-shadow: 0 4px 18px rgba(124,58,237,0.25), inset 0 0 12px rgba(168,85,247,0.08);
+      cursor: pointer; overflow: hidden; flex-shrink: 0;
+      transition: transform 0.2s ease, border-color 0.2s, box-shadow 0.2s;
+    }
+    .donate-btn img {
+      width: 100%; height: 100%; object-fit: cover; display: block;
+      transform: scale(1.08);
+    }
+    .donate-btn:hover {
+      transform: scale(1.06);
+      border-color: rgba(192,132,252,0.65);
+      box-shadow: 0 6px 24px rgba(168,85,247,0.4);
+    }
+    .donate-btn.open {
+      border-color: rgba(236,72,153,0.55);
+      box-shadow: 0 0 0 3px rgba(168,85,247,0.15), 0 6px 28px rgba(236,72,153,0.35);
+    }
+    .donate-panel {
+      width: min(94vw, 480px);
+      max-height: 0; opacity: 0; overflow: hidden; pointer-events: none;
+      transform: translateY(10px) scale(0.97);
+      transform-origin: bottom right;
+      transition: max-height 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+                  opacity 0.32s ease, transform 0.38s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .donate-panel.open {
+      max-height: min(88vh, 720px); opacity: 1; pointer-events: auto;
+      transform: translateY(0) scale(1);
+    }
+    .donate-panel-inner {
+      background: linear-gradient(145deg, rgba(18,12,28,0.97) 0%, rgba(10,10,14,0.98) 100%);
+      border: 1px solid rgba(168,85,247,0.28);
+      border-radius: 14px; padding: 14px 14px 12px;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.55), 0 0 40px rgba(124,58,237,0.12);
+      backdrop-filter: blur(20px);
+    }
+    .donate-panel-head {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 12px; gap: 8px;
+    }
+    .donate-panel-title {
+      font-size: 10px; font-weight: 700; letter-spacing: 0.14em;
+      text-transform: uppercase; color: #d8b4fe;
+    }
+    .donate-panel-close {
+      width: 26px; height: 26px; padding: 0; border: none; border-radius: 6px;
+      background: rgba(255,255,255,0.06); color: #a3a3a3; font-size: 18px; line-height: 1;
+      cursor: pointer; transition: background 0.15s, color 0.15s;
+    }
+    .donate-panel-close:hover { background: rgba(168,85,247,0.2); color: #fff; }
+    .donate-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+      max-height: calc(min(88vh, 720px) - 52px);
+      overflow-y: auto; scrollbar-width: thin;
+    }
+    .donate-card {
+      display: flex; flex-direction: column; align-items: center; gap: 6px;
+      padding: 10px 6px 8px; border-radius: 10px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.06);
+      text-align: center;
+    }
+    .donate-card-badge {
+      width: 52px; height: 52px; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .donate-card-badge--usdt {
+      width: 72px; height: 72px; overflow: visible;
+    }
+    .donate-card-badge img {
+      width: 100%; height: 100%; object-fit: contain; display: block;
+    }
+    .donate-card-label {
+      font-size: 9px; font-weight: 700; letter-spacing: 0.08em;
+      text-transform: uppercase; color: #e9d5ff; margin: 0;
+    }
+    .donate-card-hint {
+      font-size: 7px; letter-spacing: 0.04em; line-height: 1.35;
+      color: #737373; margin: 0; max-width: 100%;
+    }
+    .donate-qr {
+      width: 100%; aspect-ratio: 1; border-radius: 8px; overflow: hidden;
+      background: #2c2c2e; box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+    }
+    .donate-qr img {
+      width: 100%; height: 100%; object-fit: contain; display: block;
+    }
+    .donate-addr {
+      font-size: 9px; font-family: var(--font-mono); letter-spacing: -0.03em;
+      color: #a3a3a3; white-space: nowrap; word-break: normal;
+      line-height: 1.2; margin: 0; width: 100%;
+      overflow-x: auto; scrollbar-width: none;
+      transform: scale(0.78); transform-origin: center top;
+      height: 9px;
+    }
+    .donate-addr::-webkit-scrollbar { display: none; }
+    .donate-copy-btn {
+      width: 100%; padding: 5px 6px; border-radius: 6px; border: none;
+      background: linear-gradient(90deg, rgba(124,58,237,0.85), rgba(168,85,247,0.75));
+      color: #fff; font-family: var(--font-mono); font-size: 7px; font-weight: 700;
+      letter-spacing: 0.06em; text-transform: uppercase; cursor: pointer;
+      transition: filter 0.15s, transform 0.1s;
+    }
+    .donate-copy-btn:hover { filter: brightness(1.12); }
+    .donate-copy-btn:active { transform: scale(0.98); }
+    .donate-card--soon {
+      justify-content: center; min-height: 120px; opacity: 0.45;
+      border-style: dashed; border-color: rgba(168,85,247,0.2);
+    }
+    .donate-soon-icon {
+      font-size: 22px; opacity: 0.5; line-height: 1;
+    }
+    .donate-soon-label {
+      font-size: 9px; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase; color: #737373; margin: 0;
+    }
+    @media (max-width: 420px) {
+      .donate-grid { grid-template-columns: 1fr; }
+      .donate-panel { width: min(94vw, 320px); }
     }
 
     /* ── Toast notification ── */
@@ -880,7 +1033,7 @@
       border-color: var(--panel-border);
       box-shadow: 0 15px 30px rgba(0,0,0,0.08);
     }
-    .light-theme .modes-variants-panel {
+    .light-theme .modes-variants-wrap > .modes-variants-panel {
       background: var(--panel-bg);
       border-color: var(--panel-border);
       box-shadow: 0 15px 30px rgba(0,0,0,0.08);
@@ -1044,6 +1197,28 @@
       color: var(--text);
       border-color: var(--purple);
     }
+    .light-theme .donate-panel-inner {
+      background: linear-gradient(145deg, rgba(255,255,255,0.98) 0%, rgba(245,243,255,0.97) 100%);
+      border-color: rgba(139,92,246,0.25);
+      box-shadow: 0 16px 40px rgba(0,0,0,0.1);
+    }
+    .light-theme .donate-panel-title { color: #6d28d9; }
+    .light-theme .donate-panel-close { background: rgba(0,0,0,0.05); color: #525252; }
+    .light-theme .donate-panel-close:hover { background: rgba(139,92,246,0.15); color: #111; }
+    .light-theme .donate-card {
+      background: rgba(255,255,255,0.7);
+      border-color: rgba(0,0,0,0.08);
+    }
+    .light-theme .donate-card-label { color: #5b21b6; }
+    .light-theme .donate-addr { color: #525252; }
+    .light-theme .donate-qr {
+      background: #2c2c2e;
+    }
+    .light-theme .donate-btn {
+      background: radial-gradient(circle at 30% 25%, rgba(237,233,254,0.9), rgba(255,255,255,0.95));
+      border-color: rgba(139,92,246,0.4);
+      box-shadow: 0 4px 16px rgba(139,92,246,0.2);
+    }
     .light-theme .mode-card {
       border-color: var(--panel-border);
       background: rgba(240, 240, 240, 0.5);
@@ -1177,7 +1352,7 @@
     </div>
   </div>
 
-  <!-- Visualizer modes (vertical sidebar) + 12 variant squares -->
+  <!-- Visualizer modes + variant columns (12 cells each; 13+ only assigned slots) -->
   <div class="modes-panel-wrap ui-chrome">
   <div class="modes-panel-top">
     <!-- Shuffle Mode (X) at the very top -->
@@ -1217,7 +1392,9 @@
       <div class="mode-card-h-name" id="lblModeHName">HYBRID</div>
     </button>
   </div>
-  <div class="modes-variants-panel" id="modesVariantsPanel" aria-label="Visual variants"></div>
+  <div class="modes-variants-wrap" id="modesVariantsWrap">
+    <div class="modes-variants-panel" id="modesVariantsPanel" aria-label="Visual variants 1–12"></div>
+  </div>
   </div>
 
   <!-- Top-right -->
@@ -1361,16 +1538,63 @@
 
   <!-- Bottom-right controls -->
   <div class="bottom-right-ctrls ui-chrome">
-    <button class="ui-btn ui-btn-icon" id="mouseInteractBtn" title="Interactive Particle Repel">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M3 3l7.07 16.97 2.51-7.39 7.39-2.51L3 3z"/>
-        <path d="M13 13l6 6"/>
-      </svg>
-    </button>
-    <button class="ui-btn ui-btn-icon" id="cinemaBtn" title="Полный экран без панелей">
-      <svg id="cinemaIconEnter" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 3H5a2 2 0 0 0-2 2v3M21 8V5a2 2 0 0 0-2-2h-3M16 21h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>
-      <svg id="cinemaIconExit" style="display:none" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 14h6v6M20 10h-6V4M14 10l7-7M3 21l7-7"/></svg>
-    </button>
+    <div class="donate-panel" id="donatePanel" aria-hidden="true">
+      <div class="donate-panel-inner">
+        <div class="donate-panel-head">
+          <span class="donate-panel-title" id="donateTitle">Донат //</span>
+          <button type="button" class="donate-panel-close" id="donateClose" aria-label="Close">&times;</button>
+        </div>
+        <div class="donate-grid">
+          <article class="donate-card">
+            <div class="donate-card-badge donate-card-badge--usdt"><img src="assets/donate/badge-usdt-ton.png" alt="USDT TON" width="72" height="72"></div>
+            <p class="donate-card-label" id="donateLblTon">USDT · TON</p>
+            <p class="donate-card-hint" id="donateHintTon">Только USDT в сети TON</p>
+            <div class="donate-qr"><img src="assets/donate/qr-usdt-ton.png" alt="QR USDT TON" width="666" height="666"></div>
+            <p class="donate-addr">UQABaX0OZWIwC14aJLX01HYoibTbo9tr3eJ5fK9wE_aCUVdM</p>
+            <button type="button" class="donate-copy-btn" data-copy="UQABaX0OZWIwC14aJLX01HYoibTbo9tr3eJ5fK9wE_aCUVdM">Копировать</button>
+          </article>
+          <article class="donate-card">
+            <div class="donate-card-badge donate-card-badge--usdt"><img src="assets/donate/badge-usdt-trc20.png" alt="USDT Tron" width="72" height="72"></div>
+            <p class="donate-card-label" id="donateLblTrc">USDT · TRC20</p>
+            <p class="donate-card-hint" id="donateHintTrc">Только USDT в сети Tron</p>
+            <div class="donate-qr"><img src="assets/donate/qr-usdt-trc20.png" alt="QR USDT TRC20" width="666" height="666"></div>
+            <p class="donate-addr">TJK8V1cSZ5s8o7fDPyCczSeQHU8unk2xED</p>
+            <button type="button" class="donate-copy-btn" data-copy="TJK8V1cSZ5s8o7fDPyCczSeQHU8unk2xED">Копировать</button>
+          </article>
+          <article class="donate-card">
+            <div class="donate-card-badge"><img src="assets/donate/badge-btc.png" alt="Bitcoin" width="52" height="52"></div>
+            <p class="donate-card-label">BTC · Bitcoin</p>
+            <p class="donate-card-hint" id="donateHintBtc">Только BTC в сети Bitcoin</p>
+            <div class="donate-qr"><img src="assets/donate/qr-btc.png" alt="QR BTC" width="666" height="666"></div>
+            <p class="donate-addr">bc1qyy7fm7qs12fqkhtzuvjsjh97trrm8qpv2n105w</p>
+            <button type="button" class="donate-copy-btn" data-copy="bc1qyy7fm7qs12fqkhtzuvjsjh97trrm8qpv2n105w">Копировать</button>
+          </article>
+          <article class="donate-card">
+            <div class="donate-card-badge"><img src="assets/donate/badge-eth.png" alt="Ethereum" width="52" height="52"></div>
+            <p class="donate-card-label">ETH · Ethereum</p>
+            <p class="donate-card-hint" id="donateHintEth">Только ETH в сети Ethereum</p>
+            <div class="donate-qr"><img src="assets/donate/qr-eth.png" alt="QR ETH" width="666" height="666"></div>
+            <p class="donate-addr">0xe0A8E20b631740c8520D87f70B24131b2965D52E</p>
+            <button type="button" class="donate-copy-btn" data-copy="0xe0A8E20b631740c8520D87f70B24131b2965D52E">Копировать</button>
+          </article>
+        </div>
+      </div>
+    </div>
+    <div class="bottom-right-ctrls-row">
+      <button class="ui-btn ui-btn-icon" id="mouseInteractBtn" title="Interactive Particle Repel">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 3l7.07 16.97 2.51-7.39 7.39-2.51L3 3z"/>
+          <path d="M13 13l6 6"/>
+        </svg>
+      </button>
+      <button class="ui-btn ui-btn-icon" id="cinemaBtn" title="Полный экран без панелей">
+        <svg id="cinemaIconEnter" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 3H5a2 2 0 0 0-2 2v3M21 8V5a2 2 0 0 0-2-2h-3M16 21h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>
+        <svg id="cinemaIconExit" style="display:none" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 14h6v6M20 10h-6V4M14 10l7-7M3 21l7-7"/></svg>
+      </button>
+      <button type="button" class="donate-btn" id="donateBtn" title="Поддержать проект">
+        <img src="assets/donate/donut-btn.png" alt="" width="44" height="44">
+      </button>
+    </div>
   </div>
 
   <!-- Hidden synth viz bars (used by ProceduralSynth) -->
@@ -1415,7 +1639,7 @@
       uniform float uParticleSize;
       uniform float uNoiseStrength;
       uniform float uVisualMode; // 0-19 visual modes
-      uniform float uVariant; // 0-11 sub-variation within mode family
+      uniform float uVariant; // 0–23 sub-variation (8D: 13–23 = freedom series)
       uniform float uHighlightComponent; // Interactive highlighting (0=none, 1=disk, 2=arches, 3=ring)
       uniform float uOnset;
       uniform float uLightTheme;
@@ -1607,9 +1831,169 @@
           pos += vec3(spark, spark * 0.6, spark * -0.4) * (1.4 + amp);
         }
 
-        // --- MODE 4: FAITH 8D (silver particle vortex tunnel — Pinterest ref) ---
+        // --- MODE 4: FAITH 8D (vortex tunnel + extended freedom series v13–23) ---
         else if (uVisualMode == 4.0) {
           float seed = fract(aIndexSeed * 97.31 + aPositionSeed.x * 13.7);
+
+          if (uVariant >= 13.0) {
+            // ── 8D-14 СВОБОДА: лучи выбора, разлетающиеся из центра ──
+            if (uVariant < 14.0) {
+              float rayCount = 28.0;
+              float ray = floor(aIndexSeed * rayCount);
+              float along = aPositionSeed.x;
+              float spread = (aPositionSeed.y - 0.5) * 2.2;
+              float ang = ray * 6.28318 / rayCount + snoise(vec3(ray * 0.07, uTime * 0.12, 0.0)) * 0.45;
+              float burst = along * (7.5 + uEnergy * uSensitivity * 7.0 + uBass * 3.5);
+              float flutter = sin(along * 22.0 + uTime * 9.0 + ray) * (1.0 - along) * uHigh * 0.55;
+              pos.x = cos(ang) * burst + cos(ang + 1.5708) * spread * 0.55;
+              pos.y = sin(ang) * burst + sin(ang + 1.5708) * spread * 0.55 + flutter;
+              pos.z = (aPositionSeed.z - 0.5) * 3.5 + sin(uTime * 0.55 + along * 4.0) * uMid * 0.65;
+              if (uOnset > 0.5) pos.xyz *= 1.0 + (1.0 - along) * 0.35;
+              frontFactor4 = along;
+            }
+            // ── 8D-15 СВОБОДА ВОЛИ: две расходящиеся спирали-решения ──
+            else if (uVariant < 15.0) {
+              float side = step(0.5, fract(aIndexSeed * 3.71 + seed));
+              float t = aPositionSeed.x * 11.0;
+              float ang = t * (0.72 + side * 0.22) + uTime * 0.28 + side * 1.884;
+              float r = 0.45 + t * 0.38 + uBass * uSensitivity * 1.1;
+              float fork = side * 2.8 - 1.4;
+              pos.x = r * cos(ang) + fork * t * 0.22;
+              pos.y = t * 0.38 - 2.8 + sin(ang * 2.3 + uTime * 0.4) * (0.35 + uMid * 0.45);
+              pos.z = r * sin(ang) + sin(t * 1.7 + uTime * 0.55) * uMid * 0.55;
+              pos += vec3(snoise(vec3(t * 0.15, side, uTime * 0.08))) * uHigh * 0.35;
+              frontFactor4 = t;
+            }
+            // ── 8D-16 СВОБОДА ВЫБОРА: облако суперпозиции → кольцо на удар ──
+            else if (uVariant < 16.0) {
+              float orbit = aIndexSeed * 6283.18;
+              float cloudR = 2.2 + snoise(vec3(orbit * 0.012, uTime * 0.22, seed)) * 1.35;
+              float collapse = mix(1.0, 0.22, step(0.5, uOnset));
+              cloudR *= collapse;
+              float h = (aPositionSeed.y - 0.5) * 5.0;
+              pos.x = cloudR * cos(orbit + uTime * 0.18);
+              pos.y = h + sin(orbit * 2.8 + uTime * 0.65) * 0.65 * collapse;
+              pos.z = cloudR * sin(orbit + uTime * 0.18);
+              if (uOnset > 0.5) {
+                float ringAng = fract(aIndexSeed * 89.31) * 6.28318;
+                float ringR = 3.8 + uBass * uSensitivity * 2.2;
+                pos.xz = vec2(cos(ringAng), sin(ringAng)) * ringR;
+                pos.y *= 0.25;
+              }
+              pos += vec3(snoise(vec3(orbit * 0.02, h, uTime * 0.1))) * uMid * 0.28;
+              frontFactor4 = cloudR;
+            }
+            // ── 8D-17 ВЕРА: столпы света, поднимающиеся вверх ──
+            else if (uVariant < 17.0) {
+              float pillar = floor(aIndexSeed * 9.0);
+              float px = (pillar - 4.0) * 2.6;
+              float py = aPositionSeed.y * 15.0 - 5.5;
+              float pillarW = exp(-abs(aPositionSeed.x - 0.5) * 9.5);
+              pos.x = px + sin(py * 0.28 + uTime * 0.22 + pillar) * 0.22 * pillarW;
+              pos.y = py + sin(uTime * 0.45 + pillar * 0.7) * uBass * 0.65;
+              pos.z = (aPositionSeed.z - 0.5) * pillarW * 1.8 + sin(px * 0.45 + uTime * 0.75) * 0.35;
+              pos.y += uEnergy * uSensitivity * 1.8 * pillarW;
+              pos.y += snoise(vec3(px * 0.08, py * 0.05, uTime * 0.06)) * uMid * 0.4 * pillarW;
+              frontFactor4 = py * 0.08;
+            }
+            // ── 8D-18 РАЗВИТИЕ: золотая спираль Фибоначчи ──
+            else if (uVariant < 18.0) {
+              float golden = 2.399963;
+              float n = aIndexSeed * 9000.0;
+              float r = sqrt(n) * 0.075 * (1.0 + uBass * 0.18 + uEnergy * 0.08);
+              float theta = n * golden + uTime * 0.065;
+              float h = n * 0.0018 - 2.5;
+              pos.x = r * cos(theta);
+              pos.y = h + sin(theta * 2.5 + uTime * 0.35) * uMid * 0.38;
+              pos.z = r * sin(theta);
+              pos.xyz *= 1.0 + sin(uTime * 0.5 + n * 0.002) * uEnergy * 0.06;
+              frontFactor4 = n * 0.0008;
+            }
+            // ── 8D-19 СИЛА ВОЛИ: кольца давления, расширяющиеся от баса ──
+            else if (uVariant < 19.0) {
+              float ring = floor(aPositionSeed.y * 11.0);
+              float ang = aIndexSeed * 6283.18 + ring * 0.62;
+              float baseR = 0.7 + ring * 0.52;
+              float expand = uBass * uSensitivity * 3.8 + uOnset * 2.4;
+              float r = baseR + expand + sin(ang * 9.0 + uTime * 4.5) * uHigh * 0.18;
+              float thick = (aPositionSeed.x - 0.5) * 0.38;
+              pos.x = (r + thick) * cos(ang);
+              pos.y = ring * 0.32 - 2.2 + sin(uTime * 0.65 + ring * 0.4) * 0.25;
+              pos.z = (r + thick) * sin(ang);
+              pos.y += sin(ang * 3.0 + uTime) * uMid * 0.15;
+              frontFactor4 = ring;
+            }
+            // ── 8D-20 ДУХ: лемнискаты душ, парящие вверх ──
+            else if (uVariant < 20.0) {
+              float soul = floor(aIndexSeed * 44.0);
+              float t = aPositionSeed.x * 6.28318 + uTime * 0.28 + soul * 0.13;
+              float scale = 1.9 + uMid * 0.95;
+              float denom = 1.0 + sin(t) * sin(t);
+              pos.x = scale * cos(t) / denom + (soul - 22.0) * 0.055;
+              pos.y = scale * sin(t) * cos(t) / denom + soul * 0.075 - 2.2 + uTime * 0.18;
+              pos.z = sin(t * 2.2 + soul * 0.05) * 0.85 + (aPositionSeed.z - 0.5) * 0.45;
+              pos += vec3(snoise(vec3(t * 0.28, soul, uTime * 0.11))) * (0.45 + uHigh * 0.65);
+              frontFactor4 = soul * 0.04;
+            }
+            // ── 8D-21 ПУТЬ: дерево решений с ветвлением ──
+            else if (uVariant < 21.0) {
+              float level = floor(aPositionSeed.z * 5.5);
+              float branch = floor(aIndexSeed * pow(2.0, level + 2.0));
+              float along = aPositionSeed.x;
+              float bend = sin(level * 1.3 + uTime * 0.22) * (branch - pow(2.0, max(level - 1.0, 0.0)));
+              float x = (branch - pow(2.0, max(level - 1.0, 0.0))) * (1.4 - level * 0.18) - 4.5;
+              float y = level * 1.75 + along * 2.6 + uBass * 0.35;
+              float jag = sin(along * 14.0 + branch + uTime * 3.5) * (1.0 - along) * uHigh * 0.55;
+              pos = vec3(x + jag + bend * 0.08, y, (aPositionSeed.y - 0.5) * 0.55 + bend * 0.12);
+              pos.x += sin(y * 0.4 + uTime * 0.3) * uMid * 0.12;
+              frontFactor4 = level + along;
+            }
+            // ── 8D-22 КРЫЛЬЯ: симметричные крылья бабочки ──
+            else if (uVariant < 22.0) {
+              float wing = step(0.5, aPositionSeed.z);
+              float u = aPositionSeed.x;
+              float v = aPositionSeed.y;
+              float wingAng = v * 3.14159 * 0.88;
+              float wingR = sin(wingAng) * (2.6 + u * 4.2 + uBass * 1.6);
+              float signX = wing > 0.5 ? 1.0 : -1.0;
+              pos.x = signX * (0.35 + wingR * cos(wingAng * 0.48 + 0.25));
+              pos.y = wingR * sin(wingAng * 0.48 + 0.25) - 1.1 + sin(uTime * 0.35) * 0.25;
+              pos.z = (u - 0.5) * 0.85 + sin(wingAng * 5.0 + uTime * 0.8) * uMid * 0.28;
+              pos.xy *= 1.0 + uEnergy * 0.1 + sin(uTime * 0.5) * uBass * 0.05;
+              pos += vec3(0.0, snoise(vec3(u * 3.0, v * 2.0, uTime * 0.15)) * uHigh * 0.12, 0.0);
+              frontFactor4 = wingR;
+            }
+            // ── 8D-23 ОГОНЬ ВОЛИ: сакральный огненный тор ──
+            else if (uVariant < 23.0) {
+              float u = aPositionSeed.x * 6.28318;
+              float v = aPositionSeed.y * 6.28318;
+              float R = 3.0 + uBass * uSensitivity * 0.95;
+              float r = 0.85 + uMid * 0.55 + sin(u * 7.0 + uTime * 3.2) * uHigh * 0.2;
+              pos.x = (R + r * cos(v)) * cos(u + uTime * 0.14);
+              pos.y = r * sin(v) + sin(u * 5.0 + uTime * 2.2) * (0.35 + uHigh * 0.45);
+              pos.z = (R + r * cos(v)) * sin(u + uTime * 0.14);
+              if (fract(aIndexSeed * 17.31) > 0.82) {
+                float ang2 = fract(aIndexSeed * 97.31) * 6.28318;
+                float rr = sqrt(fract(aIndexSeed * 31.7)) * (1.15 + uBass * 0.95);
+                pos = vec3(cos(ang2) * rr, sin(ang2) * rr * 0.72, sin(ang2 * 2.1) * rr * 0.55);
+              }
+              frontFactor4 = r;
+            }
+            // ── 8D-24 ВОСХОЖДЕНИЕ: потоки духа, spiraling upward ──
+            else {
+              float stream = floor(aIndexSeed * 18.0);
+              float height = aPositionSeed.y * 17.0 - 6.5 + uTime * (0.85 + uEnergy * uSensitivity * 0.55);
+              float spiral = height * 0.32 + stream * 0.38;
+              float rad = 1.15 + sin(height * 0.48 + stream * 0.6) * 0.55 + uBass * 0.45;
+              pos.x = rad * cos(spiral);
+              pos.z = rad * sin(spiral);
+              pos.y = height;
+              float wisp = snoise(vec3(stream * 0.2, height * 0.18, uTime * 0.16));
+              pos.xz += vec2(wisp, wisp * 0.75) * (0.55 + uHigh * 0.65);
+              pos.y += sin(spiral * 2.0 + uTime * 0.4) * uMid * 0.18;
+              frontFactor4 = height * 0.06;
+            }
+          } else {
           float lane = aIndexSeed;
 
           float depth = (aPositionSeed.z - 0.5) * 22.0;
@@ -1651,6 +2035,7 @@
           }
 
           frontFactor4 = depth;
+          }
         }
 
         // --- MODE 5: NOVA (Pulsing radial shock shells) ---
@@ -2030,9 +2415,18 @@
             gl_PointSize = uParticleSize * (0.6 + filamentEnv * 0.8) * (1.0 + uEnergy * 0.4 + uHigh * 0.3);
           }
         } else if (uVisualMode == 4.0) {
+          if (uVariant >= 13.0) {
+            float glint = step(0.84, fract(aIndexSeed * 67.0 + uTime * 7.0));
+            float depthFade = clamp(0.55 + frontFactor4 * 0.25, 0.35, 1.2);
+            gl_PointSize = uParticleSize * (0.34 + glint * 1.05 + bassSwelling * 0.7 + amp * 0.55 + highGlint * 0.5) * depthFade;
+            if (uVariant >= 17.0 && uVariant < 18.0) gl_PointSize *= 0.78;
+            if (uVariant >= 21.0 && uVariant < 22.0) gl_PointSize *= 1.18;
+            if (uVariant >= 23.0) gl_PointSize *= 0.92;
+          } else {
           float glint = step(0.88, fract(aIndexSeed * 89.0 + uTime * 5.0));
           float depthFade = clamp(1.0 - abs(frontFactor4) / 13.0, 0.35, 1.15);
           gl_PointSize = uParticleSize * (0.32 + glint * 1.1 + bassSwelling * 0.75 + highGlint * 0.65) * depthFade;
+          }
         } else if (uVisualMode == 10.0) {
           if (frontFactor4 > 1.5) {
             float grain = 0.28 + fract(aIndexSeed * 37.0) * 0.55;
@@ -2113,6 +2507,53 @@
             vColor *= brightness * energyBoost;
           }
         } else if (uVisualMode == 4.0) {
+          if (uVariant >= 13.0) {
+            float bright = 0.62 + amp * 1.05 + uHigh * 0.42 + uBass * 0.38;
+            float sparkle = fract(aIndexSeed * 311.0 + uTime * 3.5);
+            if (uVariant < 14.0) {
+              vColor = mix(vec3(1.0, 0.82, 0.28), vec3(1.0, 0.97, 0.85), frontFactor4) * bright;
+              if (sparkle > 0.88) vColor += vec3(0.35, 0.25, 0.05);
+            } else if (uVariant < 15.0) {
+              vec3 pathA = vec3(0.35, 0.75, 1.0);
+              vec3 pathB = vec3(1.0, 0.45, 0.72);
+              vColor = mix(pathA, pathB, fract(aIndexSeed * 3.71)) * bright;
+            } else if (uVariant < 16.0) {
+              vec3 mist = vec3(0.55, 0.35, 0.95);
+              vec3 snap = vec3(0.95, 0.55, 1.0);
+              vColor = mix(mist, snap, uOnset) * bright;
+              if (sparkle > 0.9) vColor *= 1.25;
+            } else if (uVariant < 17.0) {
+              float pillarT = clamp(frontFactor4, 0.0, 1.0);
+              vColor = mix(vec3(0.95, 0.88, 0.55), vec3(1.0, 0.98, 0.92), pillarT) * (0.75 + amp * 0.85);
+              vColor += vec3(0.12, 0.18, 0.35) * (1.0 - pillarT) * 0.35;
+            } else if (uVariant < 18.0) {
+              float t = fract(frontFactor4 * 0.5 + uTime * 0.03);
+              vColor = mix(vec3(0.15, 0.85, 0.45), vec3(0.95, 0.78, 0.15), t) * bright;
+            } else if (uVariant < 19.0) {
+              float ringHue = fract(frontFactor4 * 0.12 + uTime * 0.04);
+              vColor = mix(vec3(0.85, 0.12, 0.22), vec3(1.0, 0.35, 0.15), ringHue) * bright;
+            } else if (uVariant < 20.0) {
+              vColor = mix(vec3(0.65, 0.82, 1.0), vec3(0.92, 0.75, 1.0), sin(uTime * 0.35 + aIndexSeed * 20.0) * 0.5 + 0.5) * bright;
+              vColor *= 0.85 + sparkle * 0.35;
+            } else if (uVariant < 21.0) {
+              float branchT = fract(frontFactor4 * 0.25);
+              vColor = mix(vec3(0.25, 0.95, 0.55), vec3(0.55, 0.35, 0.95), branchT) * bright;
+            } else if (uVariant < 22.0) {
+              vec3 wingA = vec3(0.95, 0.55, 0.85);
+              vec3 wingB = vec3(0.45, 0.75, 1.0);
+              vColor = mix(wingA, wingB, fract(aIndexSeed * 3.71)) * (0.8 + amp * 0.75);
+            } else if (uVariant < 23.0) {
+              vColor = mix(vec3(1.0, 0.35, 0.05), vec3(1.0, 0.85, 0.15), sin(uTime * 2.5 + aIndexSeed * 40.0) * 0.5 + 0.5) * bright;
+              if (fract(aIndexSeed * 17.31) > 0.82) vColor *= 1.35 + uBass * 0.45;
+            } else {
+              float asc = clamp(frontFactor4, 0.0, 1.0);
+              vColor = mix(vec3(0.72, 0.55, 1.0), vec3(1.0, 0.95, 0.75), asc) * bright;
+              if (sparkle > 0.87) vColor += vec3(0.25, 0.2, 0.08);
+            }
+            if (uPaletteTheme < 0.5) {
+              vColor = mix(vColor, paletteByTheme(fract(aIndexSeed * 5.0 + uTime * 0.02), amp), 0.18);
+            }
+          } else {
           float sparkle = fract(aIndexSeed * 437.0 + uTime * 4.0);
           float depthT = clamp((frontFactor4 + 11.0) / 22.0, 0.0, 1.0);
           float bright = 0.55 + sparkle * 0.55 + amp * 0.95 + uHigh * 0.45 + uBass * 0.35;
@@ -2126,6 +2567,7 @@
             vColor = mix(vColor, paletteByTheme(fract(aIndexSeed * 7.0 + uTime * 0.02), amp), 0.22);
           } else if (uPaletteTheme < 8.5) {
             vColor = mix(vColor, paletteByTheme(depthT + sparkle * 0.15, amp), 0.55);
+          }
           }
         } else if (uVisualMode == 10.0) {
           vec3 copper = vec3(0.82, 0.50, 0.28);
@@ -2192,9 +2634,17 @@
         vAlpha = clamp(1.2 - (gl_Position.z / 18.0), 0.1, 0.95);
         
         if (uVisualMode == 4.0) {
+          if (uVariant >= 13.0) {
+            float mist = 0.32 + 0.38 * sin(aIndexSeed * 48.0 + uTime * 2.8) + amp * 0.48;
+            vAlpha = mist * clamp(1.1 - abs(gl_Position.z) / 17.0, 0.15, 0.95);
+            if (uVariant >= 16.0 && uVariant < 17.0) vAlpha = clamp(vAlpha * 1.15, 0.2, 0.98);
+            if (uVariant >= 22.0 && uVariant < 23.0) vAlpha = clamp(vAlpha * 1.08, 0.18, 0.98);
+            if (fract(aIndexSeed * 29.0 + uTime) > 0.9) vAlpha = clamp(vAlpha * 1.35, 0.0, 0.98);
+          } else {
           float mist = 0.28 + 0.32 * sin(aIndexSeed * 55.0 + uTime * 2.5) + amp * 0.42;
           vAlpha = mist * clamp(1.15 - abs(gl_Position.z) / 16.0, 0.12, 0.92);
           if (fract(aIndexSeed * 31.0 + uTime) > 0.92) vAlpha = clamp(vAlpha * 1.4, 0.0, 0.98);
+          }
           vAlpha = clamp(vAlpha, 0.02, 0.98);
         }
 
@@ -3187,7 +3637,14 @@
     const MAIN_VISUAL_MODES = new Set([0, 1, 4, 8, 10, 11, 12, 13, 14, 15, 16]);
     let visualVariantIdx = 0;
 
-    // Слоты «директории»: метка режима + номер вариации (1–12), напр. 6D-1, 0D-12
+    const VISUAL_VARIANT_COL_SIZE = 12;
+
+    const FAITH8D_EXT_NAMES = {
+      ru: ['Свобода', 'Свобода воли', 'Свобода выбора', 'Вера', 'Развитие', 'Сила воли', 'Дух', 'Путь', 'Крылья', 'Огонь воли', 'Восхождение'],
+      en: ['Freedom', 'Free will', 'Freedom of choice', 'Faith', 'Development', 'Willpower', 'Spirit', 'Path', 'Wings', 'Fire of will', 'Ascension']
+    };
+
+    // Слоты «директории»: колонки по 12 ячеек; слот 13+ появляется только при назначении визуала
     const MODE_DIR_LABEL = {
       11: '0D', 12: '1D', 13: '2D', 14: '3D', 15: '4D', 16: '5D',
       0: '6D', 1: '7D', 4: '8D', 8: '9D', 10: '10D'
@@ -3197,32 +3654,97 @@
     const VISUAL_DIRECTORY = {
       '6D-1': { type: 'milkdrop', presetKey: 'martin - city of shadows', presetNumber: 168 },
       '6D-2': { type: 'milkdrop', presetKey: 'martin - cope - laser dome', presetNumber: 169 },
+      '6D-3': { type: 'milkdrop', presetNumber: 156 },
       '0D-2': { type: 'milkdrop', presetNumber: 26 },
       '0D-3': { type: 'milkdrop', presetNumber: 27 },
       '0D-4': { type: 'milkdrop', presetNumber: 270 },
+      '0D-5': { type: 'milkdrop', presetNumber: 44 },
+      '0D-6': { type: 'milkdrop', presetNumber: 56 },
+      '0D-7': { type: 'milkdrop', presetNumber: 50 },
+      '0D-8': { type: 'milkdrop', presetNumber: 81 },
+      '0D-9': { type: 'milkdrop', presetNumber: 141 },
       '0D-12': { type: 'webgl', visualMode: 0, variantIdx: 0 },
       '1D-2': { type: 'milkdrop', presetNumber: 7 },
       '1D-3': { type: 'milkdrop', presetNumber: 17 },
+      '1D-4': { type: 'milkdrop', presetNumber: 46 },
+      '1D-5': { type: 'milkdrop', presetNumber: 111 },
+      '1D-6': { type: 'milkdrop', presetNumber: 136 },
+      '1D-7': { type: 'milkdrop', presetNumber: 144 },
+      '2D-2': { type: 'milkdrop', presetNumber: 58 },
       '2D-3': { type: 'milkdrop', presetNumber: 23 },
       '2D-4': { type: 'milkdrop', presetNumber: 35 },
       '2D-5': { type: 'milkdrop', presetNumber: 36 },
       '2D-6': { type: 'milkdrop', presetNumber: 275 },
+      '2D-7': { type: 'milkdrop', presetNumber: 65 },
+      '2D-8': { type: 'milkdrop', presetNumber: 66 },
+      '2D-9': { type: 'milkdrop', presetNumber: 103 },
+      '2D-10': { type: 'milkdrop', presetNumber: 114 },
+      '2D-11': { type: 'milkdrop', presetNumber: 140 },
+      '2D-12': { type: 'milkdrop', presetNumber: 153 },
       '3D-2': { type: 'milkdrop', presetNumber: 285 },
+      '3D-3': { type: 'milkdrop', presetNumber: 49 },
+      '3D-4': { type: 'milkdrop', presetNumber: 50 },
+      '3D-5': { type: 'milkdrop', presetNumber: 60 },
+      '3D-6': { type: 'milkdrop', presetNumber: 104 },
+      '3D-7': { type: 'milkdrop', presetNumber: 159 },
       '4D-1': { type: 'milkdrop', presetNumber: 291 },
       '4D-2': { type: 'milkdrop', presetNumber: 25 },
       '4D-3': { type: 'milkdrop', presetNumber: 288 },
       '4D-4': { type: 'milkdrop', presetNumber: 278 },
       '4D-5': { type: 'milkdrop', presetNumber: 269 },
+      '4D-6': { type: 'milkdrop', presetNumber: 48 },
+      '4D-7': { type: 'milkdrop', presetNumber: 51 },
+      '4D-8': { type: 'milkdrop', presetNumber: 77 },
+      '4D-9': { type: 'milkdrop', presetNumber: 80 },
+      '4D-10': { type: 'milkdrop', presetNumber: 90 },
+      '4D-11': { type: 'milkdrop', presetNumber: 132 },
+      '4D-12': { type: 'milkdrop', presetNumber: 148 },
+      '5D-2': { type: 'milkdrop', presetNumber: 52 },
+      '5D-3': { type: 'milkdrop', presetNumber: 71 },
+      '5D-4': { type: 'milkdrop', presetNumber: 72 },
+      '5D-5': { type: 'milkdrop', presetNumber: 116 },
+      '5D-6': { type: 'milkdrop', presetNumber: 129 },
+      '5D-7': { type: 'milkdrop', presetNumber: 139 },
       '9D-1': { type: 'milkdrop', presetNumber: 273 },
       '9D-2': { type: 'milkdrop', presetNumber: 41 },
+      '9D-3': { type: 'milkdrop', presetNumber: 45 },
+      '9D-4': { type: 'milkdrop', presetNumber: 54 },
+      '9D-5': { type: 'milkdrop', presetNumber: 62 },
+      '9D-6': { type: 'milkdrop', presetNumber: 79 },
+      '9D-7': { type: 'milkdrop', presetNumber: 118 },
+      '9D-8': { type: 'milkdrop', presetNumber: 160 },
       '7D-1': { type: 'milkdrop', presetNumber: 8 },
       '7D-2': { type: 'milkdrop', presetNumber: 16 },
       '7D-3': { type: 'milkdrop', presetNumber: 39 },
+      '7D-4': { type: 'milkdrop', presetNumber: 119 },
+      '7D-5': { type: 'milkdrop', presetNumber: 122 },
+      '7D-6': { type: 'milkdrop', presetNumber: 128 },
+      '7D-7': { type: 'milkdrop', presetNumber: 154 },
+      '8D-1': { type: 'milkdrop', presetNumber: 57 },
+      '8D-2': { type: 'milkdrop', presetNumber: 117 },
+      '8D-3': { type: 'milkdrop', presetNumber: 115 },
+      '8D-4': { type: 'milkdrop', presetNumber: 76 },
+      '8D-5': { type: 'milkdrop', presetNumber: 63 },
+      '8D-6': { type: 'milkdrop', presetNumber: 55 },
+      '8D-7': { type: 'milkdrop', presetNumber: 53 },
       '8D-8': { type: 'milkdrop', presetNumber: 40 },
       '8D-9': { type: 'milkdrop', presetNumber: 38 },
       '8D-10': { type: 'milkdrop', presetNumber: 37 },
       '8D-11': { type: 'milkdrop', presetNumber: 34 },
       '8D-12': { type: 'milkdrop', presetNumber: 30 },
+      '8D-13': { type: 'milkdrop', presetNumber: 130 },
+      '8D-14': { type: 'milkdrop', presetNumber: 145 },
+      '8D-15': { type: 'milkdrop', presetNumber: 158 },
+      '8D-16': { type: 'webgl', visualMode: 4, variantIdx: 15 },
+      '8D-17': { type: 'webgl', visualMode: 4, variantIdx: 16 },
+      '8D-18': { type: 'webgl', visualMode: 4, variantIdx: 17 },
+      '8D-19': { type: 'webgl', visualMode: 4, variantIdx: 18 },
+      '8D-20': { type: 'webgl', visualMode: 4, variantIdx: 19 },
+      '8D-21': { type: 'webgl', visualMode: 4, variantIdx: 20 },
+      '8D-22': { type: 'webgl', visualMode: 4, variantIdx: 21 },
+      '8D-23': { type: 'webgl', visualMode: 4, variantIdx: 22 },
+      '8D-24': { type: 'webgl', visualMode: 4, variantIdx: 23 },
+      '8D-25': { type: 'milkdrop', presetNumber: 205 },
       '10D-2': { type: 'webgl', visualMode: 1, variantIdx: 0 },
       '10D-3': { type: 'webgl', visualMode: 4, variantIdx: 0 },
       '10D-4': { type: 'webgl', visualMode: 8, variantIdx: 0 }
@@ -3235,6 +3757,9 @@
     ]);
     const OTHER_VISUAL_EXCLUDED_PRESET_NUMBERS = new Set([
       7, 8, 16, 17, 23, 25, 26, 27, 29, 30, 31, 34, 35, 36, 37, 38, 39, 40, 41,
+      44, 45, 46, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 60, 62, 63, 65, 66,
+      71, 72, 76, 77, 79, 80, 81, 90, 103, 104, 111, 114, 115, 116, 117, 118, 119,
+      122, 128, 129, 130, 132, 136, 139, 140, 141, 142, 144, 145, 148, 153, 154, 156, 158, 159, 160, 205,
       168, 169, 269, 270, 273, 275, 278, 285, 288, 291
     ]);
 
@@ -3257,6 +3782,62 @@
       return slot ? VISUAL_DIRECTORY[slot] : null;
     }
 
+    function getMaxVariantSlotForMode(modeIdx) {
+      const label = MODE_DIR_LABEL[modeIdx];
+      if (!label) return VISUAL_VARIANT_COL_SIZE;
+      let max = VISUAL_VARIANT_COL_SIZE;
+      for (const key of Object.keys(VISUAL_DIRECTORY)) {
+        if (!key.startsWith(`${label}-`)) continue;
+        const n = parseInt(key.slice(label.length + 1), 10);
+        if (n > max) max = n;
+      }
+      return max;
+    }
+
+    function getAssignedVariantSlots(modeIdx) {
+      const label = MODE_DIR_LABEL[modeIdx];
+      if (!label) return [];
+      const slots = [];
+      for (const key of Object.keys(VISUAL_DIRECTORY)) {
+        if (!key.startsWith(`${label}-`)) continue;
+        slots.push(parseInt(key.slice(label.length + 1), 10));
+      }
+      return slots.sort((a, b) => a - b);
+    }
+
+    function getVariantExtraColumns(modeIdx) {
+      const assigned = new Set(getAssignedVariantSlots(modeIdx));
+      const maxSlot = getMaxVariantSlotForMode(modeIdx);
+      if (maxSlot <= VISUAL_VARIANT_COL_SIZE) return [];
+
+      const columns = [];
+      const maxColIdx = Math.ceil(maxSlot / VISUAL_VARIANT_COL_SIZE) - 1;
+      for (let colIdx = 1; colIdx <= maxColIdx; colIdx++) {
+        const slotStart = colIdx * VISUAL_VARIANT_COL_SIZE + 1;
+        const slotEnd = (colIdx + 1) * VISUAL_VARIANT_COL_SIZE;
+        const cells = [];
+        for (let s = slotStart; s <= slotEnd; s++) {
+          if (assigned.has(s)) cells.push(s);
+        }
+        if (cells.length > 0) columns.push(cells);
+      }
+      return columns;
+    }
+
+    function getAllowedVariantIndices(modeIdx) {
+      const base = Array.from({ length: VISUAL_VARIANT_COL_SIZE }, (_, i) => i);
+      const extra = getAssignedVariantSlots(modeIdx)
+        .filter(s => s > VISUAL_VARIANT_COL_SIZE)
+        .map(s => s - 1);
+      return base.concat(extra);
+    }
+
+    function isVariantAllowed(modeIdx, variantIdx) {
+      if (variantIdx < 0) return false;
+      if (variantIdx < VISUAL_VARIANT_COL_SIZE) return true;
+      return getAssignedVariantSlots(modeIdx).includes(variantIdx + 1);
+    }
+
     function getAvailableOtherPresetIndices() {
       if (!milkdropEngine || !milkdropEngine.presetKeys.length) return [];
       return milkdropEngine.presetKeys
@@ -3269,7 +3850,8 @@
     }
 
     function setVisualVariant(variantIdx) {
-      if (variantIdx < 0 || variantIdx > 11) return;
+      const mode = engine ? Math.round(engine.visualMode) : -1;
+      if (!isVariantAllowed(mode, variantIdx)) return;
       visualVariantIdx = variantIdx;
       if (engine) engine.variantIdx = variantIdx;
       renderVariantCells();
@@ -3277,18 +3859,43 @@
     }
     window.setVisualVariant = setVisualVariant;
 
+    function renderVariantCellHtml(i, family, mode) {
+      let sub = isRu ? `Вариант ${i + 1}` : `Variant ${i + 1}`;
+      if (mode === 4 && i >= 13 && i <= 23) {
+        const names = isRu ? FAITH8D_EXT_NAMES.ru : FAITH8D_EXT_NAMES.en;
+        sub = names[i - 13] || sub;
+      }
+      const label = sub;
+      const numCls = i + 1 >= 100 ? 'variant-cell-num wide wider' : (i + 1 >= 10 ? 'variant-cell-num wide' : 'variant-cell-num');
+      return `<button type="button" class="variant-cell${i === visualVariantIdx ? ' active' : ''}" data-variant="${i}" title="${family} — ${label}" onclick="setVisualVariant(${i})"><span class="${numCls}">${i + 1}</span></button>`;
+    }
+
     function renderVariantCells() {
+      const wrap = document.getElementById('modesVariantsWrap');
       const panel = document.getElementById('modesVariantsPanel');
-      if (!panel) return;
+      if (!wrap || !panel) return;
       const mode = engine ? Math.round(engine.visualMode) : -1;
       const show = isMainVisualMode(mode);
-      panel.classList.toggle('visible', show);
+      wrap.classList.toggle('visible', show);
       if (!show) return;
       const family = MODES[mode] ? (isRu ? MODES[mode].ru : MODES[mode].en) : '';
-      panel.innerHTML = Array.from({ length: 12 }, (_, i) => {
-        const label = isRu ? `Вариант ${i + 1}` : `Variant ${i + 1}`;
-        return `<button type="button" class="variant-cell${i === visualVariantIdx ? ' active' : ''}" data-variant="${i}" title="${family} — ${label}" onclick="setVisualVariant(${i})"><span class="variant-cell-num">${i + 1}</span></button>`;
-      }).join('');
+      if (!isVariantAllowed(mode, visualVariantIdx)) {
+        visualVariantIdx = 0;
+        if (engine) engine.variantIdx = 0;
+      }
+      panel.innerHTML = Array.from({ length: VISUAL_VARIANT_COL_SIZE }, (_, i) => renderVariantCellHtml(i, family, mode)).join('');
+
+      wrap.querySelectorAll('.modes-variants-panel--extra-col').forEach(el => el.remove());
+      getVariantExtraColumns(mode).forEach(colSlots => {
+        const isFullCol = colSlots.length >= VISUAL_VARIANT_COL_SIZE;
+        const col = document.createElement('div');
+        col.className = isFullCol
+          ? 'modes-variants-panel'
+          : 'modes-variants-panel modes-variants-panel--extra-col';
+        col.setAttribute('aria-label', `Variants ${colSlots[0]}–${colSlots[colSlots.length - 1]}`);
+        col.innerHTML = colSlots.map(slotNum => renderVariantCellHtml(slotNum - 1, family, mode)).join('');
+        wrap.appendChild(col);
+      });
     }
 
         const MODES = [
@@ -3334,6 +3941,14 @@
       aeonEmpty: ['Сцены Aeon не загрузились', 'Aeon scenes failed to load'],
       cinemaEnter: ['Полный экран без панелей', 'Fullscreen without panels'],
       cinemaExit: ['Выйти из полного экрана (Esc)', 'Exit fullscreen (Esc)'],
+      donateBtnTitle: ['Поддержать проект (донат)', 'Support the project (donate)'],
+      donateTitle: ['ДОНАТ //', 'DONATE //'],
+      donateHintTon: ['Только USDT в сети TON', 'Send USDT on TON network only'],
+      donateHintTrc: ['Только USDT в сети Tron', 'Send USDT on Tron network only'],
+      donateHintBtc: ['Только BTC в сети Bitcoin', 'Send BTC on Bitcoin network only'],
+      donateHintEth: ['Только ETH в сети Ethereum', 'Send ETH on Ethereum network only'],
+      donateCopy: ['Копировать', 'Copy address'],
+      donateCopied: ['Адрес скопирован', 'Address copied'],
       dragTitle: ['ОТПУСТИТЕ ДЛЯ ЗАПУСКА', 'RELEASE TO REACTOR'],
       dragHint: ['Поддерживаются MP3, WAV, FLAC, M4A, AAC', 'Supports MP3, WAV, FLAC, M4A, AAC'],
       playlistTitle: ['ПЛЕЙЛИСТ //', 'PLAYLIST //'],
@@ -3411,6 +4026,19 @@
       document.getElementById('langBtn').title = isRu ? 'Switch to English' : 'Переключить на русский';
       document.getElementById('mouseInteractBtn').title = t('mouseInteractTitle');
       document.getElementById('cinemaBtn').title = cinemaMode ? t('cinemaExit') : t('cinemaEnter');
+      const elDonateBtn = document.getElementById('donateBtn');
+      if (elDonateBtn) elDonateBtn.title = t('donateBtnTitle');
+      const elDonateTitle = document.getElementById('donateTitle');
+      if (elDonateTitle) elDonateTitle.textContent = t('donateTitle');
+      const elDonateHintTon = document.getElementById('donateHintTon');
+      if (elDonateHintTon) elDonateHintTon.textContent = t('donateHintTon');
+      const elDonateHintTrc = document.getElementById('donateHintTrc');
+      if (elDonateHintTrc) elDonateHintTrc.textContent = t('donateHintTrc');
+      const elDonateHintBtc = document.getElementById('donateHintBtc');
+      if (elDonateHintBtc) elDonateHintBtc.textContent = t('donateHintBtc');
+      const elDonateHintEth = document.getElementById('donateHintEth');
+      if (elDonateHintEth) elDonateHintEth.textContent = t('donateHintEth');
+      document.querySelectorAll('.donate-copy-btn').forEach(btn => { btn.textContent = t('donateCopy'); });
 
       // Black Hole info panel translations:
       const elTitle = document.getElementById('bhPanelTitle');
@@ -6079,6 +6707,25 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
         this.mdGain = null;
       }
 
+      // Локальные правки пресетов Other (ключ = имя в butterchurn-presets)
+      static PRESET_PATCHES = {
+        'martin + stahlregen - martin in da mash 3': (preset) => {
+          const p = JSON.parse(JSON.stringify(preset));
+          if (Array.isArray(p.shapes)) {
+            p.shapes.forEach((shape) => {
+              if (!shape.baseVals) shape.baseVals = {};
+              shape.baseVals.enabled = 0;
+            });
+          }
+          return p;
+        }
+      };
+
+      applyPresetPatch(key, preset) {
+        const patch = MilkDropEngine.PRESET_PATCHES[key];
+        return patch ? patch(preset) : preset;
+      }
+
       getNeoSettings() {
         const themeIdx = (engine && engine.themeIdx !== undefined) ? engine.themeIdx : 0;
         return {
@@ -6199,11 +6846,13 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
         const safeIdx = Math.max(0, Math.min(idx, this.presetKeys.length - 1));
         this.presetIndex = safeIdx;
         if (!this.visualizer) return;
+        const key = this.presetKeys[safeIdx];
+        const presetData = this.applyPresetPatch(key, this.presets[key]);
         try {
-          const p = this.visualizer.loadPreset(this.presets[this.presetKeys[safeIdx]], blend);
+          const p = this.visualizer.loadPreset(presetData, blend);
           if (p && typeof p.then === 'function') p.catch(() => {});
         } catch (err) {
-          console.warn('MilkDrop preset load failed:', this.presetKeys[safeIdx], err);
+          console.warn('MilkDrop preset load failed:', key, err);
         }
         if (updateSelect) {
           const sel = document.getElementById('milkdropPresetSelect');
@@ -6803,6 +7452,38 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
       document.getElementById('btnMic').addEventListener('click', () => setAudioSource('mic'));
       document.getElementById('btnSynth').addEventListener('click', () => setAudioSource('synth'));
       document.getElementById('cinemaBtn').addEventListener('click', toggleCinemaMode);
+
+      let donateOpen = false;
+      const donatePanel = document.getElementById('donatePanel');
+      const donateBtn = document.getElementById('donateBtn');
+      function setDonateOpen(open) {
+        donateOpen = open;
+        donatePanel.classList.toggle('open', open);
+        donatePanel.setAttribute('aria-hidden', open ? 'false' : 'true');
+        donateBtn.classList.toggle('open', open);
+      }
+      donateBtn.addEventListener('click', e => {
+        e.stopPropagation();
+        setDonateOpen(!donateOpen);
+      });
+      document.getElementById('donateClose').addEventListener('click', () => setDonateOpen(false));
+      document.addEventListener('click', e => {
+        if (!donateOpen) return;
+        if (!e.target.closest('.bottom-right-ctrls')) setDonateOpen(false);
+      });
+      document.querySelectorAll('.donate-copy-btn').forEach(btn => {
+        btn.addEventListener('click', async e => {
+          e.stopPropagation();
+          const addr = btn.getAttribute('data-copy');
+          try {
+            await navigator.clipboard.writeText(addr);
+            showToast(t('donateCopied'), false);
+          } catch (_) {
+            showToast(addr, false);
+          }
+        });
+      });
+
       document.getElementById('playlistLoadBtn').addEventListener('click', () => document.getElementById('fileInput').click());
 
       const fileInput = document.getElementById('fileInput');
@@ -7069,7 +7750,8 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
       let attempts = 0;
       do {
         randomMode = MODE_X_POOL[Math.floor(Math.random() * MODE_X_POOL.length)];
-        randomVariant = Math.floor(Math.random() * 12);
+        const variantPool = getAllowedVariantIndices(randomMode);
+        randomVariant = variantPool[Math.floor(Math.random() * variantPool.length)];
         attempts++;
       } while (
         randomMode === modeXLastCombo.mode &&
