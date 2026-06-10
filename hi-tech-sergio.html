@@ -3630,32 +3630,20 @@
     const playlist = [];
     let playlistIndex = -1;
     let fileEventsBound = false;
-    let demoTrackResolvedUrl = null;
 
     const DEMO_TRACK = {
-      urls: ['assets/demo.ogg', 'assets/demo.mp3'],
+      url: 'assets/demo.mp3',
       title: ['Me & My Tragedy [Demo]', 'Me & My Tragedy [Demo]']
     };
 
-    async function getDemoTrackUrl() {
-      if (demoTrackResolvedUrl) return demoTrackResolvedUrl;
-      for (const url of DEMO_TRACK.urls) {
-        try {
-          const res = await fetch(url, { method: 'HEAD' });
-          if (res.ok) {
-            demoTrackResolvedUrl = url;
-            return url;
-          }
-        } catch (e) { /* try next */ }
-      }
-      return null;
+    function getDemoTrackUrl() {
+      return DEMO_TRACK.url;
     }
 
     async function startDemoPlayback() {
       if (!reactor.ctx) return false;
       bindFileElementEvents();
-      const url = await getDemoTrackUrl();
-      if (!url) return false;
+      const url = getDemoTrackUrl();
 
       if (reactor.ctx.state === 'suspended') await reactor.ctx.resume();
       synth.stop();
@@ -3666,12 +3654,25 @@
       reactor.fileElement.loop = true;
       reactor.fileElement.src = url;
       reactor.fileElement.load();
+      let loadOk = false;
       await new Promise((resolve) => {
-        if (reactor.fileElement.readyState >= 2) return resolve();
-        reactor.fileElement.addEventListener('canplay', resolve, { once: true });
-        reactor.fileElement.addEventListener('error', resolve, { once: true });
-        setTimeout(resolve, 12000);
+        if (reactor.fileElement.readyState >= 2) {
+          loadOk = true;
+          return resolve();
+        }
+        const timer = setTimeout(resolve, 12000);
+        reactor.fileElement.addEventListener('canplay', () => {
+          loadOk = true;
+          clearTimeout(timer);
+          resolve();
+        }, { once: true });
+        reactor.fileElement.addEventListener('error', () => {
+          console.warn('Demo load error:', reactor.fileElement.error);
+          clearTimeout(timer);
+          resolve();
+        }, { once: true });
       });
+      if (!loadOk || reactor.fileElement.error) return false;
       try {
         await reactor.fileElement.play();
         reactor.activeSource = 'demo';

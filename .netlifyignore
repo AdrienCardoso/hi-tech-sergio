@@ -8,6 +8,7 @@ trinity
 *.mov
 *.mkv
 *.mp3
+!assets/demo.mp3
 *.wav
 *.flac
 пример.html
