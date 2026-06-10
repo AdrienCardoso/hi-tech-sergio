@@ -2788,10 +2788,15 @@
         this.energy = 0;
         
         this.isMuted = false;
-        this.activeSource = 'synth'; // 'synth', 'file', 'mic'
+        this.activeSource = 'synth'; // 'synth', 'file', 'mic', 'buffer'
         this.isPlaying = false;
+        this._micPaused = false;
         this.onset = false;
         this._prevInstant = 0;
+      }
+
+      get paused() {
+        return !this.isPlaying;
       }
 
       async init() {
@@ -2887,6 +2892,26 @@
 
       update() {
         if (!this.analyser) return;
+
+        if (!this.isPlaying) {
+          const decay = 0.86;
+          this.bass *= decay;
+          this.mid *= decay;
+          this.high *= decay;
+          this.energy *= decay;
+          this.onset = false;
+          document.getElementById('barBass').style.width = Math.min(this.bass * 100, 100) + '%';
+          document.getElementById('barMid').style.width = Math.min(this.mid * 100, 100) + '%';
+          document.getElementById('barHigh').style.width = Math.min(this.high * 100, 100) + '%';
+          const dot = document.getElementById('brandDot');
+          const ring = document.querySelector('.brand-outer-satin-ring');
+          if (dot && ring) {
+            dot.style.transform = 'scale(1)';
+            dot.style.boxShadow = '0 0 3px rgba(239, 68, 68, 0.45)';
+            ring.style.boxShadow = 'inset 0 0 0 rgba(239, 68, 68, 0)';
+          }
+          return;
+        }
 
         this.analyser.getByteFrequencyData(this.dataArray);
         if (this.waveArray) this.analyser.getByteTimeDomainData(this.waveArray);
@@ -3552,6 +3577,16 @@
         const next = playlistIndex + 1;
         if (next < playlist.length) playPlaylistTrack(next);
         else playPlaylistTrack(0);
+      });
+      reactor.fileElement.addEventListener('pause', () => {
+        if (reactor.activeSource !== 'file') return;
+        reactor.isPlaying = false;
+        updatePlayButtonHUD(false);
+      });
+      reactor.fileElement.addEventListener('play', () => {
+        if (reactor.activeSource !== 'file') return;
+        reactor.isPlaying = true;
+        updatePlayButtonHUD(true);
       });
     }
 
@@ -6964,7 +6999,7 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
       }
 
       render() {
-        if (!this.visualizer) return;
+        if (!this.visualizer || this.reactor.paused) return;
         try {
           this.applyNeoSettings(this.getNeoSettings());
           this.visualizer.render();
@@ -7845,6 +7880,7 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
       document.getElementById('btnSynth').classList.remove('active');
       document.getElementById('btnMic').classList.remove('active');
       micActive = false;
+      reactor._micPaused = false;
 
       if (reactor.ctx.state === 'suspended') await reactor.ctx.resume();
 
@@ -8071,6 +8107,75 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
       });
     }
 
+    function isAnyAudioActive() {
+      if (synth.isActive) return true;
+      if (reactor._bufferSource) return true;
+      if (reactor.micNode) return true;
+      if (reactor.fileElement?.src && !reactor.fileElement.paused) return true;
+      return reactor.isPlaying;
+    }
+
+    function pausePlayback() {
+      synth.stop();
+      reactor.stopBufferSource();
+      if (reactor.fileElement && !reactor.fileElement.paused) reactor.fileElement.pause();
+      if (reactor.micNode || micActive || reactor.activeSource === 'mic') {
+        reactor.disableMic();
+        reactor._micPaused = true;
+        micActive = false;
+      }
+      reactor.isPlaying = false;
+      updatePlayButtonHUD(false);
+    }
+
+    async function resumePlayback() {
+      if (reactor.ctx?.state === 'suspended') await reactor.ctx.resume();
+
+      if (reactor._micPaused || reactor.activeSource === 'mic') {
+        reactor._micPaused = false;
+        document.getElementById('btnMic').classList.add('active');
+        document.getElementById('btnSynth').classList.remove('active');
+        reactor.activeSource = 'mic';
+        const ok = await reactor.enableMic();
+        if (ok) {
+          micActive = true;
+          reactor.isPlaying = true;
+        } else {
+          reactor.activeSource = 'synth';
+          document.getElementById('btnMic').classList.remove('active');
+          synth.start();
+          reactor.isPlaying = true;
+        }
+        updatePlayButtonHUD(reactor.isPlaying);
+        return;
+      }
+
+      if (reactor.activeSource === 'buffer' && reactor.builtinBuffer) {
+        await reactor.playBuffer(true);
+        updatePlayButtonHUD(reactor.isPlaying);
+        return;
+      }
+
+      if (reactor.activeSource === 'file' && reactor.fileElement?.src) {
+        try {
+          await reactor.fileElement.play();
+          reactor.isPlaying = true;
+        } catch (e) {
+          console.warn('Play failed:', e);
+          reactor.isPlaying = false;
+        }
+        updatePlayButtonHUD(reactor.isPlaying);
+        return;
+      }
+
+      synth.start();
+      reactor.activeSource = 'synth';
+      reactor.isPlaying = true;
+      document.getElementById('btnSynth').classList.add('active');
+      document.getElementById('btnMic').classList.remove('active');
+      updatePlayButtonHUD(true);
+    }
+
     // Play/Pause Master Switch
     const playBtn = document.getElementById('playBtn');
     playBtn.addEventListener('click', async () => {
@@ -8078,43 +8183,11 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
         await startAudioContext();
         return;
       }
-      
-      if (reactor.activeSource === 'synth') {
-        if (reactor.isPlaying) {
-          synth.stop();
-          reactor.isPlaying = false;
-        } else {
-          synth.start();
-          reactor.isPlaying = true;
-        }
-        updatePlayButtonHUD(reactor.isPlaying);
-      }
-      else if (reactor.activeSource === 'buffer') {
-        if (reactor.isPlaying) {
-          reactor.stopBufferSource();
-          reactor.isPlaying = false;
-        } else if (reactor.builtinBuffer) {
-          await reactor.playBuffer(true);
-        }
-        updatePlayButtonHUD(reactor.isPlaying);
-      }
-      else if (reactor.activeSource === 'file') {
-        if (reactor.fileElement) {
-          if (reactor.isPlaying) {
-            reactor.fileElement.pause();
-            reactor.isPlaying = false;
-          } else {
-            if (reactor.ctx.state === 'suspended') await reactor.ctx.resume();
-            try {
-              await reactor.fileElement.play();
-              reactor.isPlaying = true;
-            } catch (e) {
-              console.warn('Play failed:', e);
-              reactor.isPlaying = false;
-            }
-          }
-          updatePlayButtonHUD(reactor.isPlaying);
-        }
+
+      if (isAnyAudioActive()) {
+        pausePlayback();
+      } else {
+        await resumePlayback();
       }
     });
 
