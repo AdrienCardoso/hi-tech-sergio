@@ -3632,18 +3632,38 @@
     let fileEventsBound = false;
 
     const DEMO_TRACK = {
-      url: 'assets/demo.mp3',
+      urls: [
+        'assets/demo.mp3',
+        'https://hitechsergio.github.io/hi-tech-sergio/assets/demo.mp3'
+      ],
       title: ['Me & My Tragedy [Demo]', 'Me & My Tragedy [Demo]']
     };
 
-    function getDemoTrackUrl() {
-      return DEMO_TRACK.url;
+    async function loadDemoIntoElement() {
+      for (const url of DEMO_TRACK.urls) {
+        reactor.fileElement.src = url;
+        reactor.fileElement.load();
+        const ok = await new Promise((resolve) => {
+          if (reactor.fileElement.readyState >= 2) return resolve(true);
+          const timer = setTimeout(() => resolve(false), 12000);
+          reactor.fileElement.addEventListener('canplay', () => {
+            clearTimeout(timer);
+            resolve(true);
+          }, { once: true });
+          reactor.fileElement.addEventListener('error', () => {
+            console.warn('Demo load error:', url, reactor.fileElement.error);
+            clearTimeout(timer);
+            resolve(false);
+          }, { once: true });
+        });
+        if (ok && !reactor.fileElement.error) return url;
+      }
+      return null;
     }
 
     async function startDemoPlayback() {
       if (!reactor.ctx) return false;
       bindFileElementEvents();
-      const url = getDemoTrackUrl();
 
       if (reactor.ctx.state === 'suspended') await reactor.ctx.resume();
       synth.stop();
@@ -3652,27 +3672,8 @@
       if (reactor.fileElement) reactor.fileElement.pause();
 
       reactor.fileElement.loop = true;
-      reactor.fileElement.src = url;
-      reactor.fileElement.load();
-      let loadOk = false;
-      await new Promise((resolve) => {
-        if (reactor.fileElement.readyState >= 2) {
-          loadOk = true;
-          return resolve();
-        }
-        const timer = setTimeout(resolve, 12000);
-        reactor.fileElement.addEventListener('canplay', () => {
-          loadOk = true;
-          clearTimeout(timer);
-          resolve();
-        }, { once: true });
-        reactor.fileElement.addEventListener('error', () => {
-          console.warn('Demo load error:', reactor.fileElement.error);
-          clearTimeout(timer);
-          resolve();
-        }, { once: true });
-      });
-      if (!loadOk || reactor.fileElement.error) return false;
+      const loadedUrl = await loadDemoIntoElement();
+      if (!loadedUrl) return false;
       try {
         await reactor.fileElement.play();
         reactor.activeSource = 'demo';
