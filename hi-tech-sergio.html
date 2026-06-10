@@ -3910,7 +3910,9 @@
       }
       panel.innerHTML = Array.from({ length: VISUAL_VARIANT_COL_SIZE }, (_, i) => renderVariantCellHtml(i, family, mode)).join('');
 
-      wrap.querySelectorAll('.modes-variants-panel--extra-col').forEach(el => el.remove());
+      Array.from(wrap.children).forEach(el => {
+        if (el !== panel) el.remove();
+      });
       getVariantExtraColumns(mode).forEach(colSlots => {
         const isFullCol = colSlots.length >= VISUAL_VARIANT_COL_SIZE;
         const col = document.createElement('div');
