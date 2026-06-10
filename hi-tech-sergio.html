@@ -3712,6 +3712,7 @@
       '3D-5': { type: 'milkdrop', presetNumber: 60 },
       '3D-6': { type: 'milkdrop', presetNumber: 104 },
       '3D-7': { type: 'milkdrop', presetNumber: 159 },
+      '3D-8': { type: 'three', threeMode: 15 },
       '4D-1': { type: 'milkdrop', presetNumber: 291 },
       '4D-2': { type: 'milkdrop', presetNumber: 25 },
       '4D-3': { type: 'milkdrop', presetNumber: 288 },
@@ -6489,6 +6490,7 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
         this.visualizers[12] = new FractalZoom4D(this.scene);
         this.visualizers[13] = new RI(this.scene);
         this.visualizers[14] = new wI(this.scene);
+        this.visualizers[15] = new EI(this.scene);
         this.visualizers[16] = new bI(this.scene);
 
         Object.values(this.visualizers).forEach(v => {
@@ -6580,7 +6582,7 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
         if (this.activeMode === 11 || this.activeMode === 12) {
           this.camera.position.set(0, 0, this.cameraZoom);
           this.camera.lookAt(0, 0, 0);
-        } else if (this.activeMode === 13 || this.activeMode === 14) {
+        } else if (this.activeMode === 13 || this.activeMode === 14 || this.activeMode === 15) {
           const rx = Math.sin(performance.now() * 8e-5) * 1.5;
           const ry = Math.cos(performance.now() * 5e-5) * 1.2;
           const rz = this.cameraZoom - sBass * settings.sensitivity * 2;
@@ -7644,6 +7646,8 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
         engine.render(dt);
         engine.visualMode = savedMode;
         engine.variantIdx = savedVar;
+      } else if (dir?.type === 'three') {
+        if (threeEngine) threeEngine.render(dt);
       } else if (renderedIdx < 11) {
         engine.render(dt);
       } else if ((renderedIdx >= 11 && renderedIdx <= 14) || renderedIdx === 16) {
@@ -7862,6 +7866,15 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
         threeCanvas.style.display = 'none';
         canvas2d.style.display = 'none';
         milkdropCanvas.style.display = 'none';
+        return;
+      }
+
+      if (dir?.type === 'three') {
+        particleCanvas.style.display = 'none';
+        threeCanvas.style.display = 'block';
+        canvas2d.style.display = 'none';
+        milkdropCanvas.style.display = 'none';
+        if (threeEngine) threeEngine.setMode(dir.threeMode);
         return;
       }
 
