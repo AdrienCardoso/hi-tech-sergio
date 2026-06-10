@@ -3849,19 +3849,22 @@
       '8D-14': { type: 'milkdrop', presetNumber: 145 },
       '8D-15': { type: 'milkdrop', presetNumber: 158 },
       '8D-16': { type: 'milkdrop', presetNumber: 165 },
-      '8D-17': { type: 'milkdrop', presetNumber: 193 },
-      '8D-18': { type: 'webgl', visualMode: 4, variantIdx: 17 },
-      '8D-19': { type: 'webgl', visualMode: 4, variantIdx: 18 },
-      '8D-20': { type: 'webgl', visualMode: 4, variantIdx: 19 },
-      '8D-21': { type: 'webgl', visualMode: 4, variantIdx: 20 },
-      '8D-22': { type: 'webgl', visualMode: 4, variantIdx: 21 },
-      '8D-23': { type: 'webgl', visualMode: 4, variantIdx: 22 },
-      '8D-24': { type: 'webgl', visualMode: 4, variantIdx: 23 },
-      '8D-25': { type: 'milkdrop', presetNumber: 205 },
       '10D-2': { type: 'webgl', visualMode: 1, variantIdx: 0 },
       '10D-3': { type: 'webgl', visualMode: 4, variantIdx: 0 },
       '10D-4': { type: 'webgl', visualMode: 8, variantIdx: 0 }
     };
+
+    // Удалённые слоты: ячейки не показываются, визуал недоступен
+    const REMOVED_VARIANT_SLOTS = new Set([
+      '0D-11',
+      '1D-9', '1D-10', '1D-11', '1D-12',
+      '3D-10', '3D-11', '3D-12',
+      '5D-10', '5D-11', '5D-12',
+      '6D-4', '6D-5', '6D-6', '6D-7', '6D-8', '6D-9', '6D-10', '6D-11', '6D-12',
+      '7D-9', '7D-10', '7D-11', '7D-12',
+      '8D-17', '8D-18', '8D-19', '8D-20', '8D-21', '8D-22', '8D-23', '8D-24', '8D-25',
+      '10D-5', '10D-6', '10D-7', '10D-8', '10D-9', '10D-10', '10D-11', '10D-12',
+    ]);
 
     // Пресеты, убранные из Other (ключ и/или № в полном списке — нумерация не сбивается)
     const OTHER_VISUAL_EXCLUDED_PRESET_KEYS = new Set([
@@ -3873,7 +3876,7 @@
       44, 45, 46, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 60, 62, 63, 65, 66,
       71, 72, 76, 77, 79, 80, 81, 90, 103, 104, 111, 114, 115, 116, 117, 118, 119,
       122, 128, 129, 130, 132, 136, 139, 140, 141, 142, 144, 145, 148, 153, 154, 156, 158, 159, 160,
-      161, 162, 163, 164, 165, 167, 170, 172, 174, 175, 183, 185, 189, 191, 192, 193, 194, 205, 206, 210, 216,
+      161, 162, 163, 164, 165, 167, 170, 172, 174, 175, 183, 185, 189, 191, 192, 194, 206, 210, 216,
       168, 169, 269, 270, 273, 275, 278, 285, 288, 291
     ]);
 
@@ -3893,7 +3896,14 @@
 
     function getDirectoryEntry(modeIdx, variantIdx) {
       const slot = getDirSlot(modeIdx, variantIdx);
-      return slot ? VISUAL_DIRECTORY[slot] : null;
+      if (!slot || REMOVED_VARIANT_SLOTS.has(slot)) return null;
+      return VISUAL_DIRECTORY[slot] || null;
+    }
+
+    function isVariantSlotRemoved(modeIdx, slotNum) {
+      const label = MODE_DIR_LABEL[modeIdx];
+      if (!label) return false;
+      return REMOVED_VARIANT_SLOTS.has(`${label}-${slotNum}`);
     }
 
     function getMaxVariantSlotForMode(modeIdx) {
@@ -3914,7 +3924,8 @@
       const slots = [];
       for (const key of Object.keys(VISUAL_DIRECTORY)) {
         if (!key.startsWith(`${label}-`)) continue;
-        slots.push(parseInt(key.slice(label.length + 1), 10));
+        const n = parseInt(key.slice(label.length + 1), 10);
+        if (!isVariantSlotRemoved(modeIdx, n)) slots.push(n);
       }
       return slots.sort((a, b) => a - b);
     }
@@ -3939,7 +3950,8 @@
     }
 
     function getAllowedVariantIndices(modeIdx) {
-      const base = Array.from({ length: VISUAL_VARIANT_COL_SIZE }, (_, i) => i);
+      const base = Array.from({ length: VISUAL_VARIANT_COL_SIZE }, (_, i) => i)
+        .filter(i => !isVariantSlotRemoved(modeIdx, i + 1));
       const extra = getAssignedVariantSlots(modeIdx)
         .filter(s => s > VISUAL_VARIANT_COL_SIZE)
         .map(s => s - 1);
@@ -3948,8 +3960,16 @@
 
     function isVariantAllowed(modeIdx, variantIdx) {
       if (variantIdx < 0) return false;
+      if (isVariantSlotRemoved(modeIdx, variantIdx + 1)) return false;
       if (variantIdx < VISUAL_VARIANT_COL_SIZE) return true;
       return getAssignedVariantSlots(modeIdx).includes(variantIdx + 1);
+    }
+
+    function resetVariantIfRemoved(modeIdx) {
+      if (isVariantAllowed(modeIdx, visualVariantIdx)) return;
+      const allowed = getAllowedVariantIndices(modeIdx);
+      visualVariantIdx = allowed.length ? allowed[0] : 0;
+      if (engine) engine.variantIdx = visualVariantIdx;
     }
 
     function getAvailableOtherPresetIndices() {
@@ -3993,11 +4013,10 @@
       wrap.classList.toggle('visible', show);
       if (!show) return;
       const family = MODES[mode] ? (isRu ? MODES[mode].ru : MODES[mode].en) : '';
-      if (!isVariantAllowed(mode, visualVariantIdx)) {
-        visualVariantIdx = 0;
-        if (engine) engine.variantIdx = 0;
-      }
-      panel.innerHTML = Array.from({ length: VISUAL_VARIANT_COL_SIZE }, (_, i) => renderVariantCellHtml(i, family, mode)).join('');
+      resetVariantIfRemoved(mode);
+      const baseIndices = Array.from({ length: VISUAL_VARIANT_COL_SIZE }, (_, i) => i)
+        .filter(i => !isVariantSlotRemoved(mode, i + 1));
+      panel.innerHTML = baseIndices.map(i => renderVariantCellHtml(i, family, mode)).join('');
 
       Array.from(wrap.children).forEach(el => {
         if (el !== panel) el.remove();
@@ -8078,6 +8097,7 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
         visualVariantIdx = 0;
         engine.variantIdx = 0;
       }
+      if (isMainVisualMode(modeIdx)) resetVariantIfRemoved(modeIdx);
 
       if (modeIdx === 4) {
         engine.targetAngleX = 0.06;
