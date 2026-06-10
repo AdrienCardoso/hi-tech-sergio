@@ -728,65 +728,80 @@
     .donate-panel-close:hover { background: rgba(168,85,247,0.2); color: #fff; }
     .donate-grid {
       display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
-      grid-auto-rows: 1fr; align-items: stretch;
       max-height: calc(min(88vh, 720px) - 52px);
       overflow-y: auto; scrollbar-width: thin;
     }
     .donate-card {
-      display: flex; flex-direction: column; align-items: stretch;
-      height: 100%; min-height: 0; gap: 0;
-      padding: 10px 8px 8px; border-radius: 10px;
+      display: grid;
+      grid-template-areas:
+        "badge"
+        "label"
+        "hint"
+        "qr"
+        "addr"
+        "btn";
+      grid-template-rows: 48px auto 26px 132px 12px auto;
+      justify-items: center; align-content: start;
+      gap: 4px; padding: 8px 6px 8px; border-radius: 10px;
       background: rgba(255,255,255,0.03);
       border: 1px solid rgba(255,255,255,0.06);
       text-align: center; box-sizing: border-box;
     }
     .donate-card-badge {
-      width: 56px; height: 56px; flex: 0 0 56px;
-      margin: 0 auto 6px;
+      grid-area: badge;
+      width: 48px; height: 48px; overflow: hidden;
       display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
     }
     .donate-card-badge--usdt {
-      width: 56px; height: 56px; overflow: visible;
+      width: 48px; height: 48px; overflow: hidden;
+    }
+    .donate-card-badge--usdt img {
+      width: 240%; height: 240%; max-width: none;
+      object-fit: cover; object-position: center 6%;
     }
     .donate-card-badge img {
       width: 100%; height: 100%; object-fit: contain; display: block;
     }
     .donate-card-label {
+      grid-area: label;
       font-size: 9px; font-weight: 700; letter-spacing: 0.08em;
-      text-transform: uppercase; color: #e9d5ff; margin: 0 0 2px;
-      flex: 0 0 auto;
+      text-transform: uppercase; color: #e9d5ff; margin: 0;
     }
     .donate-card-hint {
-      font-size: 7px; letter-spacing: 0.04em; line-height: 1.35;
-      color: #737373; margin: 0 0 8px; max-width: 100%;
-      min-height: 18px; flex: 0 0 18px;
+      grid-area: hint;
+      font-size: 7px; letter-spacing: 0.04em; line-height: 1.3;
+      color: #737373; margin: 0; max-width: 100%;
+      min-height: 26px;
       display: flex; align-items: center; justify-content: center;
     }
     .donate-qr {
-      width: 100%; aspect-ratio: 1; flex: 0 0 auto;
+      grid-area: qr;
+      width: 132px; height: 132px; flex-shrink: 0;
       border-radius: 8px; overflow: hidden;
       background: #2c2c2e; box-shadow: 0 2px 8px rgba(0,0,0,0.25);
-      margin-bottom: 6px; box-sizing: border-box;
+      box-sizing: border-box;
     }
     .donate-qr img {
-      width: 100%; height: 100%; object-fit: cover; display: block;
+      width: 100%; height: 100%; object-fit: contain; display: block;
     }
     .donate-addr {
+      grid-area: addr;
       font-size: 9px; font-family: var(--font-mono); letter-spacing: -0.03em;
       color: #a3a3a3; white-space: nowrap; word-break: normal;
-      line-height: 1.2; margin: 0 0 6px; width: 100%;
+      line-height: 1.2; margin: 0; width: 100%;
       overflow-x: auto; scrollbar-width: none;
       transform: scale(0.78); transform-origin: center top;
-      height: 12px; flex: 0 0 12px;
+      height: 12px;
     }
     .donate-addr::-webkit-scrollbar { display: none; }
     .donate-copy-btn {
+      grid-area: btn;
       width: 100%; padding: 5px 6px; border-radius: 6px; border: none;
       background: linear-gradient(90deg, rgba(124,58,237,0.85), rgba(168,85,247,0.75));
       color: #fff; font-family: var(--font-mono); font-size: 7px; font-weight: 700;
       letter-spacing: 0.06em; text-transform: uppercase; cursor: pointer;
       transition: filter 0.15s, transform 0.1s;
-      margin-top: auto; flex: 0 0 auto;
     }
     .donate-copy-btn:hover { filter: brightness(1.12); }
     .donate-copy-btn:active { transform: scale(0.98); }
@@ -1555,7 +1570,7 @@
         </div>
         <div class="donate-grid">
           <article class="donate-card">
-            <div class="donate-card-badge donate-card-badge--usdt"><img src="assets/donate/badge-usdt-ton.png" alt="USDT TON" width="56" height="56"></div>
+            <div class="donate-card-badge donate-card-badge--usdt"><img src="assets/donate/badge-usdt-ton.png" alt="USDT TON" width="48" height="48"></div>
             <p class="donate-card-label" id="donateLblTon">USDT · TON</p>
             <p class="donate-card-hint" id="donateHintTon">Только USDT в сети TON</p>
             <div class="donate-qr"><img src="assets/donate/qr-usdt-ton.png" alt="QR USDT TON" width="666" height="666"></div>
@@ -1563,7 +1578,7 @@
             <button type="button" class="donate-copy-btn" data-copy="UQABaX0OZWIwC14aJLX01HYoibTbo9tr3eJ5fK9wE_aCUVdM">Копировать</button>
           </article>
           <article class="donate-card">
-            <div class="donate-card-badge donate-card-badge--usdt"><img src="assets/donate/badge-usdt-trc20.png" alt="USDT Tron" width="56" height="56"></div>
+            <div class="donate-card-badge donate-card-badge--usdt"><img src="assets/donate/badge-usdt-trc20.png" alt="USDT Tron" width="48" height="48"></div>
             <p class="donate-card-label" id="donateLblTrc">USDT · TRC20</p>
             <p class="donate-card-hint" id="donateHintTrc">Только USDT в сети Tron</p>
             <div class="donate-qr"><img src="assets/donate/qr-usdt-trc20.png" alt="QR USDT TRC20" width="666" height="666"></div>
@@ -1571,7 +1586,7 @@
             <button type="button" class="donate-copy-btn" data-copy="TJK8V1cSZ5s8o7fDPyCczSeQHU8unk2xED">Копировать</button>
           </article>
           <article class="donate-card">
-            <div class="donate-card-badge"><img src="assets/donate/badge-btc.png" alt="Bitcoin" width="56" height="56"></div>
+            <div class="donate-card-badge"><img src="assets/donate/badge-btc.png" alt="Bitcoin" width="48" height="48"></div>
             <p class="donate-card-label">BTC · Bitcoin</p>
             <p class="donate-card-hint" id="donateHintBtc">Только BTC в сети Bitcoin</p>
             <div class="donate-qr"><img src="assets/donate/qr-btc.png" alt="QR BTC" width="666" height="666"></div>
@@ -1579,7 +1594,7 @@
             <button type="button" class="donate-copy-btn" data-copy="bc1qyy7fm7qs12fqkhtzuvjsjh97trrm8qpv2n105w">Копировать</button>
           </article>
           <article class="donate-card">
-            <div class="donate-card-badge"><img src="assets/donate/badge-eth.png" alt="Ethereum" width="56" height="56"></div>
+            <div class="donate-card-badge"><img src="assets/donate/badge-eth.png" alt="Ethereum" width="48" height="48"></div>
             <p class="donate-card-label">ETH · Ethereum</p>
             <p class="donate-card-hint" id="donateHintEth">Только ETH в сети Ethereum</p>
             <div class="donate-qr"><img src="assets/donate/qr-eth.png" alt="QR ETH" width="666" height="666"></div>
