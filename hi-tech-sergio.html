@@ -347,6 +347,20 @@
       color: #d8b4fe;
       font-weight: 700;
     }
+    .variant-cell-spacer {
+      flex: 1 1 0;
+      min-height: 0;
+      width: 100%;
+      visibility: hidden;
+      pointer-events: none;
+      border: 1px solid transparent;
+      box-sizing: border-box;
+    }
+    .modes-variants-panel--extra-col .variant-cell-spacer {
+      flex: 0 0 auto;
+      height: calc((100% - 33px) / 12);
+      min-height: 16px;
+    }
     .modes-panel-title {
       display: none;
     }
@@ -557,6 +571,19 @@
       align-items: center;
       justify-content: center;
       letter-spacing: 0;
+    }
+    .theme-swatch-yinyang {
+      background: #141414;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1px;
+      overflow: hidden;
+    }
+    .theme-swatch-yinyang svg {
+      width: 100%;
+      height: 100%;
+      display: block;
     }
 
     /* ── Playlist panel ── */
@@ -1518,7 +1545,9 @@
         <div class="theme-swatch" style="background:linear-gradient(135deg,#cc66ff,#6600cc)" onclick="setTheme(6)" data-theme="6" title="Фиолетовый // Violet"></div>
         <div class="theme-swatch" style="background:linear-gradient(135deg,#00f0ff,#ff007f)" onclick="setTheme(7)" data-theme="7" title="Сиренево-голубой // Lilac-Cyan"></div>
         <div class="theme-swatch" style="background:linear-gradient(135deg,#00ffcc,#0033cc)" onclick="setTheme(8)" data-theme="8" title="Сине-зелёный // Aqua-Teal"></div>
-        <div class="theme-swatch" style="background:linear-gradient(135deg,#ffffff,#1a1a1a)" onclick="setTheme(9)" data-theme="9" title="Ч/Б // B&W"></div>
+        <div class="theme-swatch theme-swatch-yinyang" onclick="setTheme(9)" data-theme="9" title="Инь-янь // Yin-Yang">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="#f4f4f5"/><path d="M12 2a10 10 0 0 1 0 20 5 5 0 0 1 0-10 5 5 0 0 0 0-10z" fill="#0a0a0a"/><circle cx="12" cy="7" r="1.6" fill="#f4f4f5"/><circle cx="12" cy="17" r="1.6" fill="#0a0a0a"/></svg>
+        </div>
       </div>
     </div>
     <div class="param-group" id="milkdropParamGroup">
@@ -3940,11 +3969,17 @@
       for (let colIdx = 1; colIdx <= maxColIdx; colIdx++) {
         const slotStart = colIdx * VISUAL_VARIANT_COL_SIZE + 1;
         const slotEnd = (colIdx + 1) * VISUAL_VARIANT_COL_SIZE;
-        const cells = [];
+        const rows = [];
+        let hasCell = false;
         for (let s = slotStart; s <= slotEnd; s++) {
-          if (assigned.has(s)) cells.push(s);
+          if (isVariantSlotRemoved(modeIdx, s) || !assigned.has(s)) {
+            rows.push(null);
+          } else {
+            rows.push(s);
+            hasCell = true;
+          }
         }
-        if (cells.length > 0) columns.push(cells);
+        if (hasCell) columns.push(rows);
       }
       return columns;
     }
@@ -3993,6 +4028,13 @@
     }
     window.setVisualVariant = setVisualVariant;
 
+    function renderVariantSlotHtml(slotIndex, family, mode) {
+      if (isVariantSlotRemoved(mode, slotIndex + 1)) {
+        return '<div class="variant-cell-spacer" aria-hidden="true"></div>';
+      }
+      return renderVariantCellHtml(slotIndex, family, mode);
+    }
+
     function renderVariantCellHtml(i, family, mode) {
       let sub = isRu ? `Вариант ${i + 1}` : `Variant ${i + 1}`;
       if (mode === 4 && i >= 13 && i <= 23) {
@@ -4014,21 +4056,21 @@
       if (!show) return;
       const family = MODES[mode] ? (isRu ? MODES[mode].ru : MODES[mode].en) : '';
       resetVariantIfRemoved(mode);
-      const baseIndices = Array.from({ length: VISUAL_VARIANT_COL_SIZE }, (_, i) => i)
-        .filter(i => !isVariantSlotRemoved(mode, i + 1));
-      panel.innerHTML = baseIndices.map(i => renderVariantCellHtml(i, family, mode)).join('');
+      panel.innerHTML = Array.from({ length: VISUAL_VARIANT_COL_SIZE }, (_, i) =>
+        renderVariantSlotHtml(i, family, mode)
+      ).join('');
 
       Array.from(wrap.children).forEach(el => {
         if (el !== panel) el.remove();
       });
-      getVariantExtraColumns(mode).forEach(colSlots => {
-        const isFullCol = colSlots.length >= VISUAL_VARIANT_COL_SIZE;
+      getVariantExtraColumns(mode).forEach(colRows => {
         const col = document.createElement('div');
-        col.className = isFullCol
-          ? 'modes-variants-panel'
-          : 'modes-variants-panel modes-variants-panel--extra-col';
-        col.setAttribute('aria-label', `Variants ${colSlots[0]}–${colSlots[colSlots.length - 1]}`);
-        col.innerHTML = colSlots.map(slotNum => renderVariantCellHtml(slotNum - 1, family, mode)).join('');
+        col.className = 'modes-variants-panel modes-variants-panel--extra-col';
+        const nums = colRows.filter(Boolean);
+        col.setAttribute('aria-label', nums.length ? `Variants ${nums[0]}–${nums[nums.length - 1]}` : 'Variants');
+        col.innerHTML = colRows.map(slotNum =>
+          slotNum === null ? '<div class="variant-cell-spacer" aria-hidden="true"></div>' : renderVariantCellHtml(slotNum - 1, family, mode)
+        ).join('');
         wrap.appendChild(col);
       });
     }
