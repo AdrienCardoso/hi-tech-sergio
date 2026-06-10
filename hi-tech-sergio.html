@@ -2827,7 +2827,7 @@
       }
 
       get paused() {
-        return !this.isPlaying;
+        return this.activeSource === 'file' && !!this.fileElement && this.fileElement.paused;
       }
 
       async init() {
@@ -2923,26 +2923,6 @@
 
       update() {
         if (!this.analyser) return;
-
-        if (!this.isPlaying) {
-          const decay = 0.86;
-          this.bass *= decay;
-          this.mid *= decay;
-          this.high *= decay;
-          this.energy *= decay;
-          this.onset = false;
-          document.getElementById('barBass').style.width = Math.min(this.bass * 100, 100) + '%';
-          document.getElementById('barMid').style.width = Math.min(this.mid * 100, 100) + '%';
-          document.getElementById('barHigh').style.width = Math.min(this.high * 100, 100) + '%';
-          const dot = document.getElementById('brandDot');
-          const ring = document.querySelector('.brand-outer-satin-ring');
-          if (dot && ring) {
-            dot.style.transform = 'scale(1)';
-            dot.style.boxShadow = '0 0 3px rgba(239, 68, 68, 0.45)';
-            ring.style.boxShadow = 'inset 0 0 0 rgba(239, 68, 68, 0)';
-          }
-          return;
-        }
 
         this.analyser.getByteFrequencyData(this.dataArray);
         if (this.waveArray) this.analyser.getByteTimeDomainData(this.waveArray);
@@ -5934,26 +5914,24 @@ class CI {
     const rightTerminalX = sideToggle ? W : nt;
     const rightTerminalY = sideToggle ? B : et;
 
-    if (!reactor.paused) {
-      // Draw beautiful lightning discharge directly between the shocker electrodes!
-      this.drawLightningArc(ctx, leftTerminalX, leftTerminalY, rightTerminalX, rightTerminalY, reactor, settings, hueCycle, true);
+    // Draw beautiful lightning discharge directly between the shocker electrodes!
+    this.drawLightningArc(ctx, leftTerminalX, leftTerminalY, rightTerminalX, rightTerminalY, reactor, settings, hueCycle, true);
 
-      // Draw secondary backup/alternative discharge arcs for high voltage fullness
-      if (Math.random() < 0.65) {
-        const leftAltX = sideToggle ? F : L;
-        const leftAltY = sideToggle ? X : z;
-        const rightAltX = sideToggle ? nt : W;
-        const rightAltY = sideToggle ? et : B;
-        this.drawLightningArc(ctx, leftAltX, leftAltY, rightAltX, rightAltY, reactor, settings, (hueCycle + 0.5) % 1, true);
-      }
+    // Draw secondary backup/alternative discharge arcs for high voltage fullness
+    if (Math.random() < 0.65) {
+      const leftAltX = sideToggle ? F : L;
+      const leftAltY = sideToggle ? X : z;
+      const rightAltX = sideToggle ? nt : W;
+      const rightAltY = sideToggle ? et : B;
+      this.drawLightningArc(ctx, leftAltX, leftAltY, rightAltX, rightAltY, reactor, settings, (hueCycle + 0.5) % 1, true);
+    }
 
-      // Draw minor corona leakage sparks between electrodes of the same shocker
-      if (Math.random() < 0.35) {
-        this.drawLightningArc(ctx, L, z, F, X, reactor, settings, (hueCycle + 0.3) % 1, false);
-      }
-      if (Math.random() < 0.35) {
-        this.drawLightningArc(ctx, nt, et, W, B, reactor, settings, (hueCycle + 0.3) % 1, false);
-      }
+    // Draw minor corona leakage sparks between electrodes of the same shocker
+    if (Math.random() < 0.35) {
+      this.drawLightningArc(ctx, L, z, F, X, reactor, settings, (hueCycle + 0.3) % 1, false);
+    }
+    if (Math.random() < 0.35) {
+      this.drawLightningArc(ctx, nt, et, W, B, reactor, settings, (hueCycle + 0.3) % 1, false);
     }
 
     // Render glow particles
@@ -6045,7 +6023,7 @@ class CI {
         ctx.fillRect(18, -2.5, 8, 5);
 
         // Terminal tip corona glow
-        if (!reactor.paused) {
+        {
           const glowRadius = 4 + energy * 8;
           const gradientTipGlow = ctx.createRadialGradient(50, 0, 0, 50, 0, glowRadius);
           gradientTipGlow.addColorStop(0, "#ffffff");
@@ -6063,7 +6041,7 @@ class CI {
       drawElectrode(-terminalHeight);
 
       // Warning LED indicator
-      const warningLEDColor = reactor.paused ? "#ef4444" : `hsl(215, 100%, 55%)`;
+      const warningLEDColor = `hsl(215, 100%, 55%)`;
       ctx.shadowColor = warningLEDColor;
       ctx.shadowBlur = 8;
       ctx.fillStyle = warningLEDColor;
@@ -6082,7 +6060,7 @@ class CI {
       const numLevelBlocks = 5;
       const activeLevels = Math.floor(1 + energy * 4.5);
       for (let i = 0; i < numLevelBlocks; i++) {
-        ctx.fillStyle = (i < activeLevels && !reactor.paused) ? `hsla(215, 100%, 60%, 0.8)` : "#27272a";
+        ctx.fillStyle = (i < activeLevels) ? `hsla(215, 100%, 60%, 0.8)` : "#27272a";
         ctx.fillRect(-110 + i * 6, -18, 4, 5);
       }
       ctx.restore();
@@ -6097,8 +6075,8 @@ class CI {
     ctx.font = "10px monospace";
     ctx.textAlign = "center";
     
-    const voltageOutput = reactor.paused ? 0 : Math.round(240 + energy * 260);
-    const telemetryText = reactor.paused ? "⚡ ARREST CURRENT: IDLE / SYSTEM PAUSED" : `⚡ VOLT.ARC: ${voltageOutput} kV // COIL.TEMP: ${Math.round(2400 + high * 1100)}K // CAP: ${Math.round(80 + mid * 20)}%`;
+    const voltageOutput = Math.round(240 + energy * 260);
+    const telemetryText = `⚡ VOLT.ARC: ${voltageOutput} kV // COIL.TEMP: ${Math.round(2400 + high * 1100)}K // CAP: ${Math.round(80 + mid * 20)}%`;
     ctx.fillText(telemetryText, width / 2, 45);
     
     // Side brackets decoration
@@ -6826,7 +6804,7 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
         const onset = this.reactor.onset;
 
         const reactorMock = {
-          sBass, sMid, sHigh, sEnergy, onset, paused: !this.reactor.isPlaying,
+          sBass, sMid, sHigh, sEnergy, onset, paused: false,
           dataArray: this.reactor.dataArray
         };
 
@@ -7062,7 +7040,7 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
       }
 
       render() {
-        if (!this.visualizer || this.reactor.paused) return;
+        if (!this.visualizer) return;
         try {
           this.applyNeoSettings(this.getNeoSettings());
           this.visualizer.render();
@@ -8171,76 +8149,8 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
       });
     }
 
-    function isAnyAudioActive() {
-      if (synth.isActive) return true;
-      if (reactor._bufferSource) return true;
-      if (reactor.micNode) return true;
-      if (reactor.fileElement?.src && !reactor.fileElement.paused) return true;
-      return reactor.isPlaying;
-    }
-
-    function pausePlayback() {
-      synth.stop();
-      reactor.stopBufferSource();
-      if (reactor.fileElement && !reactor.fileElement.paused) reactor.fileElement.pause();
-      if (reactor.micNode || micActive || reactor.activeSource === 'mic') {
-        reactor.disableMic();
-        reactor._micPaused = true;
-        micActive = false;
-      }
-      if (reactor.ctx?.state === 'running') {
-        reactor.ctx.suspend().catch(() => {});
-      }
-      reactor.isPlaying = false;
-      updatePlayButtonHUD(false);
-    }
-
-    async function resumePlayback() {
-      if (reactor.ctx?.state === 'suspended') await reactor.ctx.resume();
-
-      if (reactor._micPaused || reactor.activeSource === 'mic') {
-        reactor._micPaused = false;
-        document.getElementById('btnMic').classList.add('active');
-        document.getElementById('btnSynth').classList.remove('active');
-        reactor.activeSource = 'mic';
-        const ok = await reactor.enableMic();
-        if (ok) {
-          micActive = true;
-          reactor.isPlaying = true;
-        } else {
-          reactor.activeSource = 'synth';
-          document.getElementById('btnMic').classList.remove('active');
-          synth.start();
-          reactor.isPlaying = true;
-        }
-        updatePlayButtonHUD(reactor.isPlaying);
-        return;
-      }
-
-      if (reactor.activeSource === 'buffer' && reactor.builtinBuffer) {
-        await reactor.playBuffer(true);
-        updatePlayButtonHUD(reactor.isPlaying);
-        return;
-      }
-
-      if (reactor.activeSource === 'file' && reactor.fileElement?.src) {
-        try {
-          await reactor.fileElement.play();
-          reactor.isPlaying = true;
-        } catch (e) {
-          console.warn('Play failed:', e);
-          reactor.isPlaying = false;
-        }
-        updatePlayButtonHUD(reactor.isPlaying);
-        return;
-      }
-
-      synth.start();
-      reactor.activeSource = 'synth';
-      reactor.isPlaying = true;
-      document.getElementById('btnSynth').classList.add('active');
-      document.getElementById('btnMic').classList.remove('active');
-      updatePlayButtonHUD(true);
+    function isFileSourceActive() {
+      return reactor.activeSource === 'file' && !!reactor.fileElement?.src;
     }
 
     async function togglePlayback() {
@@ -8248,10 +8158,23 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
         await startAudioContext();
         return;
       }
-      if (reactor.isPlaying || isAnyAudioActive()) {
-        pausePlayback();
+      if (!isFileSourceActive()) return;
+
+      if (reactor.ctx?.state === 'suspended') await reactor.ctx.resume();
+      if (reactor.fileElement.paused) {
+        try {
+          await reactor.fileElement.play();
+          reactor.isPlaying = true;
+          updatePlayButtonHUD(true);
+        } catch (e) {
+          console.warn('Play failed:', e);
+          reactor.isPlaying = false;
+          updatePlayButtonHUD(false);
+        }
       } else {
-        await resumePlayback();
+        reactor.fileElement.pause();
+        reactor.isPlaying = false;
+        updatePlayButtonHUD(false);
       }
     }
     window.togglePlayback = togglePlayback;
