@@ -573,12 +573,20 @@
       letter-spacing: 0;
     }
     .theme-swatch-yinyang {
-      background: #141414;
+      background: transparent;
+      border: none;
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 1px;
-      overflow: hidden;
+      padding: 0;
+      overflow: visible;
+    }
+    .theme-swatch-yinyang:hover {
+      border: 1px solid rgba(255, 255, 255, 0.4);
+    }
+    .theme-swatch-yinyang.active {
+      border: 1px solid #fff;
+      box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.35);
     }
     .theme-swatch-yinyang svg {
       width: 100%;
@@ -1537,16 +1545,16 @@
       <div class="param-labels"><span id="lblColor">ЦВЕТ //</span></div>
       <div class="theme-grid">
         <div class="theme-swatch theme-swatch-yinyang" onclick="setTheme(9)" data-theme="9" title="Инь-янь // Yin-Yang">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="#f4f4f5"/><path d="M12 2a10 10 0 0 1 0 20 5 5 0 0 1 0-10 5 5 0 0 0 0-10z" fill="#0a0a0a"/><circle cx="12" cy="7" r="1.6" fill="#f4f4f5"/><circle cx="12" cy="17" r="1.6" fill="#0a0a0a"/></svg>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="11" fill="#f4f4f5"/><path d="M12 1a11 11 0 0 1 0 22 5.5 5.5 0 0 1 0-11 5.5 5.5 0 0 0 0-11z" fill="#0a0a0a"/><circle cx="12" cy="6.5" r="2.15" fill="#f4f4f5"/><circle cx="12" cy="17.5" r="2.15" fill="#0a0a0a"/></svg>
         </div>
         <div class="theme-swatch" style="background:linear-gradient(135deg,#ff4466,#cc0022)" onclick="setTheme(1)" data-theme="1" title="Красный // Red"></div>
         <div class="theme-swatch" style="background:linear-gradient(135deg,#ffaa22,#ff5500)" onclick="setTheme(2)" data-theme="2" title="Оранжевый // Orange"></div>
         <div class="theme-swatch" style="background:linear-gradient(135deg,#ffe566,#ccaa00)" onclick="setTheme(3)" data-theme="3" title="Жёлтый // Yellow"></div>
         <div class="theme-swatch" style="background:linear-gradient(135deg,#66ff88,#008833)" onclick="setTheme(4)" data-theme="4" title="Зелёный // Green"></div>
-        <div class="theme-swatch" style="background:linear-gradient(135deg,#00ffcc,#0033cc)" onclick="setTheme(8)" data-theme="8" title="Сине-зелёный // Aqua-Teal"></div>
         <div class="theme-swatch" style="background:linear-gradient(135deg,#00f0ff,#ff007f)" onclick="setTheme(7)" data-theme="7" title="Сиренево-голубой // Lilac-Cyan"></div>
-        <div class="theme-swatch" style="background:linear-gradient(135deg,#cc66ff,#6600cc)" onclick="setTheme(6)" data-theme="6" title="Фиолетовый // Violet"></div>
         <div class="theme-swatch" style="background:linear-gradient(135deg,#55aaff,#0033cc)" onclick="setTheme(5)" data-theme="5" title="Синий // Blue"></div>
+        <div class="theme-swatch" style="background:linear-gradient(135deg,#cc66ff,#6600cc)" onclick="setTheme(6)" data-theme="6" title="Фиолетовый // Violet"></div>
+        <div class="theme-swatch" style="background:linear-gradient(135deg,#00ffcc,#0033cc)" onclick="setTheme(8)" data-theme="8" title="Сине-зелёный // Aqua-Teal"></div>
         <div class="theme-swatch theme-swatch-auto active" onclick="setTheme(0)" data-theme="0" title="Авто // Auto">A</div>
       </div>
     </div>
