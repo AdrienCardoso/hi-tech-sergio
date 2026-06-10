@@ -572,19 +572,38 @@
       box-shadow: 0 0 0 2px rgba(196, 181, 253, 0.9), inset 0 0 0 1px rgba(255, 255, 255, 0.25);
       z-index: 2;
     }
-    .theme-swatch-auto {
-      background: #0a0a0a;
-      padding: 0;
-      overflow: hidden;
+    .theme-swatch-rainbow {
+      background: transparent;
+      border: none;
       display: flex;
       align-items: center;
       justify-content: center;
+      padding: 0;
+      overflow: visible;
     }
-    .theme-swatch-auto img {
+    .theme-swatch-rainbow:hover {
+      border: 1px solid rgba(255, 255, 255, 0.4);
+    }
+    .theme-swatch-rainbow.active {
+      border: 1px solid #fff;
+      box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.35);
+    }
+    .theme-swatch-rainbow .theme-swatch-disc {
       width: 100%;
       height: 100%;
-      object-fit: contain;
+      border-radius: 50%;
       display: block;
+      background: conic-gradient(
+        from 0deg,
+        #ff0000 0deg,
+        #ffe800 55deg,
+        #55ff00 110deg,
+        #00ffff 165deg,
+        #0055ff 220deg,
+        #aa00ff 275deg,
+        #ff0088 330deg,
+        #ff0000 360deg
+      );
     }
     .theme-swatch-yinyang {
       background: transparent;
@@ -1239,6 +1258,15 @@
       border-color: #18181b;
       box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.15), 0 2px 6px rgba(0, 0, 0, 0.12);
     }
+    .light-theme .theme-swatch-yinyang:hover,
+    .light-theme .theme-swatch-rainbow:hover {
+      border: 1px solid rgba(0, 0, 0, 0.22);
+    }
+    .light-theme .theme-swatch-yinyang.active,
+    .light-theme .theme-swatch-rainbow.active {
+      border-color: #18181b;
+      box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.15), 0 2px 6px rgba(0, 0, 0, 0.12);
+    }
     .light-theme .playlist-panel {
       background: var(--panel-bg);
       border-color: var(--panel-border);
@@ -1568,8 +1596,8 @@
         <div class="theme-swatch" style="background:linear-gradient(135deg,#00f0ff,#0088bb)" onclick="setThemeColor(5)" data-color="5" title="Голубой // Cyan — 2-й клик другого цвета = смесь"></div>
         <div class="theme-swatch" style="background:linear-gradient(135deg,#55aaff,#0033cc)" onclick="setThemeColor(6)" data-color="6" title="Синий // Blue"></div>
         <div class="theme-swatch" style="background:linear-gradient(135deg,#e066ff,#ff007f)" onclick="setThemeColor(7)" data-color="7" title="Сиреневый // Lilac — 2-й клик другого цвета = смесь"></div>
-        <div class="theme-swatch theme-swatch-auto active" onclick="setTheme(0)" data-theme="0" title="Разноцветный // Rainbow">
-          <img src="assets/theme-rainbow-wheel.png" alt="" draggable="false">
+        <div class="theme-swatch theme-swatch-rainbow active" onclick="setTheme(0)" data-theme="0" title="Разноцветный // Rainbow">
+          <span class="theme-swatch-disc" aria-hidden="true"></span>
         </div>
       </div>
     </div>
