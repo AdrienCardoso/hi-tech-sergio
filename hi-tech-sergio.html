@@ -1652,9 +1652,9 @@
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2M12 19v4M8 23h8"/></svg>
             <span class="ctrl-label">МИК</span>
           </button>
-          <button class="ctrl-btn active" id="btnSynth" title="Синтезатор">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="10" rx="2"/><line x1="6" y1="11" x2="6" y2="13"/><line x1="10" y1="9" x2="10" y2="15"/><line x1="14" y1="10" x2="14" y2="14"/><line x1="18" y1="8" x2="18" y2="16"/></svg>
-            <span class="ctrl-label">СИНТЕЗ</span>
+          <button class="ctrl-btn active" id="btnDemo" title="Демо-трек">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><polygon points="10 8.5 15.5 12 10 15.5" fill="currentColor" stroke="none"/></svg>
+            <span class="ctrl-label">ДЕМО</span>
           </button>
         </div>
         <div class="controls-right">
@@ -2879,7 +2879,7 @@
         this.energy = 0;
         
         this.isMuted = false;
-        this.activeSource = 'synth'; // 'synth', 'file', 'mic', 'buffer'
+        this.activeSource = 'demo'; // 'demo', 'file', 'mic', 'buffer', 'synth'
         this.isPlaying = false;
         this._micPaused = false;
         this.onset = false;
@@ -3630,6 +3630,64 @@
     const playlist = [];
     let playlistIndex = -1;
     let fileEventsBound = false;
+    let demoTrackResolvedUrl = null;
+
+    const DEMO_TRACK = {
+      urls: ['assets/demo.ogg', 'assets/demo.mp3'],
+      title: ['ДЕМО-ТРЕК', 'DEMO TRACK']
+    };
+
+    async function getDemoTrackUrl() {
+      if (demoTrackResolvedUrl) return demoTrackResolvedUrl;
+      for (const url of DEMO_TRACK.urls) {
+        try {
+          const res = await fetch(url, { method: 'HEAD' });
+          if (res.ok) {
+            demoTrackResolvedUrl = url;
+            return url;
+          }
+        } catch (e) { /* try next */ }
+      }
+      return null;
+    }
+
+    async function startDemoPlayback() {
+      if (!reactor.ctx) return false;
+      bindFileElementEvents();
+      const url = await getDemoTrackUrl();
+      if (!url) return false;
+
+      if (reactor.ctx.state === 'suspended') await reactor.ctx.resume();
+      synth.stop();
+      reactor.disableMic();
+      reactor.stopBufferSource();
+      if (reactor.fileElement) reactor.fileElement.pause();
+
+      reactor.fileElement.loop = true;
+      reactor.fileElement.src = url;
+      reactor.fileElement.load();
+      await new Promise((resolve) => {
+        if (reactor.fileElement.readyState >= 2) return resolve();
+        reactor.fileElement.addEventListener('canplay', resolve, { once: true });
+        reactor.fileElement.addEventListener('error', resolve, { once: true });
+        setTimeout(resolve, 12000);
+      });
+      try {
+        await reactor.fileElement.play();
+        reactor.activeSource = 'demo';
+        reactor.isPlaying = true;
+        document.getElementById('trackTitle').innerText = t('demoTitle');
+        document.getElementById('timelineBar').classList.remove('disabled');
+        updatePlayButtonHUD(true);
+        updateTrackSourceLabel();
+        return true;
+      } catch (e) {
+        console.warn('Demo play failed:', e);
+        reactor.isPlaying = false;
+        updatePlayButtonHUD(false);
+        return false;
+      }
+    }
 
     function isAudioFile(f) {
       return f && (f.type.startsWith('audio/') || /\.(mp3|wav|ogg|flac|aac|m4a|opus)$/i.test(f.name));
@@ -3639,7 +3697,7 @@
       if (fileEventsBound || !reactor.fileElement) return;
       fileEventsBound = true;
       reactor.fileElement.addEventListener('timeupdate', () => {
-        if (reactor.activeSource !== 'file') return;
+        if (reactor.activeSource !== 'file' && reactor.activeSource !== 'demo') return;
         const cur = reactor.fileElement.currentTime;
         const tot = reactor.fileElement.duration || 0;
         document.getElementById('timeCurrent').innerText = formatTime(cur);
@@ -3648,18 +3706,19 @@
         }
       });
       reactor.fileElement.addEventListener('ended', () => {
+        if (reactor.activeSource === 'demo') return;
         if (reactor.activeSource !== 'file' || playlist.length === 0) return;
         const next = playlistIndex + 1;
         if (next < playlist.length) playPlaylistTrack(next);
         else playPlaylistTrack(0);
       });
       reactor.fileElement.addEventListener('pause', () => {
-        if (reactor.activeSource !== 'file') return;
+        if (reactor.activeSource !== 'file' && reactor.activeSource !== 'demo') return;
         reactor.isPlaying = false;
         updatePlayButtonHUD(false);
       });
       reactor.fileElement.addEventListener('play', () => {
-        if (reactor.activeSource !== 'file') return;
+        if (reactor.activeSource !== 'file' && reactor.activeSource !== 'demo') return;
         reactor.isPlaying = true;
         updatePlayButtonHUD(true);
       });
@@ -3706,7 +3765,7 @@
       if (reactor.ctx.state === 'suspended') await reactor.ctx.resume();
       synth.stop();
       reactor.disableMic();
-      document.getElementById('btnSynth').classList.remove('active');
+      document.getElementById('btnDemo').classList.remove('active');
       document.getElementById('btnMic').classList.remove('active');
       document.getElementById('timelineBar').classList.remove('disabled');
       document.getElementById('trackTitle').innerText = item.name;
@@ -3751,8 +3810,8 @@
       playlist.splice(index, 1);
       if (playlist.length === 0) {
         playlistIndex = -1;
-        if (reactor.activeSource === 'file' || reactor.activeSource === 'buffer') {
-          setAudioSource('synth');
+        if (reactor.activeSource === 'file' || reactor.activeSource === 'demo' || reactor.activeSource === 'buffer') {
+          setAudioSource('demo');
         }
       } else if (index === playlistIndex) {
         playPlaylistTrack(Math.min(index, playlist.length - 1));
@@ -4173,12 +4232,15 @@
       playlistLoad: ['ДОБАВИТЬ', 'ADD'],
       playlistDrop: ['Перетащите сюда несколько треков', 'Drop multiple tracks here'],
       playlistEmpty: ['Плейлист пуст', 'Playlist is empty'],
+      demoSource: ['ДЕМО-ТРЕК', 'DEMO TRACK'],
+      demoTitle: ['ДЕМО-ТРЕК', 'DEMO TRACK'],
+      demoLoad: ['Загрузка демо…', 'Loading demo…'],
+      demoMissing: ['Демо-файл не найден', 'Demo file not found'],
       synthSource: ['СИНТЕЗАТОР', 'SYNTH PROSTHETIC'],
       fileSource: ['АУДИОПОТОК', 'TRACK FEED'],
       micSource: ['МИКРОФОН', 'MIC FEED'],
       loop: ['ПОВТОР', 'LOOP'],
-      mic: ['МИК', 'MIC'], file: ['ФАЙЛ', 'FILE'], synth: ['СИНТЕЗ', 'SYNTH'],
-      procSynth: ['NEO DRIFT', 'NEO DRIFT'],
+      mic: ['МИК', 'MIC'], file: ['ФАЙЛ', 'FILE'], demo: ['ДЕМО', 'DEMO'],
       enter: ['НАЧАТЬ', 'ENTER EXPERIENCE'],
       introHint: ['Двигай мышью · клик для входа', 'Move mouse · click to enter'],
       introBoot1: ['ИНИЦИАЛИЗАЦИЯ ШЕЙДЕРОВ…', 'INITIALIZING SHADERS…'],
@@ -4225,7 +4287,8 @@
       document.getElementById('dragHint').textContent = t('dragHint');
       document.getElementById('timeLoop').textContent = t('loop');
       document.querySelector('#btnMic .ctrl-label').textContent = t('mic');
-      document.querySelector('#btnSynth .ctrl-label').textContent = t('synth');
+      document.querySelector('#btnDemo .ctrl-label').textContent = t('demo');
+      document.getElementById('btnDemo').title = isRu ? 'Демо-трек' : 'Demo track';
       document.getElementById('playlistTitle').textContent = t('playlistTitle');
       document.getElementById('playlistLoadLabel').textContent = t('playlistLoad');
       document.getElementById('playlistDropHint').textContent = t('playlistDrop');
@@ -4344,7 +4407,8 @@
 
     function updateTrackSourceLabel() {
       const src = document.getElementById('trackSource');
-      if (reactor.activeSource === 'synth') src.textContent = t('synthSource');
+      if (reactor.activeSource === 'demo') src.textContent = t('demoSource');
+      else if (reactor.activeSource === 'synth') src.textContent = t('synthSource');
       else if (reactor.activeSource === 'file' || reactor.activeSource === 'buffer') src.textContent = t('fileSource');
       else src.textContent = t('micSource');
     }
@@ -7838,7 +7902,7 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
       });
       document.getElementById('resetParamsBtn').addEventListener('click', resetParams);
       document.getElementById('btnMic').addEventListener('click', () => setAudioSource('mic'));
-      document.getElementById('btnSynth').addEventListener('click', () => setAudioSource('synth'));
+      document.getElementById('btnDemo').addEventListener('click', () => setAudioSource('demo'));
       document.getElementById('cinemaBtn').addEventListener('click', toggleCinemaMode);
 
       let donateOpen = false;
@@ -7952,7 +8016,9 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
       }
 
       renderPlaylist();
-      await setAudioSource('synth');
+      showToast(t('demoLoad'));
+      await setAudioSource('demo');
+      hideToast();
     }
 
     let renderAccumulator = 0.0;
@@ -8057,7 +8123,7 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
     async function setAudioSource(source) {
       if (!isAudioCtxStarted) return;
       
-      document.getElementById('btnSynth').classList.remove('active');
+      document.getElementById('btnDemo').classList.remove('active');
       document.getElementById('btnMic').classList.remove('active');
       micActive = false;
       reactor._micPaused = false;
@@ -8073,15 +8139,30 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
 
       reactor.activeSource = source;
 
+      if (source === 'demo') {
+        document.getElementById('btnDemo').classList.add('active');
+        document.getElementById('timelineBar').classList.remove('disabled');
+        const ok = await startDemoPlayback();
+        if (ok) {
+          updateTrackSourceLabel();
+          return;
+        }
+        document.getElementById('btnDemo').classList.remove('active');
+        showToast(t('demoMissing'), false);
+        source = 'synth';
+        reactor.activeSource = 'synth';
+      }
+
       if (source === 'synth') {
-        document.getElementById('btnSynth').classList.add('active');
-        document.getElementById('trackTitle').innerText = t('procSynth');
+        document.getElementById('btnDemo').classList.remove('active');
+        document.getElementById('trackTitle').innerText = 'NEO DRIFT';
         document.getElementById('timelineBar').classList.add('disabled');
         document.getElementById('timelineFill').style.width = '0%';
         synth.start();
         reactor.isPlaying = true;
         updatePlayButtonHUD(true);
-      } 
+        updateTrackSourceLabel();
+      }
       else if (source === 'file') {
         document.getElementById('timelineBar').classList.remove('disabled');
       }
@@ -8094,7 +8175,7 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
         const ok = await reactor.enableMic();
         hideToast();
         if (ok) { micActive = true; reactor.isPlaying = true; updatePlayButtonHUD(true); }
-        else setAudioSource('synth');
+        else await setAudioSource('demo');
       }
       updateTrackSourceLabel();
     }
@@ -8336,7 +8417,7 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
     window.setThemeColor = setThemeColor;
 
     function isFileSourceActive() {
-      return reactor.activeSource === 'file' && !!reactor.fileElement?.src;
+      return (reactor.activeSource === 'file' || reactor.activeSource === 'demo') && !!reactor.fileElement?.src;
     }
 
     async function togglePlayback() {

@@ -8,6 +8,9 @@ _neo_test*
 *.mov
 *.mkv
 *.mp3
+!assets/demo.mp3
+*.ogg
+!assets/demo.ogg
 *.wav
 *.flac
 
