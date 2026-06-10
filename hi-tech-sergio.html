@@ -289,6 +289,17 @@
       flex-shrink: 0;
     }
     .modes-variants-wrap.visible > .modes-variants-panel { display: flex; }
+    .modes-variants-panel--extended {
+      justify-content: flex-start;
+      max-height: min(72vh, 520px);
+      overflow-y: auto;
+      scrollbar-width: thin;
+    }
+    .modes-variants-panel--extended .variant-cell {
+      flex: 0 0 22px;
+      min-height: 22px;
+      height: 22px;
+    }
     .modes-variants-panel--extra-col {
       justify-content: flex-start;
     }
@@ -3962,19 +3973,16 @@
       }
       panel.innerHTML = Array.from({ length: VISUAL_VARIANT_COL_SIZE }, (_, i) => renderVariantCellHtml(i, family, mode)).join('');
 
+      const extraSlots = getAssignedVariantSlots(mode).filter(s => s > VISUAL_VARIANT_COL_SIZE);
       Array.from(wrap.children).forEach(el => {
         if (el !== panel) el.remove();
       });
-      getVariantExtraColumns(mode).forEach(colSlots => {
-        const isFullCol = colSlots.length >= VISUAL_VARIANT_COL_SIZE;
-        const col = document.createElement('div');
-        col.className = isFullCol
-          ? 'modes-variants-panel'
-          : 'modes-variants-panel modes-variants-panel--extra-col';
-        col.setAttribute('aria-label', `Variants ${colSlots[0]}–${colSlots[colSlots.length - 1]}`);
-        col.innerHTML = colSlots.map(slotNum => renderVariantCellHtml(slotNum - 1, family, mode)).join('');
-        wrap.appendChild(col);
-      });
+      if (extraSlots.length > 0) {
+        panel.innerHTML += extraSlots.map(slotNum => renderVariantCellHtml(slotNum - 1, family, mode)).join('');
+        panel.classList.add('modes-variants-panel--extended');
+      } else {
+        panel.classList.remove('modes-variants-panel--extended');
+      }
     }
 
         const MODES = [
