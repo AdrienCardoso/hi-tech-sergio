@@ -7090,8 +7090,40 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
             });
           }
           return p;
+        },
+        // Other #237 — comp-шейдер и bass² слишком выжигают белый при sensitivity
+        'shifter - fire and brimstone': (preset) => {
+          const p = JSON.parse(JSON.stringify(preset));
+          if (typeof p.comp === 'string') {
+            p.comp = p.comp
+              .replace('vec3(0.8, 2.0, 8.0)', 'vec3(0.85, 1.35, 3.0)')
+              .replace('* 1.25)', '* 0.92)')
+              .replace('- 0.25)', '- 0.14)')
+              .replace('* 1.2))', '* 1.02))')
+              .replace('ret_1 = (ret_1 * 2.0);', 'ret_1 = (ret_1 * 1.22);');
+          }
+          if (p.frame_eqs_eel) {
+            p.frame_eqs_eel = p.frame_eqs_eel
+              .replace('min(q1*.5,2)', 'min(q1*.32,1.1)')
+              .replace(/tic\*bass\*bass\*\.1/g, 'tic*bass*bass*.05')
+              .replace(/tic\*bass\*bass\*\.2/g, 'tic*bass*bass*.1');
+          }
+          return p;
         }
       };
+
+      // Доп. ослабление audio/CSS для отдельных пресетов (номер = Other #N)
+      static PRESET_NEO_TUNING = {
+        'shifter - fire and brimstone': { sensMul: 0.48, brightMul: 0.82, brightCss: -0.1, contrastCss: -0.05 },
+        237: { sensMul: 0.48, brightMul: 0.82, brightCss: -0.1, contrastCss: -0.05 }
+      };
+
+      getPresetNeoTuning() {
+        const key = this.presetKeys[this.presetIndex];
+        const byKey = key ? MilkDropEngine.PRESET_NEO_TUNING[key] : null;
+        if (byKey) return byKey;
+        return MilkDropEngine.PRESET_NEO_TUNING[this.presetIndex + 1] || null;
+      }
 
       applyPresetPatch(key, preset) {
         const patch = MilkDropEngine.PRESET_PATCHES[key];
@@ -7121,14 +7153,20 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
       }
 
       applyNeoSettings(settings) {
+        const tuning = this.getPresetNeoTuning();
+        const sensMul = tuning?.sensMul ?? 1;
+        const effectiveSens = settings.sensitivity * sensMul;
+
         if (this.mdGain) {
-          this.mdGain.gain.value = settings.sensitivity;
+          this.mdGain.gain.value = effectiveSens;
         }
 
-        const bright = settings.brightness;
+        const bright = settings.brightness * (tuning?.brightMul ?? 1);
         const turb = settings.turbulence;
         const trail = settings.trail;
-        let filter = `brightness(${(0.72 + bright * 0.12).toFixed(3)}) contrast(${(0.92 + turb * 0.06).toFixed(3)})`;
+        const brightCss = tuning?.brightCss ?? 0;
+        const contrastCss = tuning?.contrastCss ?? 0;
+        let filter = `brightness(${(0.72 + bright * 0.12 + brightCss).toFixed(3)}) contrast(${(0.92 + turb * 0.06 + contrastCss).toFixed(3)})`;
         if (settings.themeIdx > 0 || settings.themeColorA > 0) {
           filter += ` hue-rotate(${settings.colorHue.toFixed(1)}deg)`;
         }
