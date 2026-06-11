@@ -10,6 +10,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
   <script src="https://unpkg.com/butterchurn-presets@3.0.0-beta.4/dist/base.min.js"></script>
   <script src="https://unpkg.com/butterchurn-presets@3.0.0-beta.4/dist/extra.min.js"></script>
+  <script src="aether/aether-engine.js"></script>
 
   <style>
     :root {
@@ -4017,7 +4018,8 @@
       '8D-21': { type: 'milkdrop', presetNumber: 249 },
       '10D-2': { type: 'webgl', visualMode: 1, variantIdx: 0 },
       '10D-3': { type: 'webgl', visualMode: 4, variantIdx: 0 },
-      '10D-4': { type: 'webgl', visualMode: 8, variantIdx: 0 }
+      '10D-4': { type: 'webgl', visualMode: 8, variantIdx: 0 },
+      '10D-5': { type: 'aether', preset: 'geo_rosette_vortex' }
     };
 
     // Удалённые слоты: ячейки не показываются, визуал недоступен
@@ -4028,7 +4030,7 @@
       '6D-5', '6D-6', '6D-7', '6D-8', '6D-9', '6D-10', '6D-11', '6D-12',
       '8D-22', '8D-23', '8D-24', '8D-25',
       '9D-15',
-      '10D-5', '10D-6', '10D-7', '10D-8', '10D-9', '10D-10', '10D-11', '10D-12',
+      '10D-6', '10D-7', '10D-8', '10D-9', '10D-10', '10D-11', '10D-12',
     ]);
 
     // Пресеты, убранные из Other (ключ и/или № в полном списке — нумерация не сбивается)
@@ -7070,6 +7072,7 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
 
     let threeEngine = null;
     let canvas2dEngine = null;
+    let aetherEngine = null;
     let milkdropEngine = null;
     let introSplash = null;
     let resizeVisualsRaf = 0;
@@ -7078,6 +7081,7 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
       if (engine) engine.resize();
       if (threeEngine) threeEngine.resize();
       if (canvas2dEngine) canvas2dEngine.resize();
+      if (aetherEngine) aetherEngine.resize();
       if (milkdropEngine) milkdropEngine.resize();
     }
 
@@ -7602,6 +7606,7 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
       
       const c2dCanvas = document.getElementById('canvas2d');
       canvas2dEngine = new Canvas2DEngine(c2dCanvas, reactor);
+      aetherEngine = new AetherEngine(c2dCanvas, reactor);
 
       const mdCanvas = document.getElementById('milkdropCanvas');
       milkdropEngine = new MilkDropEngine(mdCanvas, reactor);
@@ -7617,6 +7622,8 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
         
         canvas2dEngine.init();
         canvas2dEngine.resize();
+        aetherEngine.init();
+        aetherEngine.resize();
         
         window.addEventListener('resize', scheduleResizeVisuals);
 
@@ -8088,7 +8095,7 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
 
       if (milkdropEngine) milkdropEngine.ensurePresetList();
 
-      if (!keepCurrentMode) setVisualMode(11);
+      if (!keepCurrentMode) enableModeX();
 
       if (!renderLoopStarted) {
         renderLoopStarted = true;
@@ -8137,6 +8144,8 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
 
       if (dir?.type === 'milkdrop') {
         if (milkdropEngine) milkdropEngine.render();
+      } else if (dir?.type === 'aether') {
+        if (aetherEngine) aetherEngine.render(dt);
       } else if (dir?.type === 'webgl') {
         const savedMode = engine.visualMode;
         const savedVar = engine.variantIdx;
@@ -8348,6 +8357,15 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
           activeDirectorySlot = slot;
           milkdropEngine.loadDirectoryPreset(dir, 0);
         }
+        return;
+      }
+
+      if (dir?.type === 'aether') {
+        particleCanvas.style.display = 'none';
+        threeCanvas.style.display = 'none';
+        canvas2d.style.display = 'block';
+        milkdropCanvas.style.display = 'none';
+        if (aetherEngine) aetherEngine.setPreset(dir.preset || 'geo_rosette_vortex');
         return;
       }
 
