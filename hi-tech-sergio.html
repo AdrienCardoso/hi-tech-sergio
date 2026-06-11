@@ -2905,6 +2905,7 @@
         this.fileElement = null;
         this.fileNode = null;
         this.gainNode = null;
+        this.visualTap = null;
         
         // Output features smoothed using interpolation
         this.bass = 0;
@@ -2935,6 +2936,9 @@
 
         this.gainNode = this.ctx.createGain();
         this.gainNode.gain.setValueAtTime(0.6, this.ctx.currentTime);
+
+        this.visualTap = this.ctx.createGain();
+        this.visualTap.gain.value = 1.0;
 
         const bufferLength = this.analyser.frequencyBinCount;
         this.dataArray = new Uint8Array(bufferLength);
@@ -2971,6 +2975,7 @@
         }
 
         this.analyser.connect(this.gainNode);
+        this.analyser.connect(this.visualTap);
         this.gainNode.connect(this.ctx.destination);
         this._audioGraphReady = true;
 
@@ -3110,6 +3115,7 @@
       setVolume(val) {
         if (!this.gainNode) return;
         this.gainNode.gain.setValueAtTime(val, this.ctx.currentTime);
+        if (this.visualTap) this.visualTap.gain.value = 1.0;
       }
 
       toggleMute() {
@@ -7272,10 +7278,10 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
             pixelRatio: devicePixelRatio || 1,
             textureRatio: 1,
           });
-          if (this.reactor.gainNode && this.reactor.ctx) {
+          if (this.reactor.visualTap && this.reactor.ctx) {
             this.mdGain = this.reactor.ctx.createGain();
             this.mdGain.gain.value = parseFloat(document.getElementById('paramSensitivity')?.value || '1');
-            this.reactor.gainNode.connect(this.mdGain);
+            this.reactor.visualTap.connect(this.mdGain);
             this.visualizer.connectAudio(this.mdGain);
           }
           const available = this.presetKeys
