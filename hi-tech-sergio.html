@@ -544,7 +544,7 @@
     .param-select optgroup { background: #111; color: var(--text-muted); font-weight: 600; }
     .theme-grid {
       display: grid;
-      grid-template-columns: repeat(10, 1fr);
+      grid-template-columns: repeat(9, 1fr);
       gap: 3px;
       margin-top: 4px;
       width: 100%;
@@ -629,12 +629,6 @@
       width: 100%;
       height: 100%;
       display: block;
-    }
-    .theme-swatch-bw {
-      background: linear-gradient(145deg, #f0f0f0 0%, #666 45%, #1a1a1a 100%);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 7px; font-weight: 700; letter-spacing: 0.04em;
-      color: rgba(255,255,255,0.92); text-shadow: 0 1px 2px rgba(0,0,0,0.6);
     }
 
     /* ── Playlist panel ── */
@@ -1129,7 +1123,6 @@
       0%, 100% { transform: scale(1); opacity: 0.55; }
       50% { transform: scale(1.08); opacity: 1; }
     }
-    .intro-overlay.ready { cursor: pointer; }
 
 
     /* ── Light theme overrides ── */
@@ -1627,7 +1620,7 @@
     <div class="param-group">
       <div class="param-labels"><span id="lblColor">ЦВЕТ //</span></div>
       <div class="theme-grid">
-        <div class="theme-swatch theme-swatch-yinyang" onclick="setTheme(9)" data-theme="9" title="Инь-янь // Yin-Yang">
+        <div class="theme-swatch theme-swatch-yinyang" onclick="setTheme(9)" data-theme="9" title="Инь-янь · Ч/Б // Yin-Yang · B&amp;W desaturate">
           <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="11" fill="#f4f4f5"/><path d="M12 1a11 11 0 0 1 0 22 5.5 5.5 0 0 1 0-11 5.5 5.5 0 0 0 0-11z" fill="#0a0a0a"/><circle cx="12" cy="6.5" r="2.15" fill="#f4f4f5"/><circle cx="12" cy="17.5" r="2.15" fill="#0a0a0a"/></svg>
         </div>
         <div class="theme-swatch" style="background:linear-gradient(135deg,#ff4466,#cc0022)" onclick="setThemeColor(1)" data-color="1" title="Красный // Red"></div>
@@ -1637,7 +1630,6 @@
         <div class="theme-swatch" style="background:linear-gradient(135deg,#00f0ff,#0088bb)" onclick="setThemeColor(5)" data-color="5" title="Голубой // Cyan — 2-й клик другого цвета = смесь"></div>
         <div class="theme-swatch" style="background:linear-gradient(135deg,#55aaff,#0033cc)" onclick="setThemeColor(6)" data-color="6" title="Синий // Blue"></div>
         <div class="theme-swatch" style="background:linear-gradient(135deg,#e066ff,#ff007f)" onclick="setThemeColor(7)" data-color="7" title="Сиреневый // Lilac — 2-й клик другого цвета = смесь"></div>
-        <div class="theme-swatch theme-swatch-bw" onclick="setTheme(10)" data-theme="10" title="Ч/Б — обесцветить любой визуал // B&amp;W desaturate">B/W</div>
         <div class="theme-swatch theme-swatch-rainbow active" onclick="setTheme(0)" data-theme="0" title="Разноцветный // Rainbow">
           <span class="theme-swatch-disc" aria-hidden="true"></span>
         </div>
@@ -1920,7 +1912,7 @@
 
       vec3 paletteByTheme(float t, float amp) {
         t = fract(t);
-        if (uPaletteTheme > 9.5) {
+        if (uPaletteTheme > 8.5) {
           float gray;
           if (uLightTheme > 0.5) {
             gray = mix(0.92, 0.08, t) - amp * 0.45;
@@ -1928,11 +1920,6 @@
             gray = mix(0.08, 0.92, t) + amp * 0.45;
           }
           return vec3(clamp(gray, 0.0, 1.0));
-        }
-        if (uPaletteTheme > 8.5) {
-          float side = step(0.5, fract(t * 2.0 + uTime * 0.015));
-          float g = mix(0.1, 0.9, side) + amp * 0.12 * (side * 2.0 - 1.0);
-          return vec3(clamp(g, 0.0, 1.0));
         }
         if (uPaletteColorB > 0.5) {
           return mix(baseColorByIdx(uPaletteColorA, t, amp), baseColorByIdx(uPaletteColorB, t, amp), t);
@@ -2771,7 +2758,7 @@
           vec3 iceCyan = vec3(0.12, 0.82, 1.12);
           float bright = 0.72 + amp * 0.55 + uMid * 0.22;
 
-          if (uPaletteTheme > 9.5) {
+          if (uPaletteTheme > 8.5) {
             if (frontFactor4 > 1.5) {
               float g = 0.35 + fract(aIndexSeed * 11.0) * 0.55;
               vColor = vec3(g) * bright;
@@ -2782,10 +2769,6 @@
               float g = mix(0.25, 0.95, smoothstep(0.0, 0.85, t));
               vColor = vec3(g) * bright;
             }
-          } else if (uPaletteTheme > 8.5) {
-            float side = step(0.5, fract(frontFactor4 * 2.0 + uTime * 0.02));
-            float g = mix(0.15, 0.88, side);
-            vColor = vec3(g) * bright;
           } else if (uPaletteColorA >= 1.5 && uPaletteColorA < 2.5 && uPaletteColorB < 0.5) {
             if (frontFactor4 > 1.5) {
               float streak = fract(aIndexSeed * 19.0 + frontFactor4);
@@ -4708,13 +4691,9 @@ class FractalZoom4D {
         }
         vec3 themeCol(float t) {
           t = fract(t);
-          if (uPaletteTheme > 9.5) {
+          if (uPaletteTheme > 8.5) {
             float g = mix(0.08, 0.95, t);
             return vec3(g);
-          }
-          if (uPaletteTheme > 8.5) {
-            float side = step(0.5, fract(t * 2.0 + uTime * 0.015));
-            return vec3(mix(0.1, 0.9, side));
           }
           if (uPaletteColorB > 0.5) {
             return mix(baseColorByIdx(uPaletteColorA, t), baseColorByIdx(uPaletteColorB, t), t);
@@ -5590,12 +5569,9 @@ class RI {
       const theme = (ts.themeIdx !== undefined) ? ts.themeIdx : 0;
       const ca = (ts.themeColorA !== undefined) ? ts.themeColorA : 0;
       const cb = (ts.themeColorB !== undefined) ? ts.themeColorB : 0;
-      if (theme === 10) {
+      if (theme === 9) {
         const gray = 0.92 * (1 - _) + 0.08 * _;
         g.setRGB(gray, gray, gray);
-      } else if (theme === 9) {
-        const side = Math.sin(performance.now() * 0.002 + variant * 0.5) > 0 ? 0.92 : 0.12;
-        g.setRGB(side, side, side);
       } else if (cb > 0 && ca > 0) {
         const rgb = mixThemeRgb(ca, cb, _);
         g.setRGB(rgb[0], rgb[1], rgb[2]);
@@ -6593,7 +6569,7 @@ class HybridRelation {
           col += mix(c1, c5, 0.5) * (tri + gems) * glowAmt * 0.32 * varPeak(11.0);
           col += (c0 * gridA + c3 * gridD + c5 * tri) * glowAmt * 0.18;
 
-          if (uPaletteTheme > 9.5) {
+          if (uPaletteTheme > 8.5) {
             float g = dot(col, vec3(0.299, 0.587, 0.114));
             col = vec3(g);
           }
@@ -6833,7 +6809,7 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
 
     // --- Coordinator Engines ---
     function isThemeGrayscale() {
-      return engine && Math.round(engine.themeIdx) === 10;
+      return engine && Math.round(engine.themeIdx) === 9;
     }
 
     function applyCanvasGrayscale() {
@@ -6854,7 +6830,7 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
 
     function computeThemeColorHue(settings) {
       const s = settings || getThemeSettings();
-      if (s.themeIdx === 9 || s.themeIdx === 10) return 0;
+      if (s.themeIdx === 9) return 0;
       if (!s.themeColorA) return (performance.now() * 0.02) % 360;
       const a = THEME_COLOR_HUES[s.themeColorA] || 0;
       if (s.themeColorB) {
@@ -7244,9 +7220,9 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
         const brightCss = tuning?.brightCss ?? 0;
         const contrastCss = tuning?.contrastCss ?? 0;
         let filter = `brightness(${(0.72 + bright * 0.12 + brightCss).toFixed(3)}) contrast(${(0.92 + turb * 0.06 + contrastCss).toFixed(3)})`;
-        if (settings.themeIdx === 10) {
+        if (settings.themeIdx === 9) {
           filter = `grayscale(1) ${filter}`;
-        } else if (settings.themeColorA > 0 || (settings.themeIdx > 0 && settings.themeIdx !== 10)) {
+        } else if (settings.themeColorA > 0 || (settings.themeIdx > 0 && settings.themeIdx !== 9)) {
           filter += ` hue-rotate(${settings.colorHue.toFixed(1)}deg)`;
         }
         this.canvas.style.filter = filter;
@@ -7463,24 +7439,6 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
         p.vy = Math.sin(ang) * spd;
       }
 
-      _linkBroken(x1, y1, x2, y2, mouse, breakR) {
-        if (!mouse.active) return false;
-        const d1 = Math.hypot(x1 - mouse.x, y1 - mouse.y);
-        const d2 = Math.hypot(x2 - mouse.x, y2 - mouse.y);
-        const dSeg = this._distToSeg(mouse.x, mouse.y, x1, y1, x2, y2);
-        return d1 < breakR || d2 < breakR || dSeg < breakR * 0.9;
-      }
-
-      _distToSeg(px, py, x1, y1, x2, y2) {
-        const dx = x2 - x1;
-        const dy = y2 - y1;
-        const len2 = dx * dx + dy * dy;
-        if (len2 < 1e-6) return Math.hypot(px - x1, py - y1);
-        let t = ((px - x1) * dx + (py - y1) * dy) / len2;
-        t = Math.max(0, Math.min(1, t));
-        return Math.hypot(px - (x1 + t * dx), py - (y1 + t * dy));
-      }
-
       _bind() {
         const onMove = (e) => {
           const rect = this.canvas.getBoundingClientRect();
@@ -7493,7 +7451,6 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
         window.addEventListener('resize', () => this.resize());
         const enter = () => { if (this.ready && !this.exiting) this._onEnter(); };
         if (this.enterBtn) this.enterBtn.addEventListener('click', (e) => { e.stopPropagation(); enter(); });
-        this.overlay.addEventListener('click', enter);
       }
 
       resize() {
@@ -7556,7 +7513,6 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
         const maxLink = this.ready ? 158 : 132;
         const hubLink = maxLink * 1.05;
         const maxDist = Math.hypot(w, h) * 0.46;
-        const mouseBreakR = 118;
         const mouseRepelR = 120;
         const hubR = 52;
 
@@ -7614,7 +7570,6 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
         for (let i = 0; i < pts.length; i++) {
           const distHub = Math.hypot(pts[i].x - cx, pts[i].y - cy);
           if (distHub > hubLink || distHub < 6) continue;
-          if (this._linkBroken(cx, cy, pts[i].x, pts[i].y, mouse, mouseBreakR)) continue;
           const a = (1 - distHub / hubLink) * linkAlpha;
           ctx.strokeStyle = `rgba(168,85,247,${a})`;
           ctx.beginPath();
@@ -7629,7 +7584,6 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
             const dy = pts[i].y - pts[j].y;
             const d = dx * dx + dy * dy;
             if (d > maxLink * maxLink) continue;
-            if (this._linkBroken(pts[i].x, pts[i].y, pts[j].x, pts[j].y, mouse, mouseBreakR)) continue;
             const a = (1 - Math.sqrt(d) / maxLink) * linkAlpha;
             ctx.strokeStyle = `rgba(168,85,247,${a})`;
             ctx.beginPath();
@@ -7646,10 +7600,6 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
           ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
           ctx.fill();
         }
-
-        const scanY = (this.time * 40) % h;
-        ctx.fillStyle = 'rgba(168,85,247,0.03)';
-        ctx.fillRect(0, scanY, w, 2);
       }
     }
 
