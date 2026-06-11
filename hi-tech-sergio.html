@@ -1060,12 +1060,22 @@
       font-size: clamp(9px, 2vw, 11px); letter-spacing: 0.42em;
       color: var(--purple); text-transform: uppercase;
     }
-    .intro-boot {
-      font-size: 10px; letter-spacing: 0.14em; color: #525252;
-      min-height: 14px; text-align: center;
-      transition: color 0.4s ease;
+    .intro-logo {
+      width: clamp(140px, 32vw, 260px);
+      height: auto;
+      display: block;
+      object-fit: contain;
+      opacity: 0.55;
+      transform: scale(0.94);
+      filter: drop-shadow(0 0 32px rgba(168, 85, 247, 0.18));
+      transition: opacity 0.75s ease, transform 0.75s cubic-bezier(0.22, 1, 0.36, 1);
+      pointer-events: none;
+      user-select: none;
     }
-    .intro-overlay.ready .intro-boot { color: #737373; }
+    .intro-overlay.ready .intro-logo {
+      opacity: 1;
+      transform: scale(1);
+    }
     .intro-enter {
       position: relative; pointer-events: auto; cursor: pointer;
       border: 1px solid rgba(168,85,247,0.35);
@@ -1095,12 +1105,6 @@
       0%, 100% { transform: scale(1); opacity: 0.55; }
       50% { transform: scale(1.08); opacity: 1; }
     }
-    .intro-hint {
-      font-size: 9px; letter-spacing: 0.12em; color: #404040;
-      text-transform: uppercase; margin: 0;
-      opacity: 0; transition: opacity 0.6s ease 0.25s;
-    }
-    .intro-overlay.ready .intro-hint { opacity: 1; }
     .intro-overlay.ready { cursor: pointer; }
 
 
@@ -1400,12 +1404,11 @@
         <span class="intro-brand-main">HI-TECH SERGIO</span>
         <span class="intro-brand-sub">AUDIO MEASURE</span>
       </div>
-      <div class="intro-boot" id="introBoot">INITIALIZING SHADERS…</div>
+      <img class="intro-logo" id="introLogo" src="assets/intro-logo.png" width="512" height="512" alt="HI-TECH SERGIO">
       <button type="button" class="intro-enter" id="introEnter" hidden>
         <span class="intro-enter-ring"></span>
         <span id="introEnterText">ENTER EXPERIENCE</span>
       </button>
-      <p class="intro-hint" id="introHint">Move mouse · click to enter</p>
     </div>
   </div>
 
@@ -4276,11 +4279,6 @@
       loop: ['ПОВТОР', 'LOOP'],
       mic: ['МИК', 'MIC'], file: ['ФАЙЛ', 'FILE'], demo: ['ДЕМО', 'DEMO'],
       enter: ['НАЧАТЬ', 'ENTER EXPERIENCE'],
-      introHint: ['Двигай мышью · клик для входа', 'Move mouse · click to enter'],
-      introBoot1: ['ИНИЦИАЛИЗАЦИЯ ШЕЙДЕРОВ…', 'INITIALIZING SHADERS…'],
-      introBoot2: ['СБОРКА GPU-ПРОГРАММ…', 'LINKING GPU PROGRAMS…'],
-      introBoot3: ['КОМПИЛЯЦИЯ ЯДЕР…', 'COMPILING GPU KERNELS…'],
-      gpuReady: ['GPU ГОТОВ.', 'GPU COMPILATION COMPLETE.'],
       gpuErr: ['ОШИБКА WEBGL2', 'FATAL WEBGL2 ERR: Check Browser console.'],
       modesTitle: ['ВИЗУАЛИЗАТОРЫ //', 'VISUALIZERS //'],
       lblFps: ['ЧАСТОТА КАДРОВ', 'FRAME RATE'],
@@ -4358,8 +4356,6 @@
       document.querySelectorAll('.donate-copy-btn').forEach(btn => { btn.textContent = t('donateCopy'); });
       const introEnterText = document.getElementById('introEnterText');
       if (introEnterText) introEnterText.textContent = t('enter');
-      const introHint = document.getElementById('introHint');
-      if (introHint) introHint.textContent = t('introHint');
       if (introSplash) introSplash.applyLang();
 
       // Black Hole info panel translations:
@@ -7353,32 +7349,22 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
     }
 
     class IntroSplash {
-      constructor(overlay, canvas, bootEl, enterBtn) {
+      constructor(overlay, canvas, enterBtn) {
         this.overlay = overlay;
         this.canvas = canvas;
         this.ctx = canvas.getContext('2d');
-        this.bootEl = bootEl;
         this.enterBtn = enterBtn;
         this.particles = [];
         this.mouse = { x: 0, y: 0, active: false };
         this.ready = false;
         this.exiting = false;
         this.time = 0;
-        this.bootIdx = 0;
-        this.bootTimer = 0;
         this.raf = 0;
         this.last = performance.now();
         this._spawnParticles();
         this._bind();
         this.resize();
-        this.setBootMessage(typeof t === 'function' ? t('introBoot1') : 'INITIALIZING SHADERS…');
         this._loop();
-      }
-
-      _bootMessages() {
-        return typeof t === 'function'
-          ? [t('introBoot1'), t('introBoot2'), t('introBoot3'), t('gpuReady')]
-          : ['INITIALIZING SHADERS…', 'LINKING GPU PROGRAMS…', 'COMPILING GPU KERNELS…', 'GPU COMPILATION COMPLETE.'];
       }
 
       applyLang() {
@@ -7386,10 +7372,6 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
           const txt = document.getElementById('introEnterText');
           if (txt) txt.textContent = t('enter');
         }
-        const hint = document.getElementById('introHint');
-        if (hint) hint.textContent = t('introHint');
-        if (!this.ready) this.setBootMessage(this._bootMessages()[this.bootIdx] || t('introBoot1'));
-        else this.setBootMessage(t('gpuReady'));
       }
 
       _spawnParticles() {
@@ -7434,31 +7416,19 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
         if (this.particles.length < 80) this._spawnParticles();
       }
 
-      setBootMessage(msg) {
-        if (this.bootEl) this.bootEl.textContent = msg;
-      }
-
-      tickBoot(dt) {
-        if (this.ready) return;
-        this.bootTimer += dt;
-        const msgs = this._bootMessages();
-        if (this.bootTimer > 0.85 && this.bootIdx < msgs.length - 1) {
-          this.bootTimer = 0;
-          this.bootIdx++;
-          this.setBootMessage(msgs[this.bootIdx]);
-        }
-      }
-
       setReady() {
         if (this.ready) return;
         this.ready = true;
-        this.setBootMessage(typeof t === 'function' ? t('gpuReady') : 'GPU COMPILATION COMPLETE.');
         this.overlay.classList.add('ready');
         if (this.enterBtn) this.enterBtn.hidden = false;
       }
 
       setError(msg) {
-        this.setBootMessage(msg);
+        if (this.enterBtn) {
+          this.enterBtn.hidden = false;
+          const txt = document.getElementById('introEnterText');
+          if (txt) txt.textContent = msg;
+        }
       }
 
       _onEnter() {
@@ -7474,7 +7444,6 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
         this.last = now;
         if (!this.exiting) {
           this.time += dt;
-          this.tickBoot(dt);
           this._draw(dt);
         }
         this.raf = requestAnimationFrame(() => this._loop());
@@ -7588,7 +7557,6 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
       introSplash = new IntroSplash(
         document.getElementById('introOverlay'),
         document.getElementById('introCanvas'),
-        document.getElementById('introBoot'),
         document.getElementById('introEnter')
       );
       introSplash.onEnter = () => { startAudioContext(); };
