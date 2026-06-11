@@ -2,7 +2,10 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <title>HI-TECH SERGIO // AUDIO MEASURE</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -46,7 +49,7 @@
 
     #canvas, #threeCanvas, #canvas2d, #milkdropCanvas {
       position: fixed; inset: 0;
-      width: 100vw; height: 100vh;
+      width: 100vw; height: 100vh; height: 100dvh;
       z-index: 1; display: block;
     }
     #threeCanvas, #canvas2d, #milkdropCanvas { display: none; }
@@ -542,6 +545,24 @@
     .param-select:focus { border-color: var(--purple-dim); }
     .param-select option { background: #111; color: var(--text); }
     .param-select optgroup { background: #111; color: var(--text-muted); font-weight: 600; }
+    .params-donate-link {
+      display: none;
+      margin-top: 2px;
+      padding: 4px 0 0;
+      border: none;
+      border-top: 1px solid rgba(38, 38, 38, 0.45);
+      background: none;
+      font-family: var(--font-mono);
+      font-size: 8px;
+      color: #404040;
+      letter-spacing: 0.1em;
+      cursor: pointer;
+      text-align: center;
+      width: 100%;
+      opacity: 0.5;
+      text-transform: uppercase;
+    }
+    .params-donate-link:hover { opacity: 0.85; color: #737373; }
     .theme-grid {
       display: grid;
       grid-template-columns: repeat(9, 1fr);
@@ -1074,14 +1095,43 @@
       .ui-btn-icon { width: 32px; height: 32px; }
 
       .bottom-right-ctrls {
-        top: max(48px, calc(env(safe-area-inset-top) + 40px));
-        bottom: auto;
-        right: max(8px, env(safe-area-inset-right));
-        gap: 6px;
+        position: fixed;
+        inset: 0;
+        z-index: 60;
+        pointer-events: none;
+        top: auto; left: auto; bottom: auto; right: auto;
+        gap: 0;
       }
-      .bottom-right-ctrls-row { gap: 5px; }
-      #mouseInteractBtn { display: none; }
-      .donate-btn { width: 36px; height: 36px; }
+      .bottom-right-ctrls-row { display: none !important; }
+      #donateBtn { display: none !important; }
+      .donate-panel {
+        position: fixed;
+        left: 50%;
+        top: 50%;
+        bottom: auto;
+        right: auto;
+        transform: translate(-50%, -46%) scale(0.97);
+        transform-origin: center center;
+        width: min(94vw, 360px);
+      }
+      .donate-panel.open {
+        transform: translate(-50%, -50%) scale(1);
+        pointer-events: auto;
+      }
+      .params-donate-link.mobile-only { display: block; }
+
+      body.cinema-mode {
+        position: fixed;
+        inset: 0;
+        width: 100%;
+        overflow: hidden;
+      }
+      body.cinema-mode.mobile-cinema-viewport #canvas,
+      body.cinema-mode.mobile-cinema-viewport #threeCanvas,
+      body.cinema-mode.mobile-cinema-viewport #canvas2d,
+      body.cinema-mode.mobile-cinema-viewport #milkdropCanvas {
+        inset: auto;
+      }
 
       .modes-panel-wrap {
         position: fixed;
@@ -1763,6 +1813,10 @@
         <rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/>
       </svg>
     </button>
+    <button class="ui-btn ui-btn-icon" id="cinemaBtn" title="Полный экран без панелей">
+      <svg id="cinemaIconEnter" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 3H5a2 2 0 0 0-2 2v3M21 8V5a2 2 0 0 0-2-2h-3M16 21h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>
+      <svg id="cinemaIconExit" style="display:none" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 14h6v6M20 10h-6V4M14 10l7-7M3 21l7-7"/></svg>
+    </button>
     <button class="ui-btn ui-btn-icon" id="themeToggleBtn" title="Переключить тему">
       <svg class="sun-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>
@@ -1830,6 +1884,7 @@
         <option value="">…</option>
       </select>
     </div>
+    <button type="button" class="params-donate-link mobile-only" id="mobileDonateLink">Поддержать</button>
 
   </div>
   </div>
@@ -1946,16 +2001,12 @@
         </div>
       </div>
     </div>
-    <div class="bottom-right-ctrls-row">
+    <div class="bottom-right-ctrls-row desktop-only">
       <button class="ui-btn ui-btn-icon" id="mouseInteractBtn" title="Interactive Particle Repel">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <path d="M3 3l7.07 16.97 2.51-7.39 7.39-2.51L3 3z"/>
           <path d="M13 13l6 6"/>
         </svg>
-      </button>
-      <button class="ui-btn ui-btn-icon" id="cinemaBtn" title="Полный экран без панелей">
-        <svg id="cinemaIconEnter" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 3H5a2 2 0 0 0-2 2v3M21 8V5a2 2 0 0 0-2-2h-3M16 21h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>
-        <svg id="cinemaIconExit" style="display:none" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 14h6v6M20 10h-6V4M14 10l7-7M3 21l7-7"/></svg>
       </button>
       <button type="button" class="donate-btn" id="donateBtn" title="Поддержать проект">
         <img src="assets/donate/donut-btn.png" alt="" width="44" height="44">
@@ -3655,8 +3706,7 @@
 
       resize() {
         const dpr = Math.min(window.devicePixelRatio || 1, 2.0);
-        const w = window.innerWidth;
-        const h = window.innerHeight;
+        const [w, h] = getViewportWH();
         this.canvas.style.width = w + 'px';
         this.canvas.style.height = h + 'px';
         this.canvas.width = Math.floor(w * dpr);
@@ -3896,6 +3946,69 @@
     }
     applyMobileLayout();
     MOBILE_MQ.addEventListener('change', applyMobileLayout);
+
+    function getViewportWH() {
+      if (cinemaMode && isMobileLayout() && window.visualViewport) {
+        return [window.visualViewport.width, window.visualViewport.height];
+      }
+      return [window.innerWidth, window.innerHeight];
+    }
+
+    function applyMobileCinemaCanvasPos() {
+      const ids = ['canvas', 'threeCanvas', 'canvas2d', 'milkdropCanvas'];
+      if (!cinemaMode || !isMobileLayout() || !window.visualViewport) {
+        ids.forEach(id => {
+          const c = document.getElementById(id);
+          if (c) { c.style.top = ''; c.style.left = ''; }
+        });
+        return;
+      }
+      const vv = window.visualViewport;
+      ids.forEach(id => {
+        const c = document.getElementById(id);
+        if (c) {
+          c.style.top = vv.offsetTop + 'px';
+          c.style.left = vv.offsetLeft + 'px';
+        }
+      });
+    }
+
+    function isFullscreenActive() {
+      return !!(document.fullscreenElement || document.webkitFullscreenElement);
+    }
+
+    function requestAppFullscreen() {
+      const el = document.documentElement;
+      const fn = el.requestFullscreen || el.webkitRequestFullscreen;
+      if (!fn) return Promise.reject(new Error('unsupported'));
+      return Promise.resolve(fn.call(el));
+    }
+
+    function exitAppFullscreen() {
+      if (!isFullscreenActive()) return Promise.resolve();
+      const fn = document.exitFullscreen || document.webkitExitFullscreen;
+      return fn ? Promise.resolve(fn.call(document)) : Promise.resolve();
+    }
+
+    function nudgeMobileViewport() {
+      if (!isMobileLayout()) return;
+      window.scrollTo(0, 1);
+      requestAnimationFrame(() => window.scrollTo(0, 0));
+    }
+
+    function onFullscreenChange() {
+      scheduleResizeVisuals();
+      if (!isFullscreenActive() && cinemaMode) {
+        cinemaMode = false;
+        document.body.classList.remove('cinema-mode', 'ui-reveal', 'mobile-cinema-viewport');
+        document.getElementById('cinemaBtn').classList.remove('active');
+        document.getElementById('cinemaIconEnter').style.display = 'block';
+        document.getElementById('cinemaIconExit').style.display = 'none';
+        document.getElementById('cinemaBtn').title = t('cinemaEnter');
+        clearTimeout(cinemaRevealTimer);
+        applyMobileCinemaCanvasPos();
+      }
+    }
     let micActive = false;
     let cinemaMode = false;
     let cinemaRevealTimer = null;
@@ -4102,8 +4215,13 @@
 
     function setCinemaMode(on) {
       cinemaMode = on;
+      if (on && isMobileLayout()) {
+        setMobileModesOpen(false);
+        setMobileParamsOpen(false);
+      }
       document.body.classList.toggle('cinema-mode', on);
       document.body.classList.toggle('ui-reveal', !on);
+      document.body.classList.toggle('mobile-cinema-viewport', on && isMobileLayout());
       document.getElementById('cinemaBtn').classList.toggle('active', on);
       document.getElementById('cinemaIconEnter').style.display = on ? 'none' : 'block';
       document.getElementById('cinemaIconExit').style.display = on ? 'block' : 'none';
@@ -4111,15 +4229,14 @@
         ? (isRu ? 'Выйти из полного экрана (Esc)' : 'Exit fullscreen (Esc)')
         : (isRu ? 'Полный экран без панелей' : 'Fullscreen without panels');
       if (on) {
-        const el = document.documentElement;
-        if (!document.fullscreenElement && el.requestFullscreen) {
-          el.requestFullscreen().then(() => scheduleResizeVisuals()).catch(() => {});
-        }
+        requestAppFullscreen()
+          .then(() => scheduleResizeVisuals())
+          .catch(() => { if (isMobileLayout()) nudgeMobileViewport(); });
+        if (isMobileLayout()) nudgeMobileViewport();
       } else {
         clearTimeout(cinemaRevealTimer);
-        if (document.fullscreenElement && document.exitFullscreen) {
-          document.exitFullscreen().then(() => scheduleResizeVisuals()).catch(() => {});
-        }
+        exitAppFullscreen().then(() => scheduleResizeVisuals()).catch(() => {});
+        applyMobileCinemaCanvasPos();
       }
       scheduleResizeVisuals();
     }
@@ -4540,6 +4657,7 @@
       mic: ['МИК', 'MIC'], file: ['ФАЙЛ', 'FILE'], demo: ['ДЕМО', 'DEMO'],
       fileBtnTitle: ['Загрузить аудиофайл', 'Load audio file'],
       mobileModesTitle: ['Режимы визуализации', 'Visualizer modes'],
+      mobileDonate: ['Поддержать', 'Support'],
       enter: ['НАЧАТЬ', 'ENTER EXPERIENCE'],
       gpuErr: ['ОШИБКА WEBGL2', 'FATAL WEBGL2 ERR: Check Browser console.'],
       modesTitle: ['ВИЗУАЛИЗАТОРЫ //', 'VISUALIZERS //'],
@@ -4588,6 +4706,8 @@
       if (btnFile) btnFile.title = t('fileBtnTitle');
       const mobileModesBtn = document.getElementById('mobileModesBtn');
       if (mobileModesBtn) mobileModesBtn.title = t('mobileModesTitle');
+      const mobileDonateLink = document.getElementById('mobileDonateLink');
+      if (mobileDonateLink) mobileDonateLink.textContent = t('mobileDonate');
       document.getElementById('btnDemo').title = isRu ? 'Демо-трек' : 'Demo track';
       document.getElementById('playlistTitle').textContent = t('playlistTitle');
       document.getElementById('playlistLoadLabel').textContent = t('playlistLoad');
@@ -7144,8 +7264,7 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
       }
 
       resize() {
-        const w = window.innerWidth;
-        const h = window.innerHeight;
+        const [w, h] = getViewportWH();
         const dpr = Math.min(window.devicePixelRatio || 1, 2);
         if (this.renderer) {
           this.renderer.setPixelRatio(dpr);
@@ -7291,8 +7410,7 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
 
       resize() {
         const dpr = Math.min(window.devicePixelRatio || 1, 2);
-        const w = window.innerWidth;
-        const h = window.innerHeight;
+        const [w, h] = getViewportWH();
         this.canvas.style.width = w + 'px';
         this.canvas.style.height = h + 'px';
         this.canvas.width = Math.floor(w * dpr);
@@ -7351,6 +7469,7 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
     let resizeVisualsRaf = 0;
 
     function resizeAllVisuals() {
+      applyMobileCinemaCanvasPos();
       if (engine) engine.resize();
       if (threeEngine) threeEngine.resize();
       if (canvas2dEngine) canvas2dEngine.resize();
@@ -7541,8 +7660,7 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
 
       resize() {
         const dpr = Math.min(window.devicePixelRatio || 1, 2);
-        const w = window.innerWidth;
-        const h = window.innerHeight;
+        const [w, h] = getViewportWH();
         const bw = Math.floor(w * dpr);
         const bh = Math.floor(h * dpr);
         this.canvas.style.width = w + 'px';
@@ -7702,8 +7820,7 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
 
       resize() {
         const dpr = Math.min(window.devicePixelRatio || 1, 2);
-        this.w = window.innerWidth;
-        this.h = window.innerHeight;
+        [this.w, this.h] = getViewportWH();
         this.canvas.width = Math.floor(this.w * dpr);
         this.canvas.height = Math.floor(this.h * dpr);
         this.canvas.style.width = this.w + 'px';
@@ -7913,18 +8030,17 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
         
         window.addEventListener('resize', scheduleResizeVisuals);
 
-        document.addEventListener('fullscreenchange', () => {
-          scheduleResizeVisuals();
-          if (!document.fullscreenElement && cinemaMode) {
-            cinemaMode = false;
-            document.body.classList.remove('cinema-mode', 'ui-reveal');
-            document.getElementById('cinemaBtn').classList.remove('active');
-            document.getElementById('cinemaIconEnter').style.display = 'block';
-            document.getElementById('cinemaIconExit').style.display = 'none';
-            document.getElementById('cinemaBtn').title = t('cinemaEnter');
-            clearTimeout(cinemaRevealTimer);
-          }
-        });
+        document.addEventListener('fullscreenchange', onFullscreenChange);
+        document.addEventListener('webkitfullscreenchange', onFullscreenChange);
+
+        if (window.visualViewport) {
+          window.visualViewport.addEventListener('resize', () => {
+            if (cinemaMode && isMobileLayout()) scheduleResizeVisuals();
+          });
+          window.visualViewport.addEventListener('scroll', () => {
+            if (cinemaMode && isMobileLayout()) applyMobileCinemaCanvasPos();
+          });
+        }
 
         if (typeof ResizeObserver !== 'undefined') {
           const viewportObserver = new ResizeObserver(scheduleResizeVisuals);
@@ -8290,12 +8406,22 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
         donateOpen = open;
         donatePanel.classList.toggle('open', open);
         donatePanel.setAttribute('aria-hidden', open ? 'false' : 'true');
-        donateBtn.classList.toggle('open', open);
+        if (donateBtn) donateBtn.classList.toggle('open', open);
       }
-      donateBtn.addEventListener('click', e => {
-        e.stopPropagation();
-        setDonateOpen(!donateOpen);
-      });
+      if (donateBtn) {
+        donateBtn.addEventListener('click', e => {
+          e.stopPropagation();
+          setDonateOpen(!donateOpen);
+        });
+      }
+      const mobileDonateLink = document.getElementById('mobileDonateLink');
+      if (mobileDonateLink) {
+        mobileDonateLink.addEventListener('click', e => {
+          e.stopPropagation();
+          setMobileParamsOpen(false);
+          setDonateOpen(true);
+        });
+      }
       document.getElementById('donateClose').addEventListener('click', () => setDonateOpen(false));
       document.addEventListener('click', e => {
         if (!donateOpen) return;
@@ -8349,6 +8475,7 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
       });
 
       root.addEventListener('mousemove', revealCinemaUI);
+      root.addEventListener('touchstart', revealCinemaUI, { passive: true });
 
       document.getElementById('timelineBar').addEventListener('click', e => {
         if (reactor.activeSource !== 'file' || !reactor.fileElement.duration) return;
