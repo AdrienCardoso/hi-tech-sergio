@@ -4560,6 +4560,26 @@
       0: '6D', 1: '7D', 4: '8D', 8: '9D', 10: '10D'
     };
 
+    const MODE_BRIGHTNESS_DEFAULT = { 10: 0.6 };
+
+    function setParamBrightness(val) {
+      const el = document.getElementById('paramParticleSize');
+      if (!el) return;
+      el.value = val;
+      const label = document.getElementById('labelParticleSize');
+      if (label) label.textContent = String(val);
+      el.dispatchEvent(new Event('input'));
+    }
+
+    function applyModeBrightnessDefault(modeIdx) {
+      const def = MODE_BRIGHTNESS_DEFAULT[modeIdx];
+      if (def != null) setParamBrightness(def);
+    }
+
+    function is10DMode(modeIdx) {
+      return modeIdx === 10;
+    }
+
     // Переносы из Other Visualisations → слоты основных режимов (методика для следующих переносов)
     const VISUAL_DIRECTORY = {
       '6D-1': { type: 'milkdrop', presetKey: 'martin - city of shadows', presetNumber: 168 },
@@ -4830,6 +4850,7 @@
       if (!isVariantAllowed(mode, variantIdx)) return;
       visualVariantIdx = variantIdx;
       if (engine) engine.variantIdx = variantIdx;
+      if (is10DMode(mode)) applyModeBrightnessDefault(10);
       renderVariantCells();
       applyVisualCanvases();
     }
@@ -8907,6 +8928,12 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
         document.getElementById('paramTrails').value = 0.50;
         document.getElementById('paramNoise').value = 2.0;
         document.getElementById('paramPerformance').value = 75;
+      } else if (modeIdx === 10) {
+        document.getElementById('paramSensitivity').value = 1.0;
+        document.getElementById('paramParticleSize').value = 0.6;
+        document.getElementById('paramTrails').value = 0.90;
+        document.getElementById('paramNoise').value = 1.5;
+        document.getElementById('paramPerformance').value = 100;
       } else {
         // Standard global defaults
         document.getElementById('paramSensitivity').value = 1.0;
@@ -9163,6 +9190,10 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
 
       applyVisualCanvases();
       
+      if (prevVisualMode !== modeIdx) {
+        applyModeBrightnessDefault(modeIdx);
+      }
+
       if (!isAuto || modeXActive) {
         renderModeCards();
       }
