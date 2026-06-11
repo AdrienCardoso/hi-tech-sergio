@@ -1133,29 +1133,102 @@
         inset: auto;
       }
 
-      .modes-panel-wrap {
+    .mobile-only { display: none !important; }
+    .mobile-modes-dock { display: contents; }
+    .mobile-modes-handle { display: none; }
+
+    @media (max-width: 768px) {
+      .mobile-modes-dock {
+        display: flex;
+        flex-direction: row;
+        align-items: stretch;
         position: fixed;
-        top: 0; left: 0; bottom: 0;
-        transform: none;
+        left: 0;
+        top: max(48px, calc(env(safe-area-inset-top) + 40px));
+        bottom: calc(var(--mobile-player-h) + env(safe-area-inset-bottom, 0px) + 4px);
         z-index: 45;
-        width: auto;
-        max-width: none;
-        padding: max(6px, env(safe-area-inset-top)) 0 max(6px, env(safe-area-inset-bottom)) max(2px, env(safe-area-inset-left));
+        pointer-events: none;
+        max-height: none;
+      }
+      .mobile-modes-handle {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 3px;
+        width: 14px;
+        min-width: 14px;
+        margin: 0;
+        padding: 0;
+        border: none;
+        border-radius: 0 6px 6px 0;
+        background: rgba(10, 10, 10, 0.82);
+        border: 1px solid rgba(38, 38, 38, 0.65);
+        border-left: none;
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        color: #737373;
+        cursor: grab;
+        touch-action: none;
+        pointer-events: auto;
+        align-self: center;
+        flex-shrink: 0;
+        box-shadow: 2px 0 12px rgba(0, 0, 0, 0.35);
+        transition: background 0.15s, color 0.15s;
+      }
+      .mobile-modes-handle:active { cursor: grabbing; }
+      .mobile-modes-handle-grip {
+        width: 2px;
+        height: 14px;
+        border-radius: 1px;
+        background: linear-gradient(to bottom, transparent, #525252 20%, #525252 80%, transparent);
+        box-shadow: 4px 0 0 #525252, -4px 0 0 #525252;
+      }
+      .mobile-modes-handle-chevron {
+        font-size: 11px;
+        line-height: 1;
+        font-weight: 700;
+        transition: transform 0.25s ease;
+      }
+      body.mobile-modes-expanded .mobile-modes-handle-chevron {
+        transform: rotate(180deg);
+      }
+      body.mobile-modes-expanded .mobile-modes-handle {
+        color: var(--purple);
+        border-color: rgba(168, 85, 247, 0.35);
+      }
+
+      .mobile-modes-dock .modes-panel-wrap {
+        position: static;
+        top: auto; left: auto; bottom: auto;
+        transform: none;
+        translate: 0 0;
+        flex: 0 1 auto;
+        min-width: 0;
+        max-width: calc(100vw - 20px);
+        padding: 0;
         background: transparent;
-        border-right: none;
+        border: none;
         overflow: visible;
         flex-direction: row;
         align-items: stretch;
         gap: 3px;
-        translate: -110% 0;
-        transition: translate 0.28s cubic-bezier(0.22, 1, 0.36, 1);
         pointer-events: none;
+        max-height: 100%;
+        transition: transform 0.32s cubic-bezier(0.22, 1, 0.36, 1),
+                    opacity 0.25s ease;
+        transform: translateX(calc(-100% - 3px));
+        opacity: 0;
       }
-      body.mobile-modes-open .modes-panel-wrap {
-        translate: 0 0;
+      body.mobile-modes-expanded .mobile-modes-dock .modes-panel-wrap {
+        transform: translateX(0);
+        opacity: 1;
         pointer-events: auto;
       }
-      body.mobile-modes-open .mobile-drawer-backdrop.modes-backdrop { display: block; }
+      body.cinema-mode .mobile-modes-dock {
+        display: none;
+      }
+
       .modes-panel-top {
         width: 36px;
         min-width: 36px;
@@ -1167,6 +1240,16 @@
         overflow-x: hidden;
         overflow-y: auto;
         -webkit-overflow-scrolling: touch;
+      }
+      .mobile-modes-dock .mode-card-h {
+        display: none;
+      }
+      .mobile-modes-dock .modes-col-right {
+        display: none;
+      }
+      .mobile-modes-dock .modes-columns-container {
+        flex: 1;
+        min-height: 0;
       }
       .mode-card-x,
       .mode-card-h {
@@ -1852,6 +1935,11 @@
   </div>
 
   <!-- Visualizer modes + variant columns (12 cells each; 13+ only assigned slots) -->
+  <div class="mobile-modes-dock">
+    <button type="button" class="mobile-modes-handle mobile-only" id="mobileModesHandle" aria-expanded="true" aria-label="Режимы визуализации">
+      <span class="mobile-modes-handle-grip" aria-hidden="true"></span>
+      <span class="mobile-modes-handle-chevron" aria-hidden="true">›</span>
+    </button>
   <div class="modes-panel-wrap ui-chrome">
   <div class="modes-panel-top">
     <!-- Shuffle Mode (X) at the very top -->
@@ -1895,18 +1983,12 @@
     <div class="modes-variants-panel" id="modesVariantsPanel" aria-label="Visual variants 1–12"></div>
   </div>
   </div>
+  </div>
 
-  <div class="mobile-drawer-backdrop modes-backdrop" id="mobileModesBackdrop" aria-hidden="true"></div>
   <div class="mobile-drawer-backdrop params-backdrop" id="mobileParamsBackdrop" aria-hidden="true"></div>
 
   <!-- Top-right -->
   <div class="top-right ui-chrome">
-    <button class="ui-btn ui-btn-icon mobile-only" id="mobileModesBtn" title="Режимы визуализации">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/>
-        <rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/>
-      </svg>
-    </button>
     <button class="ui-btn ui-btn-icon" id="cinemaBtn" title="Полный экран без панелей">
       <svg id="cinemaIconEnter" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 3H5a2 2 0 0 0-2 2v3M21 8V5a2 2 0 0 0-2-2h-3M16 21h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>
       <svg id="cinemaIconExit" style="display:none" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 14h6v6M20 10h-6V4M14 10l7-7M3 21l7-7"/></svg>
@@ -4004,13 +4086,63 @@
 
     function isMobileLayout() { return MOBILE_MQ.matches; }
 
-    function setMobileModesOpen(open) {
-      document.body.classList.toggle('mobile-modes-open', open);
-      const btn = document.getElementById('mobileModesBtn');
-      if (btn) btn.classList.toggle('active', open);
-      const backdrop = document.getElementById('mobileModesBackdrop');
-      if (backdrop) backdrop.setAttribute('aria-hidden', open ? 'false' : 'true');
-      if (open) setMobileParamsOpen(false);
+    const MOBILE_MODE_SEQUENCE = [11, 12, 13, 14, 15, 16, 0, 1, 4, 8, 10];
+    const MOBILE_MODE_LABELS = ['0D', '1D', '2D', '3D', '4D', '5D', '6D', '7D', '8D', '9D', '10D'];
+    let mobileModesDockReady = false;
+
+    function setMobileModesExpanded(expanded) {
+      if (!isMobileLayout()) return;
+      document.body.classList.toggle('mobile-modes-expanded', expanded);
+      const handle = document.getElementById('mobileModesHandle');
+      if (handle) handle.setAttribute('aria-expanded', expanded ? 'true' : 'false');
+    }
+
+    function initMobileModesDock() {
+      if (mobileModesDockReady) return;
+      const handle = document.getElementById('mobileModesHandle');
+      if (!handle) return;
+      mobileModesDockReady = true;
+
+      let dragStartX = 0;
+      let dragMoved = false;
+
+      handle.addEventListener('click', () => {
+        if (dragMoved) {
+          dragMoved = false;
+          return;
+        }
+        setMobileModesExpanded(!document.body.classList.contains('mobile-modes-expanded'));
+      });
+
+      const onDragStart = clientX => {
+        dragStartX = clientX;
+        dragMoved = false;
+      };
+      const onDragEnd = clientX => {
+        const dx = clientX - dragStartX;
+        if (Math.abs(dx) > 20) {
+          setMobileModesExpanded(dx > 0);
+          dragMoved = true;
+        }
+      };
+
+      handle.addEventListener('touchstart', e => {
+        onDragStart(e.touches[0].clientX);
+      }, { passive: true });
+      handle.addEventListener('touchend', e => {
+        onDragEnd(e.changedTouches[0].clientX);
+      }, { passive: true });
+
+      handle.addEventListener('pointerdown', e => {
+        if (e.pointerType === 'touch') return;
+        onDragStart(e.clientX);
+        handle.setPointerCapture(e.pointerId);
+      });
+      handle.addEventListener('pointerup', e => {
+        if (e.pointerType === 'touch') return;
+        onDragEnd(e.clientX);
+        try { handle.releasePointerCapture(e.pointerId); } catch (_) {}
+      });
     }
 
     function setMobileParamsOpen(open) {
@@ -4020,22 +4152,28 @@
       document.body.classList.toggle('mobile-params-open', open && isMobileLayout());
       const backdrop = document.getElementById('mobileParamsBackdrop');
       if (backdrop) backdrop.setAttribute('aria-hidden', open ? 'false' : 'true');
-      if (open) setMobileModesOpen(false);
+      if (open) setMobileModesExpanded(false);
     }
 
     function applyMobileLayout() {
       const mobile = isMobileLayout();
       document.body.classList.toggle('is-mobile', mobile);
       if (mobile) {
+        initMobileModesDock();
         if (!document.body.dataset.mobileUiReady) {
           setMobileParamsOpen(false);
+          setMobileModesExpanded(true);
           document.body.dataset.mobileUiReady = '1';
         }
       } else {
-        setMobileModesOpen(false);
+        setMobileModesExpanded(false);
+        document.body.classList.remove('mobile-modes-expanded');
         document.body.classList.remove('mobile-params-open');
         const backdrop = document.getElementById('mobileParamsBackdrop');
         if (backdrop) backdrop.setAttribute('aria-hidden', 'true');
+      }
+      if (document.getElementById('modesColLeft') && typeof MODES !== 'undefined') {
+        renderModeCards();
       }
     }
     applyMobileLayout();
@@ -4310,7 +4448,7 @@
     function setCinemaMode(on) {
       cinemaMode = on;
       if (on && isMobileLayout()) {
-        setMobileModesOpen(false);
+        setMobileModesExpanded(false);
         setMobileParamsOpen(false);
       }
       document.body.classList.toggle('cinema-mode', on);
@@ -4798,8 +4936,8 @@
       if (btnFileLbl) btnFileLbl.textContent = t('file');
       const btnFile = document.getElementById('btnFile');
       if (btnFile) btnFile.title = t('fileBtnTitle');
-      const mobileModesBtn = document.getElementById('mobileModesBtn');
-      if (mobileModesBtn) mobileModesBtn.title = t('mobileModesTitle');
+      const mobileModesHandle = document.getElementById('mobileModesHandle');
+      if (mobileModesHandle) mobileModesHandle.setAttribute('aria-label', t('mobileModesTitle'));
       const mobileDonateLink = document.getElementById('mobileDonateLink');
       if (mobileDonateLink) mobileDonateLink.textContent = t('mobileDonate');
       document.getElementById('btnDemo').title = isRu ? 'Демо-трек' : 'Demo track';
@@ -4871,37 +5009,49 @@
       if (!colLeft || !colRight) return;
       
       const active = engine ? Math.round(engine.visualMode) : -1;
-
-      // Left Column objective indices: 11, 12, 13, 14, 15
-      // Displayed numbers: 0, 1, 2, 3, 4
-      const leftIndices = [11, 12, 13, 14, 15];
-      colLeft.innerHTML = leftIndices.map((idx, i) => {
-        const m = MODES[idx];
-        const name = isRu ? m.ru : m.en;
-        const num = String(i) + 'D';
-        return `<button class="mode-card${idx === active ? ' active' : ''}" data-mode="${idx}" onclick="setVisualMode(${idx})">
-          <span class="mode-card-num">${num}</span>
-          <span class="mode-card-icon">${m.svg}</span>
-          <span class="mode-card-name">${name}</span>
-        </button>`;
-      }).join('');
-      
-      // Right column subjective indices: 0, 1, 4, 8, 10
-      // Displayed numbers (bottom-to-top): 6, 7, 8, 9, 10
-      const rightIndices = [0, 1, 4, 8, 10];
-      colRight.innerHTML = rightIndices.map((idx, i) => {
-        const m = MODES[idx];
-        const name = isRu ? m.ru : m.en;
-        const num = String(i + 6) + 'D';
-        return `<button class="mode-card${idx === active ? ' active' : ''}" data-mode="${idx}" onclick="setVisualMode(${idx})">
-          <span class="mode-card-num">${num}</span>
-          <span class="mode-card-icon">${m.svg}</span>
-          <span class="mode-card-name">${name}</span>
-        </button>`;
-      }).reverse().join('');
-      
-      // Update highlight for the Hybrid button
       const btnH = document.getElementById('btnModeH');
+
+      if (isMobileLayout()) {
+        colLeft.innerHTML = MOBILE_MODE_SEQUENCE.map((idx, i) => {
+          const m = MODES[idx];
+          const name = isRu ? m.ru : m.en;
+          const num = MOBILE_MODE_LABELS[i];
+          return `<button class="mode-card${idx === active ? ' active' : ''}" data-mode="${idx}" onclick="setVisualMode(${idx})">
+            <span class="mode-card-num">${num}</span>
+            <span class="mode-card-icon">${m.svg}</span>
+            <span class="mode-card-name">${name}</span>
+          </button>`;
+        }).join('');
+        colRight.innerHTML = '';
+        if (btnH) btnH.style.display = 'none';
+      } else {
+        if (btnH) btnH.style.display = '';
+
+        const leftIndices = [11, 12, 13, 14, 15];
+        colLeft.innerHTML = leftIndices.map((idx, i) => {
+          const m = MODES[idx];
+          const name = isRu ? m.ru : m.en;
+          const num = String(i) + 'D';
+          return `<button class="mode-card${idx === active ? ' active' : ''}" data-mode="${idx}" onclick="setVisualMode(${idx})">
+            <span class="mode-card-num">${num}</span>
+            <span class="mode-card-icon">${m.svg}</span>
+            <span class="mode-card-name">${name}</span>
+          </button>`;
+        }).join('');
+
+        const rightIndices = [0, 1, 4, 8, 10];
+        colRight.innerHTML = rightIndices.map((idx, i) => {
+          const m = MODES[idx];
+          const name = isRu ? m.ru : m.en;
+          const num = String(i + 6) + 'D';
+          return `<button class="mode-card${idx === active ? ' active' : ''}" data-mode="${idx}" onclick="setVisualMode(${idx})">
+            <span class="mode-card-num">${num}</span>
+            <span class="mode-card-icon">${m.svg}</span>
+            <span class="mode-card-name">${name}</span>
+          </button>`;
+        }).reverse().join('');
+      }
+
       if (btnH) {
         btnH.classList.toggle('active', active === 16);
       }
@@ -8469,10 +8619,6 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
       document.getElementById('paramsToggleBtn').addEventListener('click', () => {
         setMobileParamsOpen(!paramsVisible);
       });
-      document.getElementById('mobileModesBtn').addEventListener('click', () => {
-        setMobileModesOpen(!document.body.classList.contains('mobile-modes-open'));
-      });
-      document.getElementById('mobileModesBackdrop').addEventListener('click', () => setMobileModesOpen(false));
       document.getElementById('mobileParamsBackdrop').addEventListener('click', () => setMobileParamsOpen(false));
       document.getElementById('btnFile').addEventListener('click', () => document.getElementById('fileInput').click());
       document.getElementById('mouseInteractBtn').addEventListener('click', () => {
@@ -8962,7 +9108,6 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
       if (!isAuto || modeXActive) {
         renderModeCards();
       }
-      if (!isAuto && isMobileLayout()) setMobileModesOpen(false);
     }
 
     function updateThemeUI() {
