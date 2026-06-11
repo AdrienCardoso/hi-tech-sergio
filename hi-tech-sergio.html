@@ -1064,7 +1064,10 @@
     }
 
     @media (max-width: 768px) {
-      :root { --mobile-player-h: 132px; }
+      :root {
+        --mobile-player-h: 132px;
+        --mobile-palette-w: 150px;
+      }
 
       .mobile-only { display: flex !important; }
       .desktop-only { display: none !important; }
@@ -1358,7 +1361,9 @@
         grid-template-columns: repeat(9, 14px);
         justify-content: start;
         gap: 3px;
-        max-width: none;
+        width: var(--mobile-palette-w);
+        max-width: 100%;
+        margin: 0;
       }
       .params-panel .theme-swatch {
         width: 14px;
@@ -1375,24 +1380,77 @@
 
       .right-sidebar {
         position: fixed;
-        top: auto;
-        bottom: calc(var(--mobile-player-h) + env(safe-area-inset-bottom, 0px));
-        left: max(8px, env(safe-area-inset-left));
+        top: max(46px, calc(env(safe-area-inset-top) + 38px));
         right: max(8px, env(safe-area-inset-right));
+        left: auto;
+        bottom: auto;
         transform: none;
-        width: auto;
-        max-width: none;
+        width: var(--mobile-palette-w);
+        max-width: var(--mobile-palette-w);
         z-index: 46;
       }
       .params-panel {
-        max-height: min(48vh, 340px);
+        width: 100%;
+        max-height: 25dvh;
+        padding: 7px 8px 6px;
+        gap: 6px;
+        font-size: 9px;
+        overflow-x: hidden;
         overflow-y: auto;
         -webkit-overflow-scrolling: touch;
+        box-sizing: border-box;
+      }
+      .params-panel .params-header {
+        padding-bottom: 4px;
+        gap: 4px;
+      }
+      .params-panel .params-header span {
+        font-size: 7px;
+        letter-spacing: 0.04em;
+        line-height: 1.2;
+      }
+      .params-panel .params-reset {
+        font-size: 6.5px;
+        flex-shrink: 0;
+        padding: 0;
+      }
+      .params-panel .param-group {
+        gap: 3px;
+      }
+      .params-panel .param-labels {
+        font-size: 7px;
+        gap: 2px;
+        letter-spacing: 0.03em;
+      }
+      .params-panel .param-labels span:first-child {
+        font-size: 6.5px;
+        line-height: 1.15;
+        flex: 1;
+        min-width: 0;
+      }
+      .params-panel .param-value {
+        font-size: 7px;
+        flex-shrink: 0;
+      }
+      .params-panel .param-slider {
+        height: 3px;
+      }
+      .params-panel .param-slider::-webkit-slider-thumb {
+        width: 10px;
+        height: 10px;
+      }
+      .params-panel .param-select {
+        font-size: 7px;
+        padding: 4px 5px;
+      }
+      .params-panel .params-donate-link {
+        font-size: 7px;
+        padding-top: 3px;
       }
       .params-panel.hidden {
         opacity: 0;
         pointer-events: none;
-        transform: translateY(16px);
+        transform: translateY(-8px);
       }
       body.mobile-params-open .mobile-drawer-backdrop.params-backdrop { display: block; }
 
