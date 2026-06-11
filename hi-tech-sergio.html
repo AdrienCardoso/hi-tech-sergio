@@ -1033,6 +1033,186 @@
       }
     }
 
+    .mobile-only { display: none !important; }
+    .mobile-drawer-backdrop {
+      display: none;
+      position: fixed; inset: 0; z-index: 44;
+      background: rgba(0, 0, 0, 0.55);
+      backdrop-filter: blur(2px);
+      -webkit-backdrop-filter: blur(2px);
+    }
+
+    @media (max-width: 768px) {
+      :root { --mobile-player-h: 132px; }
+
+      .mobile-only { display: flex !important; }
+      .desktop-only { display: none !important; }
+
+      #playlistPanel { display: none !important; }
+
+      .brand-badge {
+        top: max(8px, env(safe-area-inset-top));
+        left: max(8px, env(safe-area-inset-left));
+        min-width: 0;
+        padding: 6px 10px;
+        max-width: calc(100vw - 168px);
+      }
+      .brand-telemetry { display: none; }
+      .brand-subtitle { display: none; }
+      .brand-icon-wrap { width: 30px; height: 30px; }
+      .brand-title { font-size: 8px; letter-spacing: 0.1em; }
+      .brand-top { gap: 8px; }
+
+      .top-right {
+        top: max(8px, env(safe-area-inset-top));
+        right: max(8px, env(safe-area-inset-right));
+        gap: 5px;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+        max-width: calc(100vw - 8px);
+      }
+      .ui-btn-icon { width: 32px; height: 32px; }
+
+      .bottom-right-ctrls {
+        top: max(48px, calc(env(safe-area-inset-top) + 40px));
+        bottom: auto;
+        right: max(8px, env(safe-area-inset-right));
+        gap: 6px;
+      }
+      .bottom-right-ctrls-row { gap: 5px; }
+      #mouseInteractBtn { display: none; }
+      .donate-btn { width: 36px; height: 36px; }
+
+      .modes-panel-wrap {
+        position: fixed;
+        top: 0; left: 0; bottom: 0;
+        transform: none;
+        z-index: 45;
+        width: min(90vw, 280px);
+        padding: max(10px, env(safe-area-inset-top)) 8px max(10px, env(safe-area-inset-bottom));
+        background: rgba(8, 8, 8, 0.97);
+        border-right: 1px solid rgba(38, 38, 38, 0.85);
+        overflow-x: hidden;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+        translate: -105% 0;
+        transition: translate 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+        pointer-events: none;
+        align-items: stretch;
+      }
+      body.mobile-modes-open .modes-panel-wrap {
+        translate: 0 0;
+        pointer-events: auto;
+      }
+      body.mobile-modes-open .mobile-drawer-backdrop.modes-backdrop { display: block; }
+      .modes-panel-top {
+        width: 100%;
+        box-shadow: none;
+      }
+      .modes-panel-wrap {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .modes-variants-wrap.visible {
+        position: static;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        width: 100%;
+        margin-top: 6px;
+        padding-bottom: 4px;
+        -webkit-overflow-scrolling: touch;
+      }
+      .modes-variants-wrap.visible > .modes-variants-panel {
+        flex-direction: row;
+        width: auto;
+        height: auto;
+        min-height: 32px;
+        padding: 4px;
+        gap: 3px;
+        flex-shrink: 0;
+      }
+      .modes-variants-panel--extra-col {
+        justify-content: flex-start;
+      }
+      .modes-variants-panel--extra-col .variant-cell {
+        flex: 0 0 28px;
+        height: 28px;
+        min-height: 28px;
+      }
+      .variant-cell {
+        flex: 0 0 28px;
+        height: 28px;
+        min-height: 28px;
+      }
+
+      .right-sidebar {
+        position: fixed;
+        top: auto;
+        bottom: calc(var(--mobile-player-h) + env(safe-area-inset-bottom, 0px));
+        left: max(8px, env(safe-area-inset-left));
+        right: max(8px, env(safe-area-inset-right));
+        transform: none;
+        width: auto;
+        max-width: none;
+        z-index: 46;
+      }
+      .params-panel {
+        max-height: min(48vh, 340px);
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+      }
+      .params-panel.hidden {
+        opacity: 0;
+        pointer-events: none;
+        transform: translateY(16px);
+      }
+      body.mobile-params-open .mobile-drawer-backdrop.params-backdrop { display: block; }
+
+      .bottom-panel-wrap {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        transform: none;
+        max-width: none;
+        padding: 0;
+        z-index: 40;
+      }
+      .bottom-panel {
+        border-radius: 14px 14px 0 0;
+        border-bottom: none;
+        padding: 10px 12px max(10px, env(safe-area-inset-bottom));
+        gap: 8px;
+      }
+      .track-row { font-size: 10px; gap: 2px 8px; }
+      .track-name { font-size: 9px; }
+      .track-source { font-size: 8px; }
+      .timeline-row { gap: 6px; }
+      .controls-row { margin-top: 0; gap: 4px; }
+      .controls-left, .controls-right { gap: 4px; flex-wrap: wrap; }
+      .ctrl-btn { padding: 6px 8px; font-size: 9px; }
+      .ctrl-btn svg { width: 13px; height: 13px; }
+      .vol-group { width: auto; flex: 1; min-width: 88px; max-width: 140px; }
+      .vol-slider { width: 48px; flex: 1; min-width: 36px; }
+      .vol-pct { display: none; }
+      .play-btn { width: 36px; height: 36px; flex-shrink: 0; }
+
+      .toast {
+        top: max(56px, calc(env(safe-area-inset-top) + 48px));
+        max-width: calc(100vw - 24px);
+        font-size: 10px;
+        padding: 10px 16px;
+      }
+
+      .blackhole-panel { display: none !important; }
+    }
+
+    @media (max-width: 380px) {
+      .ctrl-btn .ctrl-label { display: none; }
+      .ctrl-btn { padding: 7px; }
+    }
+
     /* ── Intro splash ── */
     .intro-overlay {
       position: fixed; inset: 0; z-index: 99;
@@ -1572,8 +1752,17 @@
   </div>
   </div>
 
+  <div class="mobile-drawer-backdrop modes-backdrop" id="mobileModesBackdrop" aria-hidden="true"></div>
+  <div class="mobile-drawer-backdrop params-backdrop" id="mobileParamsBackdrop" aria-hidden="true"></div>
+
   <!-- Top-right -->
   <div class="top-right ui-chrome">
+    <button class="ui-btn ui-btn-icon mobile-only" id="mobileModesBtn" title="Режимы визуализации">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/>
+        <rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/>
+      </svg>
+    </button>
     <button class="ui-btn ui-btn-icon" id="themeToggleBtn" title="Переключить тему">
       <svg class="sun-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>
@@ -1689,6 +1878,10 @@
           <button class="ctrl-btn active" id="btnDemo" title="Демо-трек">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><polygon points="10 8.5 15.5 12 10 15.5" fill="currentColor" stroke="none"/></svg>
             <span class="ctrl-label">ДЕМО</span>
+          </button>
+          <button class="ctrl-btn" id="btnFile" title="Загрузить файл">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+            <span class="ctrl-label">ФАЙЛ</span>
           </button>
         </div>
         <div class="controls-right">
@@ -3663,6 +3856,46 @@
     // --- UI State & i18n ---
     let isRu = false;
     let paramsVisible = true;
+    const MOBILE_MQ = window.matchMedia('(max-width: 768px)');
+
+    function isMobileLayout() { return MOBILE_MQ.matches; }
+
+    function setMobileModesOpen(open) {
+      document.body.classList.toggle('mobile-modes-open', open);
+      const btn = document.getElementById('mobileModesBtn');
+      if (btn) btn.classList.toggle('active', open);
+      const backdrop = document.getElementById('mobileModesBackdrop');
+      if (backdrop) backdrop.setAttribute('aria-hidden', open ? 'false' : 'true');
+      if (open) setMobileParamsOpen(false);
+    }
+
+    function setMobileParamsOpen(open) {
+      paramsVisible = open;
+      document.getElementById('paramsPanel').classList.toggle('hidden', !open);
+      document.getElementById('paramsToggleBtn').classList.toggle('active', open);
+      document.body.classList.toggle('mobile-params-open', open && isMobileLayout());
+      const backdrop = document.getElementById('mobileParamsBackdrop');
+      if (backdrop) backdrop.setAttribute('aria-hidden', open ? 'false' : 'true');
+      if (open) setMobileModesOpen(false);
+    }
+
+    function applyMobileLayout() {
+      const mobile = isMobileLayout();
+      document.body.classList.toggle('is-mobile', mobile);
+      if (mobile) {
+        if (!document.body.dataset.mobileUiReady) {
+          setMobileParamsOpen(false);
+          document.body.dataset.mobileUiReady = '1';
+        }
+      } else {
+        setMobileModesOpen(false);
+        document.body.classList.remove('mobile-params-open');
+        const backdrop = document.getElementById('mobileParamsBackdrop');
+        if (backdrop) backdrop.setAttribute('aria-hidden', 'true');
+      }
+    }
+    applyMobileLayout();
+    MOBILE_MQ.addEventListener('change', applyMobileLayout);
     let micActive = false;
     let cinemaMode = false;
     let cinemaRevealTimer = null;
@@ -4305,6 +4538,8 @@
       micSource: ['МИКРОФОН', 'MIC FEED'],
       loop: ['ПОВТОР', 'LOOP'],
       mic: ['МИК', 'MIC'], file: ['ФАЙЛ', 'FILE'], demo: ['ДЕМО', 'DEMO'],
+      fileBtnTitle: ['Загрузить аудиофайл', 'Load audio file'],
+      mobileModesTitle: ['Режимы визуализации', 'Visualizer modes'],
       enter: ['НАЧАТЬ', 'ENTER EXPERIENCE'],
       gpuErr: ['ОШИБКА WEBGL2', 'FATAL WEBGL2 ERR: Check Browser console.'],
       modesTitle: ['ВИЗУАЛИЗАТОРЫ //', 'VISUALIZERS //'],
@@ -4347,6 +4582,12 @@
       document.getElementById('timeLoop').textContent = t('loop');
       document.querySelector('#btnMic .ctrl-label').textContent = t('mic');
       document.querySelector('#btnDemo .ctrl-label').textContent = t('demo');
+      const btnFileLbl = document.querySelector('#btnFile .ctrl-label');
+      if (btnFileLbl) btnFileLbl.textContent = t('file');
+      const btnFile = document.getElementById('btnFile');
+      if (btnFile) btnFile.title = t('fileBtnTitle');
+      const mobileModesBtn = document.getElementById('mobileModesBtn');
+      if (mobileModesBtn) mobileModesBtn.title = t('mobileModesTitle');
       document.getElementById('btnDemo').title = isRu ? 'Демо-трек' : 'Demo track';
       document.getElementById('playlistTitle').textContent = t('playlistTitle');
       document.getElementById('playlistLoadLabel').textContent = t('playlistLoad');
@@ -8016,10 +8257,14 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
       });
       document.getElementById('langBtn').addEventListener('click', () => { isRu = !isRu; applyLang(); });
       document.getElementById('paramsToggleBtn').addEventListener('click', () => {
-        paramsVisible = !paramsVisible;
-        document.getElementById('paramsPanel').classList.toggle('hidden', !paramsVisible);
-        document.getElementById('paramsToggleBtn').classList.toggle('active', paramsVisible);
+        setMobileParamsOpen(!paramsVisible);
       });
+      document.getElementById('mobileModesBtn').addEventListener('click', () => {
+        setMobileModesOpen(!document.body.classList.contains('mobile-modes-open'));
+      });
+      document.getElementById('mobileModesBackdrop').addEventListener('click', () => setMobileModesOpen(false));
+      document.getElementById('mobileParamsBackdrop').addEventListener('click', () => setMobileParamsOpen(false));
+      document.getElementById('btnFile').addEventListener('click', () => document.getElementById('fileInput').click());
       document.getElementById('mouseInteractBtn').addEventListener('click', () => {
         if (engine) {
           engine.mouseInteractEnabled = !engine.mouseInteractEnabled;
@@ -8496,6 +8741,7 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
       if (!isAuto || modeXActive) {
         renderModeCards();
       }
+      if (!isAuto && isMobileLayout()) setMobileModesOpen(false);
     }
 
     function updateThemeUI() {
