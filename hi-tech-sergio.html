@@ -1068,7 +1068,8 @@
     @media (max-width: 768px) {
       :root {
         --mobile-player-h: 132px;
-        --mobile-palette-w: 150px;
+        --mobile-palette-w: 168px;
+        --mobile-params-w: calc(var(--mobile-palette-w) + 16px);
         --mobile-modes-toggle-h: 40px;
         --mobile-modes-gap: 8px;
         --mobile-brand-clear: calc(env(safe-area-inset-top, 0px) + 58px);
@@ -1361,7 +1362,7 @@
       .variant-cell-num.wider { font-size: 4.5px; }
 
       .params-panel .theme-grid {
-        grid-template-columns: repeat(9, 14px);
+        grid-template-columns: repeat(9, 16px);
         justify-content: start;
         gap: 3px;
         width: var(--mobile-palette-w);
@@ -1369,16 +1370,16 @@
         margin: 0;
       }
       .params-panel .theme-swatch {
-        width: 14px;
-        height: 14px;
+        width: 16px;
+        height: 16px;
         aspect-ratio: auto;
         min-width: 0;
-        border-radius: 2px;
+        border-radius: 3px;
       }
       .params-panel .theme-swatch-rainbow .theme-swatch-disc,
       .params-panel .theme-swatch-yinyang svg {
-        width: 14px;
-        height: 14px;
+        width: 16px;
+        height: 16px;
       }
 
       .right-sidebar {
@@ -1388,15 +1389,21 @@
         left: auto;
         bottom: auto;
         transform: none;
-        width: var(--mobile-palette-w);
-        max-width: var(--mobile-palette-w);
+        width: var(--mobile-params-w);
+        max-width: var(--mobile-params-w);
         z-index: 46;
       }
       .params-panel {
         width: 100%;
-        max-height: 25dvh;
-        padding: 7px 8px 6px;
-        gap: 6px;
+        max-height: calc(
+          100dvh
+          - var(--mobile-brand-clear)
+          - env(safe-area-inset-bottom, 0px)
+          - var(--mobile-player-h)
+          - 10px
+        );
+        padding: 8px 8px 7px;
+        gap: 7px;
         font-size: 9px;
         overflow-x: hidden;
         overflow-y: auto;
@@ -1455,7 +1462,7 @@
         pointer-events: none;
         transform: translateY(-8px);
       }
-      body.mobile-params-open .mobile-drawer-backdrop.params-backdrop { display: block; }
+      body.mobile-params-open .mobile-drawer-backdrop.params-backdrop { display: none !important; }
 
       .bottom-panel-wrap {
         position: fixed;
