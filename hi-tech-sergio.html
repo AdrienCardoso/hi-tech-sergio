@@ -153,6 +153,8 @@
       box-shadow: 0 25px 50px -12px rgba(0,0,0,0.4);
       transition: border-color 0.2s;
       min-width: 196px;
+      cursor: default;
+      user-select: none;
     }
     .brand-badge:hover { border-color: rgba(64, 64, 64, 0.8); }
     .brand-top { display: flex; align-items: center; gap: 12px; }
@@ -515,6 +517,8 @@
     }
     .params-reset:hover { color: #d8b4fe; }
     .param-group { display: flex; flex-direction: column; gap: 6px; }
+    #milkdropParamGroup { display: none; }
+    #milkdropParamGroup.other-visible { display: flex; }
     .param-labels {
       display: flex; justify-content: space-between; align-items: center;
       font-size: 10px; color: #737373; letter-spacing: 0.05em;
@@ -7643,6 +7647,15 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
             await milkdropEngine.init();
             if (engine && Math.round(engine.visualMode) !== 17) setVisualMode(17);
             milkdropEngine.loadPresetByIndex(idx, 5.7);
+          });
+        }
+
+        const brandBadge = document.getElementById('brandBadge');
+        const milkdropParamGroup = document.getElementById('milkdropParamGroup');
+        if (brandBadge && milkdropParamGroup) {
+          brandBadge.addEventListener('dblclick', (e) => {
+            e.preventDefault();
+            milkdropParamGroup.classList.toggle('other-visible');
           });
         }
 
