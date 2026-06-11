@@ -1055,6 +1055,8 @@
     }
 
     .mobile-only { display: none !important; }
+    .mobile-modes-dock { display: contents; }
+    .mobile-modes-handle { display: none; }
     .mobile-drawer-backdrop {
       display: none;
       position: fixed; inset: 0; z-index: 44;
@@ -1136,11 +1138,6 @@
         inset: auto;
       }
 
-    .mobile-only { display: none !important; }
-    .mobile-modes-dock { display: contents; }
-    .mobile-modes-handle { display: none; }
-
-    @media (max-width: 768px) {
       .mobile-modes-dock {
         display: flex;
         flex-direction: row;
@@ -4230,11 +4227,10 @@
         const backdrop = document.getElementById('mobileParamsBackdrop');
         if (backdrop) backdrop.setAttribute('aria-hidden', 'true');
       }
-      if (document.getElementById('modesColLeft') && typeof MODES !== 'undefined') {
+      if (document.getElementById('modesColLeft') && typeof MODES !== 'undefined' && engine) {
         renderModeCards();
       }
     }
-    applyMobileLayout();
     MOBILE_MQ.addEventListener('change', applyMobileLayout);
 
     function getViewportWH() {
@@ -8648,6 +8644,7 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
         
         renderModeCards();
         applyLang();
+        applyMobileLayout();
         
         if (introSplash) introSplash.setReady();
 
