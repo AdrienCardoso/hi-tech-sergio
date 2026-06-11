@@ -822,6 +822,14 @@
     .donate-card-badge img {
       width: 100%; height: 100%; object-fit: contain; display: block;
     }
+    .donate-card-badge--btc,
+    .donate-card-badge--eth {
+      width: 40px; height: 40px;
+    }
+    .donate-card-badge--btc img,
+    .donate-card-badge--eth img {
+      width: 86%; height: 86%;
+    }
     .donate-card-label {
       grid-area: label;
       font-size: 9px; font-weight: 700; letter-spacing: 0.08em;
@@ -1060,21 +1068,31 @@
       font-size: clamp(9px, 2vw, 11px); letter-spacing: 0.42em;
       color: var(--purple); text-transform: uppercase;
     }
-    .intro-logo {
-      width: clamp(140px, 32vw, 260px);
-      height: auto;
-      display: block;
-      object-fit: contain;
+    .intro-speaker-logo {
+      position: relative;
+      width: clamp(96px, 20vw, 140px);
+      height: clamp(96px, 20vw, 140px);
+      flex-shrink: 0;
+      border-radius: 50%;
+      overflow: hidden;
+      box-shadow: inset 0 2px 4px rgba(0,0,0,0.3), 0 0 36px rgba(168,85,247,0.14);
+      border: 1px solid #0a0a0a;
       opacity: 0.55;
       transform: scale(0.94);
-      filter: drop-shadow(0 0 32px rgba(168, 85, 247, 0.18));
       transition: opacity 0.75s ease, transform 0.75s cubic-bezier(0.22, 1, 0.36, 1);
       pointer-events: none;
-      user-select: none;
+      z-index: 3;
     }
-    .intro-overlay.ready .intro-logo {
+    .intro-overlay.ready .intro-speaker-logo {
       opacity: 1;
       transform: scale(1);
+    }
+    .intro-overlay.ready .intro-speaker-dot {
+      animation: introDotPulse 2.2s ease-in-out infinite;
+    }
+    @keyframes introDotPulse {
+      0%, 100% { transform: scale(1); box-shadow: 0 0 8px rgba(239,68,68,0.5); }
+      50% { transform: scale(1.08); box-shadow: 0 0 20px rgba(239,68,68,0.78); }
     }
     .intro-enter {
       position: relative; pointer-events: auto; cursor: pointer;
@@ -1404,7 +1422,11 @@
         <span class="intro-brand-main">HI-TECH SERGIO</span>
         <span class="intro-brand-sub">AUDIO MEASURE</span>
       </div>
-      <img class="intro-logo" id="introLogo" src="assets/intro-logo.png" width="512" height="512" alt="HI-TECH SERGIO">
+      <div class="intro-speaker-logo" aria-hidden="true">
+        <div class="brand-icon-bg"></div>
+        <div class="brand-outer-satin-ring"></div>
+        <div class="brand-central-red-dot intro-speaker-dot"></div>
+      </div>
       <button type="button" class="intro-enter" id="introEnter" hidden>
         <span class="intro-enter-ring"></span>
         <span id="introEnterText">ENTER EXPERIENCE</span>
@@ -1714,7 +1736,7 @@
             <button type="button" class="donate-copy-btn" data-copy="TJK8V1cSZ5s8o7fDPyCczSeQHU8unk2xED">Копировать</button>
           </article>
           <article class="donate-card">
-            <div class="donate-card-badge"><img src="assets/donate/badge-btc.png" alt="Bitcoin" width="48" height="48"></div>
+            <div class="donate-card-badge donate-card-badge--btc"><img src="assets/donate/badge-btc.png" alt="Bitcoin" width="48" height="48"></div>
             <p class="donate-card-label">BTC · Bitcoin</p>
             <p class="donate-card-hint" id="donateHintBtc">Только BTC в сети Bitcoin</p>
             <div class="donate-qr"><img src="assets/donate/qr-btc.png" alt="QR BTC" width="666" height="666"></div>
@@ -1722,7 +1744,7 @@
             <button type="button" class="donate-copy-btn" data-copy="bc1qyy7fm7qs12fqkhtzuvjsjh97trrm8qpv2n105w">Копировать</button>
           </article>
           <article class="donate-card">
-            <div class="donate-card-badge"><img src="assets/donate/badge-eth.png" alt="Ethereum" width="48" height="48"></div>
+            <div class="donate-card-badge donate-card-badge--eth"><img src="assets/donate/badge-eth.png" alt="Ethereum" width="48" height="48"></div>
             <p class="donate-card-label">ETH · Ethereum</p>
             <p class="donate-card-hint" id="donateHintEth">Только ETH в сети Ethereum</p>
             <div class="donate-qr"><img src="assets/donate/qr-eth.png" alt="QR ETH" width="666" height="666"></div>
@@ -7376,17 +7398,41 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
 
       _spawnParticles() {
         this.particles = [];
-        const n = Math.min(200, Math.floor((window.innerWidth * window.innerHeight) / 5500));
+        const n = Math.min(180, Math.floor((window.innerWidth * window.innerHeight) / 8000));
+        const cx = window.innerWidth * 0.5;
+        const cy = window.innerHeight * 0.5;
         for (let i = 0; i < n; i++) {
+          const ang = Math.random() * Math.PI * 2;
+          const spd = 0.45 + Math.random() * 1.1;
           this.particles.push({
-            x: Math.random() * window.innerWidth,
-            y: Math.random() * window.innerHeight,
-            vx: (Math.random() - 0.5) * 0.35,
-            vy: (Math.random() - 0.5) * 0.35,
+            x: cx + (Math.random() - 0.5) * 10,
+            y: cy + (Math.random() - 0.5) * 10,
+            vx: Math.cos(ang) * spd,
+            vy: Math.sin(ang) * spd,
             r: 0.6 + Math.random() * 1.6,
             hue: 260 + Math.random() * 40
           });
         }
+        this.emitAcc = 0;
+      }
+
+      _respawnFromCenter(p, cx, cy) {
+        const ang = Math.random() * Math.PI * 2;
+        const spd = 0.55 + Math.random() * (this.ready ? 2.4 : 1.0);
+        p.x = cx + (Math.random() - 0.5) * 8;
+        p.y = cy + (Math.random() - 0.5) * 8;
+        p.vx = Math.cos(ang) * spd;
+        p.vy = Math.sin(ang) * spd;
+      }
+
+      _distToSeg(px, py, x1, y1, x2, y2) {
+        const dx = x2 - x1;
+        const dy = y2 - y1;
+        const len2 = dx * dx + dy * dy;
+        if (len2 < 1e-6) return Math.hypot(px - x1, py - y1);
+        let t = ((px - x1) * dx + (py - y1) * dy) / len2;
+        t = Math.max(0, Math.min(1, t));
+        return Math.hypot(px - (x1 + t * dx), py - (y1 + t * dy));
       }
 
       _bind() {
@@ -7460,30 +7506,45 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
         }
         const cx = w * 0.5;
         const cy = h * 0.5;
-        const pull = this.ready ? 0.018 : 0.004;
+        const outForce = this.ready ? 0.032 : 0.014;
         const maxLink = this.ready ? 110 : 85;
+        const maxDist = Math.hypot(w, h) * 0.52;
+        const mouseBreakR = 130;
+        const mouseRepelR = 140;
+
+        this.emitAcc += dt;
+        const emitEvery = this.ready ? 0.04 : 0.11;
+        while (this.emitAcc >= emitEvery) {
+          this.emitAcc -= emitEvery;
+          this._respawnFromCenter(pts[Math.floor(Math.random() * pts.length)], cx, cy);
+        }
 
         for (const p of pts) {
           if (mouse.active) {
-            const dx = p.x - mouse.x;
-            const dy = p.y - mouse.y;
-            const dist = Math.hypot(dx, dy) || 1;
-            if (dist < 140) {
-              const f = (140 - dist) / 140;
-              p.vx += (dx / dist) * f * 0.08;
-              p.vy += (dy / dist) * f * 0.08;
+            const mdx = p.x - mouse.x;
+            const mdy = p.y - mouse.y;
+            const mdist = Math.hypot(mdx, mdy) || 1;
+            if (mdist < mouseRepelR) {
+              const f = (mouseRepelR - mdist) / mouseRepelR;
+              p.vx += (mdx / mdist) * f * 0.1;
+              p.vy += (mdy / mdist) * f * 0.1;
             }
           }
-          p.vx += (cx - p.x) * pull * 0.001;
-          p.vy += (cy - p.y) * pull * 0.001;
-          p.vx *= 0.985;
-          p.vy *= 0.985;
+
+          const dx = p.x - cx;
+          const dy = p.y - cy;
+          const dist = Math.hypot(dx, dy) || 1;
+          const nearCore = dist < 48 ? 1.35 : 1;
+          p.vx += (dx / dist) * outForce * nearCore;
+          p.vy += (dy / dist) * outForce * nearCore;
+          p.vx += (-dy / dist) * 0.005 * (this.ready ? 1.6 : 0.7);
+          p.vy += (dx / dist) * 0.005 * (this.ready ? 1.6 : 0.7);
+          p.vx *= 0.987;
+          p.vy *= 0.987;
           p.x += p.vx * (1 + dt * 60);
           p.y += p.vy * (1 + dt * 60);
-          if (p.x < -20) p.x = w + 20;
-          if (p.x > w + 20) p.x = -20;
-          if (p.y < -20) p.y = h + 20;
-          if (p.y > h + 20) p.y = -20;
+
+          if (dist > maxDist) this._respawnFromCenter(p, cx, cy);
         }
 
         ctx.lineWidth = 0.6;
@@ -7493,6 +7554,12 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
             const dy = pts[i].y - pts[j].y;
             const d = dx * dx + dy * dy;
             if (d > maxLink * maxLink) continue;
+            if (mouse.active) {
+              const d1 = Math.hypot(pts[i].x - mouse.x, pts[i].y - mouse.y);
+              const d2 = Math.hypot(pts[j].x - mouse.x, pts[j].y - mouse.y);
+              const dSeg = this._distToSeg(mouse.x, mouse.y, pts[i].x, pts[i].y, pts[j].x, pts[j].y);
+              if (d1 < mouseBreakR || d2 < mouseBreakR || dSeg < mouseBreakR * 0.88) continue;
+            }
             const a = 1 - Math.sqrt(d) / maxLink;
             ctx.strokeStyle = `rgba(168,85,247,${a * (this.ready ? 0.35 : 0.18)})`;
             ctx.beginPath();
@@ -7508,15 +7575,6 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
           ctx.beginPath();
           ctx.arc(p.x, p.y, p.r * (this.ready ? 1.15 : 1), 0, Math.PI * 2);
           ctx.fill();
-        }
-
-        if (this.ready) {
-          const pulse = 0.5 + Math.sin(this.time * 2.2) * 0.5;
-          ctx.strokeStyle = `rgba(168,85,247,${0.12 + pulse * 0.18})`;
-          ctx.lineWidth = 1;
-          ctx.beginPath();
-          ctx.arc(cx, cy, 90 + pulse * 12, 0, Math.PI * 2);
-          ctx.stroke();
         }
 
         const scanY = (this.time * 40) % h;
