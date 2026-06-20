@@ -13,6 +13,8 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
   <script src="https://unpkg.com/butterchurn-presets@3.0.0-beta.4/dist/base.min.js"></script>
   <script src="https://unpkg.com/butterchurn-presets@3.0.0-beta.4/dist/extra.min.js"></script>
+  <script src="assets/mdrop-manifest.js"></script>
+  <script src="assets/anti-manifest.js"></script>
 
   <style>
     :root {
@@ -520,8 +522,11 @@
     }
     .params-reset:hover { color: #d8b4fe; }
     .param-group { display: flex; flex-direction: column; gap: 6px; }
-    #milkdropParamGroup { display: none; }
-    #milkdropParamGroup.other-visible { display: flex; }
+    /* TEST: скрыты только списки Other / MDrop / ANTI */
+    #extraVisualGroups { display: none !important; }
+    #milkdropParamGroup,
+    #mdropParamGroup,
+    #antiParamGroup { display: none !important; }
     .param-labels {
       display: flex; justify-content: space-between; align-items: center;
       font-size: 10px; color: #737373; letter-spacing: 0.05em;
@@ -545,6 +550,74 @@
     .param-select:focus { border-color: var(--purple-dim); }
     .param-select option { background: #111; color: var(--text); }
     .param-select optgroup { background: #111; color: var(--text-muted); font-weight: 600; }
+    .preset-scrub-slider {
+      -webkit-appearance: none; appearance: none;
+      width: 100%; height: 6px; margin: 2px 0 4px;
+      border-radius: 6px; outline: none; cursor: pointer;
+      background: linear-gradient(90deg, #262626 0%, rgba(168, 85, 247, 0.45) 100%);
+      border: 1px solid rgba(168, 85, 247, 0.35);
+    }
+    .preset-scrub-slider::-webkit-slider-thumb {
+      -webkit-appearance: none; width: 14px; height: 14px;
+      border-radius: 50%; background: var(--purple); cursor: pointer;
+      border: 2px solid rgba(255, 255, 255, 0.85);
+      box-shadow: 0 0 10px rgba(168, 85, 247, 0.75);
+    }
+    .preset-scrub-slider::-moz-range-track {
+      height: 6px; border-radius: 6px;
+      background: linear-gradient(90deg, #262626, rgba(168, 85, 247, 0.45));
+      border: 1px solid rgba(168, 85, 247, 0.35);
+    }
+    .preset-scrub-slider::-moz-range-thumb {
+      width: 14px; height: 14px; border-radius: 50%;
+      background: var(--purple); border: 2px solid #fff;
+    }
+    .preset-scrub-slider.preset-scrub-idle,
+    .preset-scrub-idle {
+      opacity: 0.4; pointer-events: none;
+    }
+    .preset-picker-shell { position: relative; width: 100%; }
+    .preset-picker-trigger {
+      display: block; text-align: left; width: 100%;
+      overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+    }
+    .preset-picker-trigger[aria-expanded="true"] {
+      border-color: var(--purple);
+      box-shadow: 0 0 0 1px rgba(168, 85, 247, 0.35);
+    }
+    .preset-picker-panel {
+      margin-top: 4px; padding: 4px;
+      background: rgba(8, 8, 8, 0.98);
+      border: 1px solid rgba(168, 85, 247, 0.45);
+      border-radius: 4px;
+      box-shadow: 0 10px 28px rgba(0, 0, 0, 0.65);
+      z-index: 60;
+    }
+    .preset-picker-panel.hidden { display: none; }
+    .preset-picker-list {
+      display: block; width: 100%; height: 220px;
+      font-family: var(--font-mono); font-size: 9px;
+      background: #0a0a0a; color: var(--text);
+      border: 1px solid #262626; border-radius: 3px;
+      outline: none; cursor: pointer;
+      scrollbar-width: thin;
+      scrollbar-color: var(--purple) #171717;
+    }
+    .preset-picker-list::-webkit-scrollbar { width: 12px; }
+    .preset-picker-list::-webkit-scrollbar-track {
+      background: #171717; border-radius: 6px;
+    }
+    .preset-picker-list::-webkit-scrollbar-thumb {
+      background: var(--purple); border-radius: 6px;
+      border: 2px solid #171717;
+      box-shadow: 0 0 6px rgba(168, 85, 247, 0.5);
+    }
+    .preset-picker-list:focus { border-color: var(--purple); }
+    .preset-picker-list optgroup { color: var(--text-muted); font-weight: 600; }
+    .preset-select-hidden {
+      position: absolute; width: 1px; height: 1px; opacity: 0;
+      pointer-events: none; overflow: hidden; clip: rect(0, 0, 0, 0);
+    }
     .params-donate-link {
       display: none;
       margin-top: 2px;
@@ -1445,6 +1518,18 @@
       .params-panel .param-slider {
         height: 3px;
       }
+      .params-panel .preset-scrub-slider {
+        height: 7px; margin: 1px 0 3px;
+      }
+      .params-panel .preset-scrub-slider::-webkit-slider-thumb {
+        width: 16px; height: 16px;
+      }
+      .params-panel .preset-picker-list {
+        height: 160px; font-size: 7px;
+      }
+      .params-panel .preset-picker-list::-webkit-scrollbar {
+        width: 10px;
+      }
       .params-panel .param-slider::-webkit-slider-thumb {
         width: 10px;
         height: 10px;
@@ -2118,11 +2203,36 @@
         </div>
       </div>
     </div>
-    <div class="param-group" id="milkdropParamGroup">
-      <div class="param-labels"><span id="lblMilkdrop">OTHER VISUALISATIONS //</span></div>
-      <select class="param-select" id="milkdropPresetSelect" title="Other visualisations">
-        <option value="">…</option>
-      </select>
+    <div class="param-group" id="mdropParamGroup">
+      <div class="param-labels">
+        <span id="lblMdropScrub">ПРОКРУТКА //</span>
+        <span class="param-value" id="mdropPresetScrubLabel">—</span>
+      </div>
+      <input type="range" class="preset-scrub-slider preset-scrub-idle" id="mdropPresetScrub" min="0" max="1" value="0" step="1" title="Быстрая прокрутка пресетов">
+      <div class="param-labels"><span id="lblMdrop">MDropDX12 //</span></div>
+      <div class="preset-picker-shell" id="mdropPresetPicker">
+        <button type="button" class="preset-picker-trigger param-select" id="mdropPresetTrigger" aria-expanded="false" aria-haspopup="listbox">…</button>
+        <div class="preset-picker-panel hidden" id="mdropPresetPanel">
+          <select class="preset-picker-list" id="mdropPresetList" size="14" title="MDropDX12 presets"></select>
+        </div>
+        <select class="preset-select-hidden" id="mdropPresetSelect" tabindex="-1" aria-hidden="true"><option value="">…</option></select>
+      </div>
+    </div>
+    <div class="param-group" id="antiParamGroup">
+      <div class="param-labels">
+        <span id="lblAntiScrub">ПРОКРУТКА //</span>
+        <span class="param-value" id="antiPresetScrubLabel">—</span>
+      </div>
+      <input type="range" class="preset-scrub-slider preset-scrub-idle" id="antiPresetScrub" min="0" max="1" value="0" step="1" title="Быстрая прокрутка пресетов">
+      <div class="param-labels"><span id="lblAnti">ANTI //</span></div>
+      <div class="preset-picker-shell" id="antiPresetPicker">
+        <button type="button" class="preset-picker-trigger param-select" id="antiPresetTrigger" aria-expanded="false" aria-haspopup="listbox">…</button>
+        <div class="preset-picker-panel hidden" id="antiPresetPanel">
+          <select class="preset-picker-list" id="antiPresetList" size="14" title="ANTI presets"></select>
+        </div>
+        <select class="preset-select-hidden" id="antiPresetSelect" tabindex="-1" aria-hidden="true"><option value="">…</option></select>
+      </div>
+    </div>
     </div>
     <button type="button" class="params-donate-link mobile-only" id="mobileDonateLink">Поддержать</button>
 
@@ -2368,6 +2478,38 @@
         m = m * m;
         return 42.0 * dot( m*m, vec4( dot(p0,x0), dot(p1,x1),
                                       dot(p2,x2), dot(p3,x3) ) );
+      }
+
+      // Chladni plate — nodal patterns (cymatics)
+      float chladniField(vec2 uv, float mm, float nn) {
+        return cos(mm * PI * uv.x) * cos(nn * PI * uv.y)
+             - cos(nn * PI * uv.x) * cos(mm * PI * uv.y);
+      }
+
+      vec2 chladniGrad(vec2 uv, float mm, float nn) {
+        float sx = sin(mm * PI * uv.x), cx = cos(mm * PI * uv.x);
+        float sy = sin(nn * PI * uv.y), cy = cos(nn * PI * uv.y);
+        float snx = sin(nn * PI * uv.x), cnx = cos(nn * PI * uv.x);
+        float smy = sin(mm * PI * uv.y), cmy = cos(mm * PI * uv.y);
+        return vec2(
+          -mm * PI * sx * cy + nn * PI * snx * cmy,
+          -nn * PI * cx * sy + mm * PI * cnx * smy
+        );
+      }
+
+      float cymaticsField(vec2 uv, float m1, float n1, float m2, float n2, float m3, float n3, float t) {
+        float f1 = chladniField(uv, m1, n1);
+        float f2 = chladniField(uv * 0.86 + vec2(0.04, -0.03), m2, n2) * 0.58;
+        float ang = atan(uv.y, uv.x);
+        float rr = length(uv);
+        float f3 = sin(m3 * ang + t * 0.19) * sin(n3 * rr * PI * 1.15) * 0.42;
+        float f4 = sin((m1 + n2) * ang * 0.5 + rr * (m2 + 1.0) * PI * 0.7 + t * 0.11) * 0.28;
+        return f1 + f2 + f3 + f4;
+      }
+
+      vec2 cymaticsGrad(vec2 uv, float m1, float n1, float m2, float n2, float t) {
+        return chladniGrad(uv, m1, n1)
+             + chladniGrad(uv * 0.86 + vec2(0.04, -0.03), m2, n2) * 0.58;
       }
 
       // HSL to RGB conversion (used by RELATION mode)
@@ -2775,8 +2917,82 @@
           pos.z += cos(pos.x * 0.35 + uTime * 0.14) * uMid * 0.3;
         }
 
-        // --- MODE 10: ART (fuzzy sphere + radial corona) ---
+        // --- MODE 10: ART (fuzzy sphere) | variant 4 = cymatics plate ---
         else if (uVisualMode == 10.0) {
+          if (uVariant >= 4.0 && uVariant < 5.0) {
+            // ── 10D-5 РЕЗОНАНС: cymatics — sand on vibrating Chladni plate ──
+            float grainId = floor(aIndexSeed * 14000.0);
+            vec2 p = vec2(
+              fract(aIndexSeed * 127.1 + grainId * 0.013) * 2.0 - 1.0,
+              fract(aIndexSeed * 311.7 + grainId * 0.017) * 2.0 - 1.0
+            );
+            float rLen = length(p);
+            if (rLen > 0.985) p *= 0.985 / max(rLen, 0.001);
+
+            // Покой: стабильный узор. Музыка: плавный морф без floor/sin-скачков.
+            float audioGate = clamp(
+              (uEnergy * uSensitivity + uBass * 0.42 + uMid * 0.28 + uHigh * 0.18 - 0.1) / 0.28,
+              0.0, 1.0
+            );
+            audioGate = audioGate * audioGate;
+
+            float rm1 = 3.0, rn1 = 4.0, rm2 = 5.0, rn2 = 3.0, rm3 = 4.0, rn3 = 6.0;
+            float drive = (uBass * 1.1 + uMid * 0.85 + uHigh * 0.55) * uSensitivity;
+            float am1 = 2.0 + drive * 9.0 + uOnset * 3.5 * audioGate;
+            float an1 = 2.0 + uMid * uSensitivity * 7.5 + uHigh * 1.8;
+            float am2 = 4.0 + uBass * 4.5 + uHigh * 3.2;
+            float an2 = 3.0 + uMid * 4.0 + uEnergy * 2.5;
+            float am3 = 5.0 + uHigh * 6.0 + uOnset * 2.0 * audioGate;
+            float an3 = 2.0 + uEnergy * uSensitivity * 5.0;
+
+            float m1 = mix(rm1, am1, audioGate);
+            float n1 = mix(rn1, an1, audioGate);
+            float m2 = mix(rm2, am2, audioGate);
+            float n2 = mix(rn2, an2, audioGate);
+            float m3 = mix(rm3, am3, audioGate);
+            float n3 = mix(rn3, an3, audioGate);
+            float fieldTime = mix(uTime * 0.028, uTime, audioGate);
+
+            vec2 uv = p;
+            float driftAmt = mix(0.065, 0.105 + uEnergy * uSensitivity * 0.095, audioGate);
+            for (int k = 0; k < 5; k++) {
+              float field = cymaticsField(uv, m1, n1, m2, n2, m3, n3, fieldTime);
+              vec2 g = cymaticsGrad(uv, m1, n1, m2, n2, fieldTime);
+              uv -= g * field * driftAmt;
+              uv = clamp(uv, vec2(-0.99), vec2(0.99));
+            }
+
+            float fFinal = cymaticsField(uv, m1, n1, m2, n2, m3, n3, fieldTime);
+            float nodeSharp = exp(-fFinal * fFinal * mix(38.0, 48.0 + uHigh * uSensitivity * 110.0, audioGate));
+            float antiNode = 1.0 - nodeSharp;
+
+            vec2 jitter = vec2(
+              snoise(vec3(uv * 4.2, fieldTime * 0.38 + grainId * 0.008)),
+              snoise(vec3(uv * 4.2 + 17.3, fieldTime * 0.33 + grainId * 0.011))
+            ) * antiNode * mix(0.035, 0.06 + amp * 0.24, audioGate);
+            uv += jitter;
+
+            float plateR = 8.8;
+            float lift = antiNode * mix(0.14, 0.55 + uBass * 1.05 + amp * 0.55, audioGate)
+                       + nodeSharp * 0.035
+                       + sin(fieldTime * 4.0 + grainId * 0.17) * antiNode * mix(0.04, uHigh * 0.18, audioGate);
+
+            pos.x = uv.x * plateR;
+            pos.z = uv.y * plateR * 0.93;
+            pos.y = lift - 0.4;
+            pos.y += pos.z * 0.07;
+
+            if (aPositionSeed.z > 0.93) {
+              float burst = (uOnset * 2.8 + uBass * 0.85) * audioGate;
+              pos.y += burst * 1.35;
+              pos.xz *= 1.0 + burst * 0.07;
+            }
+
+            pos.x += sin(fieldTime * 0.22 + uv.y * 2.5) * uMid * 0.06 * antiNode * audioGate;
+            pos.z += cos(fieldTime * 0.19 + uv.x * 2.5) * uMid * 0.06 * antiNode * audioGate;
+
+            frontFactor4 = nodeSharp * 2.2 + antiNode * 0.45;
+          } else {
           float role = aPositionSeed.y;
           float expand = 1.0 + uBass * 0.75 + uEnergy * 0.55;
           float pulse = 0.92 + sin(uTime * 0.4 + uBass * 4.0) * 0.12;
@@ -2836,6 +3052,7 @@
             pos = vec3(cos(ang) * r, sin(ang * 1.37) * r * 0.75, sin(ang * 0.62) * r * 0.9);
             pos += vec3(snoise(vec3(ang * 0.04, uTime * 0.45, 0.0))) * (0.18 + uMid * 0.25);
             frontFactor4 = -1.0;
+          }
           }
         }
 
@@ -3099,7 +3316,11 @@
           gl_PointSize = uParticleSize * (0.32 + glint * 1.1 + bassSwelling * 0.75 + highGlint * 0.65) * depthFade;
           }
         } else if (uVisualMode == 10.0) {
-          if (frontFactor4 > 1.5) {
+          if (uVariant >= 4.0 && uVariant < 5.0) {
+            float nodeT = clamp(frontFactor4 - 0.35, 0.0, 1.8);
+            float grain = 0.32 + fract(aIndexSeed * 53.0) * 0.48;
+            gl_PointSize = uParticleSize * grain * (0.55 + nodeT * 0.75 + uHigh * 0.35 + amp * 0.28);
+          } else if (frontFactor4 > 1.5) {
             float grain = 0.28 + fract(aIndexSeed * 37.0) * 0.55;
             gl_PointSize = uParticleSize * grain * (0.85 + uHigh * 0.65 + amp * 0.35);
           } else if (frontFactor4 < 0.0) {
@@ -3241,6 +3462,22 @@
           }
           }
         } else if (uVisualMode == 10.0) {
+          if (uVariant >= 4.0 && uVariant < 5.0) {
+            float nodeT = clamp(frontFactor4 - 0.35, 0.0, 1.8);
+            float grain = 0.55 + fract(aIndexSeed * 73.0) * 0.45;
+            float sparkle = step(0.93, fract(aIndexSeed * 41.0 + uTime * 6.0 + uHigh * 3.0));
+            vec3 sand = vec3(0.94, 0.95, 0.98);
+            vec3 silver = vec3(0.78, 0.84, 0.96);
+            vec3 shadow = vec3(0.08, 0.10, 0.16);
+            vColor = mix(shadow, mix(sand, silver, nodeT * 0.65), nodeT + grain * 0.12);
+            vColor *= 0.72 + amp * 0.55 + uMid * 0.18 + sparkle * (0.35 + uHigh * 0.45);
+            if (uPaletteTheme > 8.5) {
+              float g = mix(0.2, 0.98, nodeT);
+              vColor = vec3(g) * (0.7 + amp * 0.45);
+            } else if (uPaletteColorA < 0.5 && uPaletteTheme < 0.5) {
+              vColor = mix(vColor, paletteByTheme(fract(aIndexSeed * 5.0 + nodeT * 0.3), amp), nodeT * 0.22);
+            }
+          } else {
           vec3 copper = vec3(0.82, 0.50, 0.28);
           vec3 bronze = vec3(0.65, 0.38, 0.22);
           vec3 deepBlue = vec3(0.04, 0.22, 0.58);
@@ -3291,6 +3528,7 @@
               float t = clamp(frontFactor4, 0.0, 1.0);
               vColor = paletteByTheme(t + fract(aIndexSeed * 5.0) * 0.2, amp) * bright;
             }
+          }
           }
         } else {
           vColor = getGradientColor(aIndexSeed, amp + uHigh * 0.2);
@@ -3343,7 +3581,12 @@
 
         // --- MODE 10: ART alphas ---
         if (uVisualMode == 10.0) {
-          if (frontFactor4 > 1.5) {
+          if (uVariant >= 4.0 && uVariant < 5.0) {
+            float nodeT = clamp(frontFactor4 - 0.35, 0.0, 1.8);
+            float dust = 1.0 - nodeT;
+            vAlpha = (0.18 + nodeT * 0.62 + dust * amp * 0.35) * clamp(1.15 - abs(gl_Position.z) / 20.0, 0.12, 0.96);
+            if (fract(aIndexSeed * 29.0 + uTime * 2.0) > 0.92) vAlpha = clamp(vAlpha * 1.4, 0.0, 0.98);
+          } else if (frontFactor4 > 1.5) {
             float env = sin(fract(aIndexSeed * 9.0 + frontFactor4) * PI);
             vAlpha = (0.22 + env * 0.55 + amp * 0.32) * clamp(1.2 - (gl_Position.z / 18.0), 0.06, 0.92);
           } else if (frontFactor4 < 0.0) {
@@ -4008,7 +4251,6 @@
 
         const isFaith8D = Math.round(this.visualMode) === 4;
         const sensitivity = parseFloat(document.getElementById('paramSensitivity').value);
-
         if (isFaith8D) {
           const bass = this.reactor.bass;
           if (this.reactor.onset) {
@@ -4223,6 +4465,7 @@
       }
       return [window.innerWidth, window.innerHeight];
     }
+
 
     function applyMobileCinemaCanvasPos() {
       const ids = ['canvas', 'threeCanvas', 'canvas2d', 'milkdropCanvas'];
@@ -4560,23 +4803,78 @@
       return modeIdx === 10;
     }
 
+    function apply10DVariantCamera(variantIdx) {
+      if (!engine) return;
+      if (variantIdx === 4) {
+        engine.targetAngleX = 1.08;
+        engine.targetAngleY = 0;
+        if (engine.cameraZoom > 11.0) engine.cameraZoom = 9.8;
+      } else {
+        engine.targetAngleX = 0.25;
+        if (engine.cameraZoom < 9.0) engine.cameraZoom = 10.0;
+      }
+    }
+
+    function apply10DVariantParams(variantIdx) {
+      if (variantIdx === 4) {
+        document.getElementById('paramParticleSize').value = 0.42;
+        document.getElementById('paramTrails').value = 0.94;
+        document.getElementById('paramNoise').value = 1.2;
+        document.getElementById('paramPerformance').value = 100;
+        const ps = document.getElementById('paramParticleSize');
+        if (ps) ps.dispatchEvent(new Event('input'));
+        const tr = document.getElementById('paramTrails');
+        if (tr) tr.dispatchEvent(new Event('input'));
+      } else {
+        applyModeBrightnessDefault(10);
+      }
+    }
+
+    const CITY_OF_SHADOWS_SKY_LABELS = {
+      ru: [
+        'Низкое небо', 'Мягкие слои', 'Гроза', 'Плотные тучи', 'Тёмный шторм', 'Открытое небо',
+        'Горизонт низ', 'Западный ветер', 'Южный дрейф', 'Северо-запад', 'Высокое небо', 'Диагональ',
+      ],
+      en: [
+        'Low sky', 'Soft layers', 'Storm', 'Dense clouds', 'Dark storm', 'Open sky',
+        'Low horizon', 'West wind', 'South drift', 'Northwest', 'High sky', 'Diagonal',
+      ],
+    };
+
+    // TEST.html — основа 0D–10D как в vRABOTU; без UI-списков Other / MDrop / ANTI
+    const IS_TEST_BUILD = true;
+
     // Переносы из Other Visualisations → слоты основных режимов (методика для следующих переносов)
     const VISUAL_DIRECTORY = {
-      '6D-1': { type: 'milkdrop', presetKey: 'martin - city of shadows', presetNumber: 168 },
+      '6D-1': {
+        type: 'milkdrop',
+        mdropPresetNumber: 4193,
+        mdropPatch: 'cityOfShadowsSky',
+        skyVariant: 12,
+        overlayImage: 'assets/visuals/6d-jet-engine-overlay.png',
+        overlayFlipY: false,
+        skyHint: { ru: 'Иллюминатор', en: 'Window seat' },
+      },
       '6D-2': { type: 'milkdrop', presetKey: 'martin - cope - laser dome', presetNumber: 169 },
       '6D-3': { type: 'milkdrop', presetNumber: 156 },
       '6D-4': { type: 'milkdrop', presetNumber: 262 },
+      '6D-5': { type: 'milkdrop', presetKey: 'martin - city of shadows', presetNumber: 168 },
       '0D-2': { type: 'milkdrop', presetNumber: 26 },
       '0D-3': { type: 'milkdrop', presetNumber: 27 },
       '0D-4': { type: 'milkdrop', presetNumber: 270 },
       '0D-5': { type: 'milkdrop', presetNumber: 44 },
       '0D-6': { type: 'milkdrop', presetNumber: 56 },
-      '0D-7': { type: 'milkdrop', presetNumber: 50 },
+      '0D-7': { type: 'milkdrop', antiPresetNumber: 3336 },
       '0D-8': { type: 'milkdrop', presetNumber: 81 },
       '0D-9': { type: 'milkdrop', presetNumber: 141 },
       '0D-10': { type: 'milkdrop', presetNumber: 170 },
       '0D-11': { type: 'milkdrop', presetNumber: 220 },
       '0D-12': { type: 'webgl', visualMode: 0, variantIdx: 0 },
+      '0D-13': { type: 'milkdrop', antiPresetNumber: 526 },
+      '0D-14': { type: 'milkdrop', antiPresetNumber: 4721 },
+      '0D-15': { type: 'milkdrop', antiPresetNumber: 195 },
+      '0D-16': { type: 'milkdrop', antiPresetNumber: 347 },
+      '0D-17': { type: 'milkdrop', antiPresetNumber: 383 },
       '1D-2': { type: 'milkdrop', presetNumber: 7 },
       '1D-3': { type: 'milkdrop', presetNumber: 17 },
       '1D-4': { type: 'milkdrop', presetNumber: 46 },
@@ -4586,6 +4884,9 @@
       '1D-8': { type: 'milkdrop', presetNumber: 210 },
       '1D-9': { type: 'milkdrop', presetNumber: 242 },
       '1D-10': { type: 'milkdrop', presetNumber: 193 },
+      '1D-11': { type: 'milkdrop', mdropPresetNumber: 6054 },
+      '1D-12': { type: 'milkdrop', antiPresetNumber: 280 },
+      '1D-13': { type: 'milkdrop', antiPresetNumber: 295 },
       '2D-2': { type: 'milkdrop', presetNumber: 58 },
       '2D-3': { type: 'milkdrop', presetNumber: 23 },
       '2D-4': { type: 'milkdrop', presetNumber: 35 },
@@ -4618,7 +4919,6 @@
       '4D-2': { type: 'milkdrop', presetNumber: 25 },
       '4D-3': { type: 'milkdrop', presetNumber: 288 },
       '4D-4': { type: 'milkdrop', presetNumber: 278 },
-      '4D-5': { type: 'milkdrop', presetNumber: 269 },
       '4D-6': { type: 'milkdrop', presetNumber: 48 },
       '4D-7': { type: 'milkdrop', presetNumber: 51 },
       '4D-8': { type: 'milkdrop', presetNumber: 77 },
@@ -4630,6 +4930,8 @@
       '4D-14': { type: 'milkdrop', presetNumber: 174 },
       '4D-15': { type: 'milkdrop', presetNumber: 189 },
       '4D-16': { type: 'milkdrop', presetNumber: 266 },
+      '4D-17': { type: 'milkdrop', antiPresetNumber: 5949 },
+      '4D-18': { type: 'milkdrop', antiPresetNumber: 305 },
       '5D-2': { type: 'milkdrop', presetNumber: 52 },
       '5D-3': { type: 'milkdrop', presetNumber: 71 },
       '5D-4': { type: 'milkdrop', presetNumber: 72 },
@@ -4653,6 +4955,12 @@
       '9D-12': { type: 'milkdrop', presetNumber: 185 },
       '9D-13': { type: 'milkdrop', presetNumber: 206 },
       '9D-14': { type: 'milkdrop', presetNumber: 227 },
+      '9D-18': { type: 'milkdrop', mdropPresetNumber: 6652 },
+      '9D-19': { type: 'milkdrop', antiPresetNumber: 124 },
+      '9D-20': { type: 'milkdrop', antiPresetNumber: 126 },
+      '9D-21': { type: 'milkdrop', antiPresetNumber: 143 },
+      '9D-22': { type: 'milkdrop', antiPresetNumber: 141 },
+      '9D-23': { type: 'milkdrop', antiPresetNumber: 531 },
       '7D-1': { type: 'milkdrop', presetNumber: 8 },
       '7D-2': { type: 'milkdrop', presetNumber: 16 },
       '7D-3': { type: 'milkdrop', presetNumber: 39 },
@@ -4665,6 +4973,12 @@
       '7D-10': { type: 'milkdrop', presetNumber: 232 },
       '7D-11': { type: 'milkdrop', presetNumber: 238 },
       '7D-12': { type: 'milkdrop', presetNumber: 255 },
+      '7D-13': { type: 'milkdrop', antiPresetNumber: 9784 },
+      '7D-14': { type: 'milkdrop', antiPresetNumber: 1312 },
+      '7D-15': { type: 'milkdrop', antiPresetNumber: 190 },
+      '7D-16': { type: 'milkdrop', antiPresetNumber: 191 },
+      '7D-17': { type: 'milkdrop', antiPresetNumber: 192 },
+      '7D-18': { type: 'milkdrop', antiPresetNumber: 207 },
       '8D-1': { type: 'milkdrop', presetNumber: 57 },
       '8D-2': { type: 'milkdrop', presetNumber: 117 },
       '8D-3': { type: 'milkdrop', presetNumber: 115 },
@@ -4686,20 +5000,100 @@
       '8D-19': { type: 'milkdrop', presetNumber: 241 },
       '8D-20': { type: 'milkdrop', presetNumber: 247 },
       '8D-21': { type: 'milkdrop', presetNumber: 249 },
+      '8D-22': { type: 'milkdrop', antiPresetNumber: 9795 },
+      '8D-23': { type: 'milkdrop', antiPresetNumber: 9783 },
+      '8D-24': { type: 'milkdrop', antiPresetNumber: 7029 },
+      '8D-25': { type: 'milkdrop', antiPresetNumber: 119 },
+      '8D-26': { type: 'milkdrop', antiPresetNumber: 177 },
+      '8D-27': { type: 'milkdrop', antiPresetNumber: 318 },
+      '8D-28': { type: 'milkdrop', antiPresetNumber: 351 },
+      '8D-29': { type: 'milkdrop', antiPresetNumber: 454 },
+      '0D-18': { type: 'milkdrop', antiPresetNumber: 729 },
+      '0D-19': { type: 'milkdrop', antiPresetNumber: 803 },
+      '0D-20': { type: 'milkdrop', antiPresetNumber: 895 },
+      '0D-21': { type: 'milkdrop', antiPresetNumber: 989 },
+      '0D-22': { type: 'milkdrop', antiPresetNumber: 1160 },
+      '0D-23': { type: 'milkdrop', antiPresetNumber: 1375 },
+      '0D-24': { type: 'milkdrop', antiPresetNumber: 9795 },
+      '1D-14': { type: 'milkdrop', antiPresetNumber: 813 },
+      '1D-15': { type: 'milkdrop', antiPresetNumber: 1036 },
+      '1D-16': { type: 'milkdrop', antiPresetNumber: 1228 },
+      '1D-17': { type: 'milkdrop', antiPresetNumber: 1858 },
+      '2D-22': { type: 'milkdrop', antiPresetNumber: 723 },
+      '2D-23': { type: 'milkdrop', antiPresetNumber: 783 },
+      '2D-24': { type: 'milkdrop', antiPresetNumber: 880 },
+      '2D-25': { type: 'milkdrop', antiPresetNumber: 1366 },
+      '4D-20': { type: 'milkdrop', antiPresetNumber: 1027 },
+      '5D-11': { type: 'milkdrop', antiPresetNumber: 843 },
+      '5D-12': { type: 'milkdrop', antiPresetNumber: 890 },
+      '5D-13': { type: 'milkdrop', antiPresetNumber: 946 },
+      '5D-14': { type: 'milkdrop', antiPresetNumber: 1046 },
+      '5D-15': { type: 'milkdrop', antiPresetNumber: 1483 },
+      '6D-6': { type: 'milkdrop', antiPresetNumber: 1069 },
+      '7D-19': { type: 'milkdrop', antiPresetNumber: 600 },
+      '7D-20': { type: 'milkdrop', antiPresetNumber: 653 },
+      '7D-21': { type: 'milkdrop', antiPresetNumber: 728 },
+      '7D-22': { type: 'milkdrop', antiPresetNumber: 1104 },
+      '7D-23': { type: 'milkdrop', antiPresetNumber: 1164 },
+      '7D-24': { type: 'milkdrop', antiPresetNumber: 1196 },
+      '7D-25': { type: 'milkdrop', antiPresetNumber: 1208 },
+      '7D-26': { type: 'milkdrop', antiPresetNumber: 1344 },
+      '7D-27': { type: 'milkdrop', antiPresetNumber: 1738 },
+      '8D-30': { type: 'milkdrop', antiPresetNumber: 651 },
+      '8D-31': { type: 'milkdrop', antiPresetNumber: 701 },
+      '8D-32': { type: 'milkdrop', antiPresetNumber: 702 },
+      '8D-33': { type: 'milkdrop', antiPresetNumber: 745 },
+      '8D-34': { type: 'milkdrop', antiPresetNumber: 747 },
+      '8D-35': { type: 'milkdrop', antiPresetNumber: 778 },
+      '8D-36': { type: 'milkdrop', antiPresetNumber: 839 },
+      '8D-37': { type: 'milkdrop', antiPresetNumber: 1005 },
+      '8D-38': { type: 'milkdrop', antiPresetNumber: 1058 },
+      '8D-39': { type: 'milkdrop', antiPresetNumber: 1168 },
+      '8D-40': { type: 'milkdrop', antiPresetNumber: 1170 },
+      '9D-24': { type: 'milkdrop', antiPresetNumber: 643 },
+      '9D-25': { type: 'milkdrop', antiPresetNumber: 710 },
+      '9D-26': { type: 'milkdrop', antiPresetNumber: 739 },
+      '9D-27': { type: 'milkdrop', antiPresetNumber: 743 },
+      '9D-28': { type: 'milkdrop', antiPresetNumber: 757 },
+      '9D-29': { type: 'milkdrop', antiPresetNumber: 789 },
+      '9D-30': { type: 'milkdrop', antiPresetNumber: 873 },
+      '9D-31': { type: 'milkdrop', antiPresetNumber: 889 },
+      '9D-32': { type: 'milkdrop', antiPresetNumber: 1000 },
+      '9D-33': { type: 'milkdrop', antiPresetNumber: 1066 },
+      '9D-34': { type: 'milkdrop', antiPresetNumber: 1007 },
+      '9D-35': { type: 'milkdrop', antiPresetNumber: 1073 },
+      '9D-36': { type: 'milkdrop', antiPresetNumber: 1083 },
+      '9D-37': { type: 'milkdrop', antiPresetNumber: 1118 },
+      '9D-38': { type: 'milkdrop', antiPresetNumber: 1195 },
+      '9D-39': { type: 'milkdrop', antiPresetNumber: 1202 },
+      '9D-40': { type: 'milkdrop', antiPresetNumber: 1214 },
+      '9D-41': { type: 'milkdrop', antiPresetNumber: 1225 },
+      '9D-42': { type: 'milkdrop', antiPresetNumber: 1245 },
+      '9D-43': { type: 'milkdrop', antiPresetNumber: 1274 },
+      '9D-44': { type: 'milkdrop', antiPresetNumber: 1280 },
+      '9D-45': { type: 'milkdrop', antiPresetNumber: 1309 },
+      '9D-46': { type: 'milkdrop', antiPresetNumber: 1342 },
+      '9D-47': { type: 'milkdrop', antiPresetNumber: 1726 },
+      '9D-48': { type: 'milkdrop', antiPresetNumber: 1757 },
+      '9D-49': { type: 'milkdrop', antiPresetNumber: 1778 },
+      '9D-50': { type: 'milkdrop', antiPresetNumber: 9771 },
+      '10D-6': { type: 'milkdrop', antiPresetNumber: 741 },
+      '10D-7': { type: 'milkdrop', antiPresetNumber: 1002 },
+      '10D-8': { type: 'milkdrop', antiPresetNumber: 1279 },
       '10D-2': { type: 'webgl', visualMode: 1, variantIdx: 0 },
       '10D-3': { type: 'webgl', visualMode: 4, variantIdx: 0 },
-      '10D-4': { type: 'webgl', visualMode: 8, variantIdx: 0 }
+      '10D-4': { type: 'webgl', visualMode: 8, variantIdx: 0 },
+      '10D-5': { type: 'webgl', visualMode: 10, variantIdx: 4 },
     };
 
     // Удалённые слоты: ячейки не показываются, визуал недоступен
     const REMOVED_VARIANT_SLOTS = new Set([
-      '1D-11', '1D-12',
+      '6D-7', '6D-8', '6D-9', '6D-10', '6D-11', '6D-12',
+      '6D-13', '6D-14', '6D-15', '6D-16', '6D-17', '6D-18', '6D-19',
       '3D-10', '3D-11', '3D-12',
-      '5D-11', '5D-12',
-      '6D-5', '6D-6', '6D-7', '6D-8', '6D-9', '6D-10', '6D-11', '6D-12',
-      '8D-22', '8D-23', '8D-24', '8D-25',
-      '9D-15',
-      '10D-5', '10D-6', '10D-7', '10D-8', '10D-9', '10D-10', '10D-11', '10D-12',
+      '4D-5', '4D-19',
+      '9D-15', '9D-16', '9D-17',
+      '10D-9', '10D-10', '10D-11', '10D-12',
     ]);
 
     // Пресеты, убранные из Other (ключ и/или № в полном списке — нумерация не сбивается)
@@ -4718,6 +5112,94 @@
     ]);
 
     let activeDirectorySlot = null;
+    let lastAppliedDirSlot = null;
+
+    function syncActiveVisualLayers(dir, modeIdx, variantIdx) {
+      const particleCanvas = document.getElementById('canvas');
+      const threeCanvas = document.getElementById('threeCanvas');
+      const canvas2d = document.getElementById('canvas2d');
+      const milkdropCanvas = document.getElementById('milkdropCanvas');
+      if (!particleCanvas || !threeCanvas || !canvas2d || !milkdropCanvas) return;
+
+      canvas2d.classList.remove('hybrid-overlay');
+      particleCanvas.style.display = 'none';
+      threeCanvas.style.display = 'none';
+      canvas2d.style.display = 'none';
+      milkdropCanvas.style.display = 'none';
+
+      const renderedIdx = getRenderedMode(modeIdx);
+
+      if (dir?.type === 'milkdrop') {
+        milkdropCanvas.style.display = 'block';
+        if (dir.overlayImage) {
+          canvas2d.style.display = 'block';
+          canvas2d.classList.add('hybrid-overlay');
+        }
+        return;
+      }
+      if (dir?.type === 'webgl') {
+        particleCanvas.style.display = 'block';
+        return;
+      }
+      if (dir?.type === 'three') {
+        threeCanvas.style.display = 'block';
+        return;
+      }
+      if (dir?.type === 'canvas2d') {
+        canvas2d.style.display = 'block';
+        canvas2d.style.zIndex = '3';
+        return;
+      }
+
+      canvas2d.style.zIndex = '';
+      if (renderedIdx < 11) {
+        particleCanvas.style.display = 'block';
+      } else if (renderedIdx === 16) {
+        threeCanvas.style.display = 'block';
+        canvas2d.style.display = 'block';
+        canvas2d.classList.add('hybrid-overlay');
+      } else if (renderedIdx >= 11 && renderedIdx <= 14) {
+        threeCanvas.style.display = 'block';
+      } else if (renderedIdx === 15) {
+        canvas2d.style.display = 'block';
+      } else if (renderedIdx === 17) {
+        milkdropCanvas.style.display = 'block';
+      }
+    }
+
+    function ensureDirectoryVisualApplied(dir, modeIdx, variantIdx) {
+      const slot = getDirSlot(modeIdx, variantIdx);
+      syncActiveVisualLayers(dir, modeIdx, variantIdx);
+      if (slot === lastAppliedDirSlot) return;
+      lastAppliedDirSlot = slot;
+
+      if ((dir?.type === 'canvas2d' || dir?.overlayImage) && canvas2dEngine) {
+        if (!canvas2dEngine.ctx) canvas2dEngine.init();
+        canvas2dEngine.setDirectoryVisual(dir);
+      } else if (canvas2dEngine) {
+        canvas2dEngine.setDirectoryVisual(null);
+      }
+
+      if (dir?.type === 'milkdrop' && milkdropEngine) {
+        activeDirectorySlot = slot;
+        getDirectoryAssetsReady()
+          .then(() => milkdropEngine.init({ bootstrapPreset: false }))
+          .then(() => milkdropEngine.loadDirectoryPreset(dir, 0))
+          .then((ok) => {
+            if (!ok) {
+              showDirectoryAssetWarning('preset', slot || 'milkdrop');
+            }
+          });
+      } else if (dir?.type !== 'milkdrop') {
+        activeDirectorySlot = null;
+      }
+
+      if (dir?.type === 'three' && threeEngine) {
+        threeEngine.setMode(dir.threeMode);
+      }
+
+      applyCanvasGrayscale();
+    }
 
     function isOtherPresetExcluded(key, index) {
       if (OTHER_VISUAL_EXCLUDED_PRESET_KEYS.has(key)) return true;
@@ -4725,10 +5207,75 @@
       return false;
     }
 
+    function resolveAssetUrl(relPath) {
+      if (!relPath) return relPath;
+      try {
+        return new URL(relPath, window.location.href).href;
+      } catch {
+        return relPath;
+      }
+    }
+
+    const _directoryAssetWarnings = new Set();
+
+    function showDirectoryAssetWarning(kind, detail) {
+      const key = kind + ':' + detail;
+      if (_directoryAssetWarnings.has(key)) return;
+      _directoryAssetWarnings.add(key);
+      const msg = isRu
+        ? `Не загружен ресурс (${kind}): ${detail}`
+        : `Asset load failed (${kind}): ${detail}`;
+      if (typeof showToast === 'function') showToast(msg, false);
+      console.warn('[DirectoryAsset]', kind, detail);
+    }
+
+    let directoryAssetsReady = null;
+
+    function getDirectoryAssetsReady() {
+      if (!directoryAssetsReady) directoryAssetsReady = preloadDirectoryAssets();
+      return directoryAssetsReady;
+    }
+
+    async function preloadDirectoryAssets() {
+      if (!milkdropEngine) return;
+      const overlays = new Set();
+      const mdropIdx = new Set();
+      const antiIdx = new Set();
+      for (const entry of Object.values(VISUAL_DIRECTORY)) {
+        if (entry?.overlayImage) overlays.add(entry.overlayImage);
+        if (entry?.mdropPresetNumber) mdropIdx.add(entry.mdropPresetNumber - 1);
+        if (entry?.antiPresetNumber) antiIdx.add(entry.antiPresetNumber - 1);
+      }
+      try {
+        await milkdropEngine.loadMdropManifest();
+      } catch (e) {
+        console.warn('preloadDirectoryAssets: mdrop manifest', e);
+      }
+      try {
+        await milkdropEngine.loadAntiManifest();
+      } catch (e) {
+        console.warn('preloadDirectoryAssets: anti manifest', e);
+      }
+      await Promise.all([...mdropIdx].map((i) =>
+        milkdropEngine.fetchMdropConvertedJson(i).catch(() => null)
+      ));
+      await Promise.all([...antiIdx].map((i) =>
+        milkdropEngine.fetchAntiConvertedJson(i).catch(() => null)
+      ));
+      await Promise.all([...overlays].map((src) =>
+        VisualImageOverlay.preload(src).catch(() => {
+          showDirectoryAssetWarning('overlay', src);
+          return null;
+        })
+      ));
+    }
+
     function getDirSlot(modeIdx, variantIdx) {
       const label = MODE_DIR_LABEL[modeIdx];
       if (!label) return null;
-      return `${label}-${variantIdx + 1}`;
+      const v = Number(variantIdx);
+      if (!Number.isFinite(v) || v < 0) return null;
+      return `${label}-${v + 1}`;
     }
 
     function getDirectoryEntry(modeIdx, variantIdx) {
@@ -4828,10 +5375,15 @@
 
     function setVisualVariant(variantIdx) {
       const mode = engine ? Math.round(engine.visualMode) : -1;
-      if (!isVariantAllowed(mode, variantIdx)) return;
-      visualVariantIdx = variantIdx;
-      if (engine) engine.variantIdx = variantIdx;
-      if (is10DMode(mode)) applyModeBrightnessDefault(10);
+      const v = Number(variantIdx);
+      if (!Number.isFinite(v) || !isVariantAllowed(mode, v)) return;
+      visualVariantIdx = v;
+      if (engine) engine.variantIdx = v;
+      if (is10DMode(mode)) {
+        apply10DVariantCamera(v);
+        apply10DVariantParams(v);
+      }
+      lastAppliedDirSlot = null;
       renderVariantCells();
       applyVisualCanvases();
     }
@@ -4846,6 +5398,20 @@
 
     function renderVariantCellHtml(i, family, mode) {
       let sub = isRu ? `Вариант ${i + 1}` : `Variant ${i + 1}`;
+      const slot = getDirSlot(mode, i);
+      const dirEntry = slot && !REMOVED_VARIANT_SLOTS.has(slot) ? VISUAL_DIRECTORY[slot] : null;
+      if (dirEntry?.canvasVisual === 'nebulaLightning') {
+        sub = dirEntry.image?.includes('storm') ? (isRu ? 'Шторм + молнии' : 'Storm + lightning') : (isRu ? 'Nebula + молнии' : 'Nebula + lightning');
+      }
+      if (dirEntry?.mdropPatch === 'cityOfShadowsSky') {
+        if (dirEntry.skyHint) {
+          sub = isRu ? dirEntry.skyHint.ru : dirEntry.skyHint.en;
+        } else {
+          const names = isRu ? CITY_OF_SHADOWS_SKY_LABELS.ru : CITY_OF_SHADOWS_SKY_LABELS.en;
+          const vi = dirEntry.skyVariant ?? 0;
+          sub = names[vi] || (isRu ? `Небо ${vi + 1}` : `Sky ${vi + 1}`);
+        }
+      }
       if (mode === 4 && i >= 13 && i <= 23) {
         const names = isRu ? FAITH8D_EXT_NAMES.ru : FAITH8D_EXT_NAMES.en;
         sub = names[i - 13] || sub;
@@ -4920,6 +5486,16 @@
       turbulence: ['ТУРБУЛЕНТНОСТЬ //', 'TURBULENCE //'],
       color: ['ЦВЕТ //', 'COLOR //'],
       milkdrop: ['ДРУГИЕ ВИЗУАЛИЗАЦИИ //', 'OTHER VISUALISATIONS //'],
+      presetScrub: ['ПРОКРУТКА //', 'SCROLL //'],
+      mdrop: ['MDropDX12 //', 'MDropDX12 //'],
+      mdropLoading: ['Загрузка MDropDX12…', 'Loading MDropDX12…'],
+      mdropEmpty: ['Пресеты MDropDX12 не найдены', 'MDropDX12 presets not found'],
+      mdropConverting: ['Конвертация пресета…', 'Converting preset…'],
+      mdropConvertErr: ['Ошибка пресета MDropDX12', 'MDropDX12 preset error'],
+      anti: ['ANTI //', 'ANTI //'],
+      antiLoading: ['Загрузка ANTI…', 'Loading ANTI…'],
+      antiEmpty: ['Пресеты ANTI не найдены', 'ANTI presets not found'],
+      antiConvertErr: ['Ошибка пресета ANTI', 'ANTI preset error'],
       milkdropLoading: ['Загрузка пресетов…', 'Loading presets…'],
       milkdropEmpty: ['Пресеты не загрузились (нужен интернет)', 'Presets not loaded (internet required)'],
       cinemaEnter: ['Полный экран без панелей', 'Fullscreen without panels'],
@@ -4989,6 +5565,16 @@
       document.getElementById('lblColor').textContent = t('color');
       const lblMd = document.getElementById('lblMilkdrop');
       if (lblMd) lblMd.textContent = t('milkdrop');
+      const lblMdScrub = document.getElementById('lblMilkdropScrub');
+      if (lblMdScrub) lblMdScrub.textContent = t('presetScrub');
+      const lblMdrop = document.getElementById('lblMdrop');
+      if (lblMdrop) lblMdrop.textContent = t('mdrop');
+      const lblMdropScrub = document.getElementById('lblMdropScrub');
+      if (lblMdropScrub) lblMdropScrub.textContent = t('presetScrub');
+      const lblAnti = document.getElementById('lblAnti');
+      if (lblAnti) lblAnti.textContent = t('anti');
+      const lblAntiScrub = document.getElementById('lblAntiScrub');
+      if (lblAntiScrub) lblAntiScrub.textContent = t('presetScrub');
       document.getElementById('dragTitle').textContent = t('dragTitle');
       document.getElementById('dragHint').textContent = t('dragHint');
       document.getElementById('timeLoop').textContent = t('loop');
@@ -5061,7 +5647,7 @@
       renderModeCards();
       renderPlaylist();
       updateTrackSourceLabel();
-      if (milkdropEngine) tryLoadMilkdropPresetList();
+      // TEST: без Other preset list
     }
 
     function renderModeCards() {
@@ -6359,7 +6945,6 @@ class RI {
   }
 }
 
-
 // ====================InkTrailsOrb (5D right object — Canvas2D ink fill) ====================
 class InkTrailsOrb {
   constructor() {
@@ -6545,6 +7130,331 @@ class InkTrailsOrb {
   show() {}
 }
 
+// ==================== Image + zonal lightning (6D-5, 6D-6) ====================
+const NEBULA_LIGHTNING_PRESETS = {
+  'assets/visuals/6d-nebula-fractal-h.jpg': {
+    pulse: { r: 120, g: 185, b: 255 },
+    zones: [
+      { x0: 0.5, y0: 0.02, x1: 0.98, y1: 0.4, hueDeg: 44, weight: 1.15, warm: true, label: 'goldTR' },
+      { x0: 0.0, y0: 0.55, x1: 0.36, y1: 0.98, hueDeg: 38, weight: 1.0, warm: true, label: 'goldBL' },
+      { x0: 0.1, y0: 0.06, x1: 0.7, y1: 0.68, hueDeg: 186, weight: 1.35, cool: true, label: 'cyanMain' },
+      { x0: 0.38, y0: 0.12, x1: 0.92, y1: 0.55, hueDeg: 178, weight: 0.95, cool: true, label: 'cyanHot' },
+      { x0: 0.2, y0: 0.58, x1: 0.82, y1: 0.96, hueDeg: 204, weight: 0.5, dim: true, label: 'darkWeb' },
+    ],
+  },
+  'assets/visuals/6d-storm-jet-h.png': {
+    pulse: { r: 255, g: 242, b: 195 },
+    lightningHueDeg: 52,
+    thinLightning: true,
+    lineScale: 0.34,
+    singleColor: true,
+    cloudDrift: true,
+    bassPulseBoost: 1.75,
+    zones: [
+      { x0: 0.38, y0: 0.06, x1: 0.94, y1: 0.52, hueDeg: 52, weight: 1.45, warm: true, label: 'upperStorm' },
+      { x0: 0.44, y0: 0.28, x1: 0.97, y1: 0.88, hueDeg: 50, weight: 1.65, warm: true, label: 'mainBolt' },
+      { x0: 0.52, y0: 0.12, x1: 0.92, y1: 0.72, hueDeg: 48, weight: 1.25, warm: true, label: 'boltCore' },
+    ],
+  },
+};
+
+class NebulaFractalLightning {
+  constructor(imageSrc) {
+    this.time = 0;
+    this.bgPulse = 0;
+    this.lightning = new CI();
+    this.img = new Image();
+    this.loaded = false;
+    this.loadFailed = false;
+    this.img.onload = () => { this.loaded = true; this.loadFailed = false; };
+    this.img.onerror = () => { this.loaded = false; this.loadFailed = true; };
+    this.imageKey = imageSrc;
+    this.img.src = resolveAssetUrl(imageSrc);
+    const preset = NEBULA_LIGHTNING_PRESETS[imageSrc] || NEBULA_LIGHTNING_PRESETS['assets/visuals/6d-nebula-fractal-h.jpg'];
+    this.preset = preset;
+    this.zones = preset.zones;
+    this.pulseColor = preset.pulse;
+    this.lightningHueDeg = preset.lightningHueDeg;
+    this.thinLightning = !!preset.thinLightning;
+    this.lineScale = preset.lineScale ?? 1;
+    this.singleColor = !!preset.singleColor;
+    this.cloudDrift = !!preset.cloudDrift;
+    this.bassPulseBoost = preset.bassPulseBoost ?? 1;
+  }
+
+  pickZone(reactor, settings) {
+    const bass = reactor.sBass * settings.sensitivity;
+    let total = 0;
+    const weights = this.zones.map((z) => {
+      let w = z.weight;
+      if (z.warm) w *= 0.65 + bass * 0.85;
+      if (z.cool) w *= 0.75 + reactor.sMid * settings.sensitivity * 0.9;
+      if (z.dim) w *= 0.35 + reactor.sHigh * settings.sensitivity * 0.55;
+      total += w;
+      return w;
+    });
+    let r = Math.random() * total;
+    for (let i = 0; i < this.zones.length; i++) {
+      r -= weights[i];
+      if (r <= 0) return this.zones[i];
+    }
+    return this.zones[this.zones.length - 1];
+  }
+
+  randomPointInZone(zone, w, h) {
+    const pad = 0.06;
+    const u = zone.x0 + pad + Math.random() * Math.max(0.05, (zone.x1 - zone.x0 - pad * 2));
+    const v = zone.y0 + pad + Math.random() * Math.max(0.05, (zone.y1 - zone.y0 - pad * 2));
+    return { x: u * w, y: v * h };
+  }
+
+  update(t, reactor, settings) {
+    this.time += t;
+    const bass = (reactor?.sBass || 0) * (settings?.sensitivity || 1);
+    const boost = this.bassPulseBoost || 1;
+    const target = Math.min(1, bass * 1.05 * boost + (reactor?.onset ? 0.42 * boost : 0));
+    this.bgPulse += (target - this.bgPulse) * Math.min(1, t * (this.cloudDrift ? 11 : 9));
+  }
+
+  drawImageCover(ctx, w, h, pulse) {
+    if (this.loadFailed) {
+      ctx.fillStyle = '#0a1020';
+      ctx.fillRect(0, 0, w, h);
+      ctx.fillStyle = 'rgba(180, 210, 255, 0.55)';
+      ctx.font = '14px monospace';
+      ctx.fillText('image missing: ' + (this.imageKey || ''), 24, 40);
+      return;
+    }
+    if (!this.loaded) {
+      ctx.fillStyle = '#04060c';
+      ctx.fillRect(0, 0, w, h);
+      return;
+    }
+    const iw = this.img.naturalWidth || this.img.width;
+    const ih = this.img.naturalHeight || this.img.height;
+    const scale = Math.max(w / iw, h / ih);
+    const t = this.time;
+    const boost = this.bassPulseBoost || 1;
+    const zoomAmt = this.cloudDrift ? 0.038 * boost : 0.028;
+    const zoom = 1 + pulse * zoomAmt;
+    const dw = iw * scale * zoom;
+    const dh = ih * scale * zoom;
+    let dx = (w - dw) * 0.5;
+    let dy = (h - dh) * 0.5;
+    if (this.cloudDrift) {
+      dx += Math.sin(t * 0.07) * w * 0.014 + Math.sin(t * 0.19 + 1.2) * w * 0.007;
+      dy += Math.cos(t * 0.055) * h * 0.009 + pulse * h * 0.006;
+    }
+    ctx.drawImage(this.img, dx, dy, dw, dh);
+
+    const pc = this.pulseColor;
+    const colorAlpha = pulse * (this.cloudDrift ? 0.2 * boost : 0.13);
+    const whiteAlpha = pulse * (this.cloudDrift ? 0.14 * boost : 0.09);
+    ctx.save();
+    ctx.globalCompositeOperation = 'lighter';
+    ctx.fillStyle = `rgba(${pc.r}, ${pc.g}, ${pc.b}, ${colorAlpha})`;
+    ctx.fillRect(0, 0, w, h);
+    ctx.globalCompositeOperation = 'soft-light';
+    ctx.fillStyle = `rgba(255, 255, 255, ${whiteAlpha})`;
+    ctx.fillRect(0, 0, w, h);
+    if (this.cloudDrift && pulse > 0.25) {
+      ctx.globalCompositeOperation = 'screen';
+      ctx.fillStyle = `rgba(255, 248, 220, ${(pulse - 0.25) * 0.22})`;
+      ctx.fillRect(0, 0, w, h);
+    }
+    ctx.restore();
+  }
+
+  draw2d(reactor, settings, ctx, width, height) {
+    const bass = reactor.sBass * settings.sensitivity;
+    const energy = reactor.sEnergy * settings.sensitivity;
+    const cssW = width;
+    const cssH = height;
+
+    this.drawImageCover(ctx, cssW, cssH, this.bgPulse);
+
+    // Шлейф молний
+    ctx.save();
+    ctx.globalCompositeOperation = 'source-over';
+    ctx.fillStyle = `rgba(0, 0, 0, ${(1 - settings.trail) * 0.22})`;
+    ctx.fillRect(0, 0, cssW, cssH);
+    ctx.restore();
+
+    const strikeChance = reactor.onset
+      ? 0.92
+      : (0.018 + bass * 0.07 + energy * 0.04);
+    if (Math.random() >= strikeChance) return;
+
+    const numStrikes = reactor.onset
+      ? (1 + Math.floor(Math.random() * 2))
+      : (Math.random() < 0.35 + bass * 0.25 ? 1 : 0);
+    if (!numStrikes) return;
+
+    ctx.save();
+    ctx.globalCompositeOperation = 'lighter';
+
+    for (let i = 0; i < numStrikes; i++) {
+      const zone = this.pickZone(reactor, settings);
+      const a = this.randomPointInZone(zone, cssW, cssH);
+      const b = this.randomPointInZone(zone, cssW, cssH);
+      const span = Math.hypot(b.x - a.x, b.y - a.y);
+      if (span < cssW * 0.04) continue;
+
+      const fixedHue = this.lightningHueDeg ?? zone.hueDeg;
+      const zoneSettings = {
+        ...settings,
+        baseHueDeg: this.singleColor ? fixedHue : zone.hueDeg + Math.floor((Math.random() - 0.5) * 12),
+        thinLightning: this.thinLightning,
+        lineScale: this.lineScale,
+        singleColor: this.singleColor,
+        turbulence: settings.turbulence * (zone.dim ? 0.75 : (this.thinLightning ? 0.62 : 1.0)),
+      };
+      const hueCycle = this.singleColor
+        ? fixedHue / 360
+        : (zone.hueDeg / 360 + this.time * 0.05 + i * 0.17) % 1;
+      this.lightning.drawLightningArc(ctx, a.x, a.y, b.x, b.y, reactor, zoneSettings, hueCycle, true);
+
+      const branchChance = this.thinLightning ? 0.12 : (zone.dim ? 0.22 : 0.45);
+      if (Math.random() < branchChance) {
+        const mid = { x: (a.x + b.x) * 0.5, y: (a.y + b.y) * 0.5 };
+        const c = this.randomPointInZone(zone, cssW, cssH);
+        this.lightning.drawLightningArc(ctx, mid.x, mid.y, c.x, c.y, reactor, zoneSettings, hueCycle, false);
+      }
+    }
+    ctx.restore();
+  }
+
+  show() {}
+}
+
+// ==================== PNG overlay on MilkDrop (6D-1) ====================
+const IMAGE_OVERLAY_PRESETS = {
+  'assets/visuals/6d-jet-engine-overlay.png': {
+    anchor: 'bottom-left',
+    scale: 0.9,
+    padX: 0.0,
+    padY: 0.0,
+    bassPulse: 0.012,
+    turbulence: 1.15,
+    turbSpeed: 1.85,
+  },
+};
+
+class VisualImageOverlay {
+  static _preloadPromises = new Map();
+
+  static preload(imageSrc) {
+    if (!imageSrc) return Promise.reject(new Error('empty overlay src'));
+    if (VisualImageOverlay._preloadPromises.has(imageSrc)) {
+      return VisualImageOverlay._preloadPromises.get(imageSrc);
+    }
+    const p = new Promise((resolve, reject) => {
+      const img = new Image();
+      img.onload = () => resolve(img);
+      img.onerror = () => reject(new Error('overlay: ' + imageSrc));
+      img.src = resolveAssetUrl(imageSrc) + '?v=6';
+    }).catch((err) => {
+      VisualImageOverlay._preloadPromises.delete(imageSrc);
+      throw err;
+    });
+    VisualImageOverlay._preloadPromises.set(imageSrc, p);
+    return p;
+  }
+
+  constructor(imageSrc, opts = {}) {
+    this.time = 0;
+    this.pulse = 0;
+    this.img = new Image();
+    this.loaded = false;
+    this.loadFailed = false;
+    this._loadAttempts = 0;
+    this.imageKey = imageSrc;
+    this.preset = { ...(IMAGE_OVERLAY_PRESETS[imageSrc] || {}), ...opts };
+    this.flipY = !!opts.flipY;
+    this._startLoad();
+  }
+
+  _startLoad() {
+    const src = this.imageKey;
+    VisualImageOverlay.preload(src)
+      .then((img) => {
+        this.img = img;
+        this.loaded = true;
+        this.loadFailed = false;
+      })
+      .catch(() => {
+        this._loadAttempts += 1;
+        VisualImageOverlay._preloadPromises.delete(src);
+        if (this._loadAttempts < 5) {
+          setTimeout(() => this._startLoad(), 350 * this._loadAttempts);
+          return;
+        }
+        this.loaded = false;
+        this.loadFailed = true;
+        console.warn('VisualImageOverlay: failed after retries:', src);
+        if (typeof showDirectoryAssetWarning === 'function') {
+          showDirectoryAssetWarning('overlay', src);
+        }
+      });
+  }
+
+  update(t, reactor, settings) {
+    this.time += t;
+    const bass = (reactor?.sBass || 0) * (settings?.sensitivity || 1);
+    const target = Math.min(1, bass * 0.85 + (reactor?.onset ? 0.25 : 0));
+    this.pulse += (target - this.pulse) * Math.min(1, t * 10);
+  }
+
+  draw2d(reactor, settings, ctx, width, height) {
+    ctx.clearRect(0, 0, width, height);
+    if (this.loadFailed) return;
+    if (!this.loaded) return;
+
+    const iw = this.img.naturalWidth || this.img.width;
+    const ih = this.img.naturalHeight || this.img.height;
+    const p = this.preset;
+    const baseScale = (p.scale ?? 0.72) * Math.min(width / iw, height / ih);
+    const zoom = 1 + this.pulse * (p.bassPulse ?? 0.012);
+    const dw = iw * baseScale * zoom;
+    const dh = ih * baseScale * zoom;
+    let dx = (width - dw) * 0.5;
+    let dy = (height - dh) * 0.5;
+    const padX = (p.padX ?? 0) * width;
+    const padY = (p.padY ?? 0) * height;
+    const anchor = p.anchor || 'center';
+    if (anchor.includes('left')) dx = padX;
+    else if (anchor.includes('right')) dx = width - dw - padX;
+    if (anchor.includes('top')) dy = padY;
+    else if (anchor.includes('bottom')) dy = height - dh - padY;
+
+    const turbAmt = p.turbulence ?? 0;
+    const turbSpd = p.turbSpeed ?? 1;
+    const t = this.time * turbSpd;
+    const turb = turbAmt > 0
+      ? {
+          jx: (Math.sin(t * 2.1) + Math.sin(t * 3.4 + 1.0) * 0.4) * (0.7 + this.pulse * 1.1) * turbAmt,
+          jy: (Math.cos(t * 2.5 + 0.4) + Math.sin(t * 4.2) * 0.3) * (0.55 + this.pulse * 0.85) * turbAmt,
+          rot: Math.sin(t * 1.6 + 0.8) * 0.0011 * turbAmt * (1 + this.pulse * 0.45),
+        }
+      : null;
+
+    ctx.save();
+    if (this.flipY || turb) {
+      const cx = dx + dw * 0.5 + (turb?.jx || 0);
+      const cy = dy + dh * 0.5 + (turb?.jy || 0);
+      ctx.translate(cx, cy);
+      if (turb?.rot) ctx.rotate(turb.rot);
+      if (this.flipY) ctx.scale(1, -1);
+      ctx.drawImage(this.img, -dw * 0.5, -dh * 0.5, dw, dh);
+    } else {
+      ctx.drawImage(this.img, dx, dy, dw, dh);
+    }
+    ctx.restore();
+  }
+
+  show() {}
+}
+
 // ====================CI====================
 class CI {
   constructor(t) {
@@ -6581,8 +7491,10 @@ class CI {
     
     const variant = (settings.variantIdx !== undefined) ? settings.variantIdx : 0;
     const vTurb = 0.88 + (variant % 6) * 0.05;
+    const thin = !!settings.thinLightning;
+    const ls = settings.lineScale ?? 1;
     // Core displacement scale
-    const displaceScale = isParent ? (24 + energy * 72) * settings.turbulence * vTurb : (12 + energy * 36) * settings.turbulence * vTurb;
+    const displaceScale = (isParent ? (24 + energy * 72) : (12 + energy * 36)) * settings.turbulence * vTurb * (thin ? 0.42 * ls : 1);
     
     const points = [];
     points.push({ x: startX, y: startY });
@@ -6596,7 +7508,8 @@ class CI {
         const segLen = Math.sqrt(segDx * segDx + segDy * segDy);
         
         // Stop subdividing when segments are shorter than 10px (parent) or 16px (branches)
-        if (segLen < (isParent ? 10.0 : 16.0)) return;
+        const minSeg = thin ? (isParent ? 18.0 : 22.0) : (isParent ? 10.0 : 16.0);
+        if (segLen < minSeg) return;
 
         let mx = (xa + xb) * 0.5;
         let my = (ya + yb) * 0.5;
@@ -6632,35 +7545,52 @@ class CI {
     }
 
     ctx.save();
-    const blueHue = 215 + Math.floor(Math.sin(hue * Math.PI * 2) * 15);
-    const mainStroke = `hsla(${blueHue}, 95%, ${Math.floor(55 + energy * 15)}%, ${isParent ? 0.8 : 0.35})`;
-    const coreStroke = `rgba(255, 255, 255, ${isParent ? 0.98 : 0.65})`;
+    const baseHue = (settings.baseHueDeg !== undefined) ? settings.baseHueDeg : 215;
+    const boltHue = settings.singleColor ? baseHue : baseHue + Math.floor(Math.sin(hue * Math.PI * 2) * 15);
+    const mainStroke = thin
+      ? `hsla(${boltHue}, 88%, ${Math.floor(72 + energy * 12)}%, ${isParent ? 0.72 : 0.38})`
+      : `hsla(${boltHue}, 95%, ${Math.floor(55 + energy * 15)}%, ${isParent ? 0.8 : 0.35})`;
+    const coreStroke = `rgba(255, 255, 255, ${isParent ? (thin ? 0.82 : 0.98) : 0.65})`;
 
     if (isParent) {
-      // Glowing neon bloom halo
-      ctx.shadowColor = `hsl(${blueHue}, 100%, 60%)`;
-      ctx.shadowBlur = 15 + bass * 15;
-      ctx.strokeStyle = `hsla(${blueHue}, 100%, 50%, 0.16)`;
-      ctx.lineWidth = 14 + displaceScale * 0.15;
-      ctx.lineCap = "round";
-      ctx.lineJoin = "round";
-      ctx.stroke();
+      if (thin) {
+        ctx.shadowColor = `hsla(${boltHue}, 90%, 75%, 0.35)`;
+        ctx.shadowBlur = 3 + bass * 4;
+        ctx.strokeStyle = mainStroke;
+        ctx.lineWidth = (0.55 + bass * 0.35) * ls;
+        ctx.lineCap = "round";
+        ctx.lineJoin = "round";
+        ctx.stroke();
+        ctx.shadowBlur = 0;
+        ctx.strokeStyle = coreStroke;
+        ctx.lineWidth = (0.35 + high * 0.25) * ls;
+        ctx.stroke();
+      } else {
+        // Glowing neon bloom halo
+        ctx.shadowColor = `hsl(${boltHue}, 100%, 60%)`;
+        ctx.shadowBlur = 15 + bass * 15;
+        ctx.strokeStyle = `hsla(${boltHue}, 100%, 50%, 0.16)`;
+        ctx.lineWidth = 14 + displaceScale * 0.15;
+        ctx.lineCap = "round";
+        ctx.lineJoin = "round";
+        ctx.stroke();
 
-      // Sharp primary discharge bolt
-      ctx.shadowBlur = 0;
-      ctx.strokeStyle = mainStroke;
-      ctx.lineWidth = 3.2 + bass * 4.2;
-      ctx.stroke();
+        // Sharp primary discharge bolt
+        ctx.shadowBlur = 0;
+        ctx.strokeStyle = mainStroke;
+        ctx.lineWidth = 3.2 + bass * 4.2;
+        ctx.stroke();
 
-      // Emissive hot plasma core
-      ctx.strokeStyle = coreStroke;
-      ctx.lineWidth = 1.1 + high * 1.5;
-      ctx.stroke();
+        // Emissive hot plasma core
+        ctx.strokeStyle = coreStroke;
+        ctx.lineWidth = 1.1 + high * 1.5;
+        ctx.stroke();
+      }
     } else {
       // Soft secondary discharge line
       ctx.shadowBlur = 0;
       ctx.strokeStyle = mainStroke;
-      ctx.lineWidth = 1.4 + bass * 2.0;
+      ctx.lineWidth = thin ? (0.4 + bass * 0.25) * ls : 1.4 + bass * 2.0;
       ctx.stroke();
     }
     ctx.restore();
@@ -6669,7 +7599,9 @@ class CI {
     if (isParent) {
       const angleOfDirection = Math.atan2(dy, dx);
       let numBranches = 0;
-      if (reactor.onset) {
+      if (thin) {
+        numBranches = reactor.onset && Math.random() < 0.28 ? 1 : 0;
+      } else if (reactor.onset) {
         numBranches = Math.floor(Math.random() * 3) + 2; // Beat sparks: 2 to 4 branches
       } else if (energy > 0.45) {
         numBranches = Math.random() < 0.5 ? 2 : 1;
@@ -7479,7 +8411,7 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
 
 
 
-    // --- Coordinator Engines ---
+// --- Coordinator Engines ---
     function isThemeGrayscale() {
       return engine && Math.round(engine.themeIdx) === 9;
     }
@@ -7699,6 +8631,10 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
         this.ctx = null;
         this.visualizer = null;
         this.hybridInk = null;
+        this.nebulaVisual = null;
+        this.imageOverlayVisual = null;
+        this.directoryVisual = null;
+        this.activeCanvasVisual = null;
         this.activeMode = 15;
         this.mouse = { x: 0, y: 0 };
       }
@@ -7707,6 +8643,31 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
         this.ctx = this.canvas.getContext('2d');
         this.visualizer = new CI();
         this.hybridInk = new InkTrailsOrb();
+      }
+
+      setDirectoryVisual(dirEntry) {
+        if (dirEntry?.overlayImage) {
+          this.activeCanvasVisual = 'imageOverlay';
+          const key = dirEntry.overlayImage;
+          if (!this.imageOverlayVisual || this.directoryVisual !== key) {
+            this.imageOverlayVisual = new VisualImageOverlay(key, {
+              flipY: !!dirEntry.overlayFlipY,
+              ...(dirEntry.overlayOpts || {}),
+            });
+            this.directoryVisual = key;
+          } else if (this.imageOverlayVisual) {
+            this.imageOverlayVisual.flipY = !!dirEntry.overlayFlipY;
+          }
+        } else if (dirEntry?.canvasVisual === 'nebulaLightning' && dirEntry.image) {
+          this.activeCanvasVisual = 'nebulaLightning';
+          if (!this.nebulaVisual || this.directoryVisual !== dirEntry.image) {
+            this.nebulaVisual = new NebulaFractalLightning(dirEntry.image);
+            this.directoryVisual = dirEntry.image;
+          }
+        } else {
+          this.activeCanvasVisual = null;
+          this.directoryVisual = null;
+        }
       }
 
       setMode(modeIdx) {
@@ -7762,6 +8723,28 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
           return;
         }
 
+        if (this.activeCanvasVisual === 'nebulaLightning' && this.nebulaVisual) {
+          const cssW = this.canvas.clientWidth || window.innerWidth;
+          const cssH = this.canvas.clientHeight || window.innerHeight;
+          const dpr = this.canvas.width / cssW;
+          this.ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+          this.nebulaVisual.update(dt, reactorMock, settings);
+          this.nebulaVisual.draw2d(reactorMock, settings, this.ctx, cssW, cssH);
+          this.ctx.setTransform(1, 0, 0, 1, 0, 0);
+          return;
+        }
+
+        if (this.activeCanvasVisual === 'imageOverlay' && this.imageOverlayVisual) {
+          const cssW = this.canvas.clientWidth || window.innerWidth;
+          const cssH = this.canvas.clientHeight || window.innerHeight;
+          const dpr = this.canvas.width / cssW;
+          this.ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+          this.imageOverlayVisual.update(dt, reactorMock, settings);
+          this.imageOverlayVisual.draw2d(reactorMock, settings, this.ctx, cssW, cssH);
+          this.ctx.setTransform(1, 0, 0, 1, 0, 0);
+          return;
+        }
+
         this.visualizer.update(dt, reactorMock, settings, this.mouse);
         this.visualizer.draw2d(reactorMock, settings, this.ctx, this.canvas.width, this.canvas.height, this.mouse);
       }
@@ -7801,7 +8784,168 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
         this._initPromise = null;
         this._presetBase = null;
         this.mdGain = null;
+        this.activePool = 'other';
+        this.mdropEntries = [];
+        this.antiEntries = [];
+        this.mdropIndex = -1;
+        this.antiIndex = -1;
+        this._mdropManifestPromise = null;
+        this._antiManifestPromise = null;
+        this._mdropConvertFn = null;
+        this._mdropConvertAwsFn = null;
+        this._antiConvertFn = null;
+        this._antiConvertAwsFn = null;
+        this._mdropCache = new Map();
+        this._antiCache = new Map();
+        this._mdropJsonCache = null;
+        this._antiJsonCache = null;
+        this._bcNormMap = null;
       }
+
+      static normPresetName(s) {
+        return String(s).replace(/\s+/g, ' ').trim().toLowerCase();
+      }
+
+      static sanitizeConvertedPreset(p) {
+        const preset = JSON.parse(JSON.stringify(p));
+        if (!preset.baseVals) preset.baseVals = {};
+        const bv = preset.baseVals;
+        if (bv.decay == null || bv.decay <= 0) bv.decay = 0.9;
+        if (bv.gammaadj == null) bv.gammaadj = 1.0;
+        if (bv.wave_mode == null && bv.wavemode != null) bv.wave_mode = bv.wavemode;
+        if (!Array.isArray(preset.shapes)) preset.shapes = [];
+        if (!Array.isArray(preset.waves)) preset.waves = [];
+        for (const k of ['warp', 'comp', 'warp_hlsl', 'comp_hlsl']) {
+          if (typeof preset[k] === 'string' && !preset[k].trim()) delete preset[k];
+        }
+        return preset;
+      }
+
+      static boostVisibility(p) {
+        const preset = JSON.parse(JSON.stringify(p));
+        const bv = preset.baseVals || (preset.baseVals = {});
+        if (bv.wave_mode == null && bv.wavemode == null) bv.wave_mode = 0;
+        if (bv.wave_a != null && bv.wave_a < 0.02) bv.wave_a = 0.18;
+        const wr = bv.wave_r ?? 0, wg = bv.wave_g ?? 0, wb = bv.wave_b ?? 0;
+        if (wr + wg + wb < 0.05) {
+          bv.wave_r = 0.55;
+          bv.wave_g = 0.65;
+          bv.wave_b = 1.0;
+        }
+        if (bv.decay != null && bv.decay < 0.5) bv.decay = 0.88;
+        if (bv.ob_a > 0.85 && (bv.ob_r || 0) + (bv.ob_g || 0) + (bv.ob_b || 0) < 0.05) bv.ob_a = 0.25;
+        if ((bv.warp == null || bv.warp === 0) && !preset.warp) bv.warp = 0.012;
+        return preset;
+      }
+
+      static stripCustomShaders(p) {
+        const preset = JSON.parse(JSON.stringify(p));
+        for (const k of ['warp', 'comp', 'warp_hlsl', 'comp_hlsl']) delete preset[k];
+        return preset;
+      }
+
+      static relaxPresetForLoad(p) {
+        const preset = MilkDropEngine.stripCustomShaders(p);
+        preset.shapes?.forEach((shape) => {
+          if (!shape.baseVals) shape.baseVals = {};
+          if (shape.baseVals.textured) shape.baseVals.textured = 0;
+        });
+        return preset;
+      }
+
+      static stripEquations(p) {
+        const preset = MilkDropEngine.relaxPresetForLoad(p);
+        for (const k of ['pixel_eqs_str', 'frame_eqs_str', 'init_eqs_str', 'pixel_eqs_eel', 'frame_eqs_eel', 'init_eqs_eel']) {
+          delete preset[k];
+        }
+        preset.shapes?.forEach((shape) => {
+          if (!shape.baseVals) shape.baseVals = {};
+          shape.baseVals.enabled = 0;
+          delete shape.frame_eqs_eel;
+          delete shape.init_eqs_eel;
+        });
+        preset.waves?.forEach((wave) => {
+          delete wave.point_eqs_eel;
+          delete wave.frame_eqs_eel;
+          delete wave.init_eqs_eel;
+        });
+        return preset;
+      }
+
+      static minimalFromPreset(p) {
+        const src = p.baseVals || {};
+        return {
+          baseVals: {
+            decay: Math.max(0.88, src.decay || 0.92),
+            gammaadj: src.gammaadj || 1.0,
+            wave_mode: src.wave_mode ?? src.wavemode ?? 0,
+            wave_a: Math.max(0.35, src.wave_a || 0.45),
+            wave_r: src.wave_r || 0.55,
+            wave_g: src.wave_g || 0.65,
+            wave_b: src.wave_b || 1.0,
+            zoom: src.zoom || 1.0,
+            rot: src.rot || 0,
+            cx: 0.5,
+            cy: 0.5,
+            dx: src.dx || 0,
+            dy: src.dy || 0,
+            warp: src.warp || 0.015,
+            sx: src.sx || 1,
+            sy: src.sy || 1,
+          },
+          shapes: [],
+          waves: [],
+        };
+      }
+
+      static isValidConvertedPreset(p) {
+        return !!(p && p.baseVals && typeof p.baseVals.decay === 'number');
+      }
+
+      static hasConvertedShaders(p) {
+        return !!((p.comp || '').trim() || (p.warp || '').trim());
+      }
+
+      // Только кастомные warp/comp/pixel шейдеры (`...`), не wavecode/shapecode конфиг
+      static milkNeedsShaderConvert(milkText) {
+        return /(^|\n)(warp_\d+|comp_\d+|pixel_\d+)=`/m.test(milkText);
+      }
+
+      static normPresetLookupName(s) {
+        return String(s)
+          .replace(/\s+/g, ' ')
+          .trim()
+          .toLowerCase()
+          .replace(/\s*\[[^\]]*\]\s*/g, ' ')
+          .replace(/\s*\([^)]*\)\s*/g, ' ')
+          .replace(/\s+/g, ' ')
+          .trim();
+      }
+
+      static MDROP_PRESET_BASE = 'MDropDX12-main/resources/presets/';
+      static MDROP_MANIFEST_URLS = [
+        'MDropDX12-main/resources/mdrop-manifest.json',
+        'assets/mdrop-manifest.json',
+      ];
+      static MDROP_PRESET_BASES = [
+        'MDropDX12-main/resources/presets/',
+        'https://raw.githubusercontent.com/IkeC/Milkwave/main/Visualizer/resources/presets/',
+      ];
+      // Предконвертированные оффлайн (hlsl2glsl + glsl-optimizer) пресеты — полное качество
+      static MDROP_JSON_BASE = 'assets/mdrop-json/';
+      static ANTI_JSON_BASE = 'assets/anti-json/';
+      static ANTI_CONVERTER_SCRIPT = 'assets/milkdrop-preset-converter.min.js';
+      static ANTI_MANIFEST_SCRIPT = 'assets/anti-manifest.js';
+      static _antiConverterScriptPromise = null;
+      static _antiManifestScriptPromise = null;
+      // ANTI: полная библиотека ~9795 пресетов (lazy-load, не трогает MDrop)
+      static ANTI_MANIFEST_URLS = [
+        'assets/anti-manifest.json',
+      ];
+      static ANTI_PRESET_BASES = [
+        'MDropDX12-main/resources/presets/',
+        'https://raw.githubusercontent.com/projectM-visualizer/presets-cream-of-the-crop/master/',
+      ];
 
       // Локальные правки пресетов Other (ключ = имя в butterchurn-presets)
       static PRESET_PATCHES = {
@@ -7836,6 +8980,320 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
         }
       };
 
+      // Патчи MDrop-пресетов для слотов VISUAL_DIRECTORY (ключ = dirEntry.mdropPatch)
+      static MDROP_DIRECTORY_PATCHES = {
+        cityOfShadowsSky: (preset, opts) => MilkDropEngine.patchCityOfShadowsSkyOnly(preset, opts?.skyVariant ?? 0),
+      };
+
+      /** Параметры фиксированных неб: кадр (up/pan/scale) + вектор дрейфа облаков */
+      static CITY_OF_SHADOWS_SKY_VARIANTS = [
+        { up: 0.32, driftX: 0.169967, driftY: 0.985450, flashX: 0.35, flashY: 0.55 },
+        { up: 0.52, driftX: -0.998295, driftY: -0.058374, flashX: 0.55, flashY: 0.4 },
+        { up: 0.68, driftX: 0.377978, driftY: -0.925815, flashX: 0.42, flashY: 0.62 },
+        { up: 0.82, driftX: -0.666276, driftY: 0.745705, flashX: 0.28, flashY: 0.48 },
+        { up: 0.44, driftX: 0.869397, driftY: 0.494113, flashX: 0.65, flashY: 0.35 },
+        { up: 0.96, driftX: -0.210796, driftY: -0.977530, flashX: 0.48, flashY: 0.72 },
+        { up: 0.26, driftX: 0.620, driftY: 0.780, panX: -0.06, panY: 0.04, cloudScale: 1.08, flashX: 0.4, flashY: 0.5 },
+        { up: 0.58, driftX: -0.450, driftY: 0.880, panX: 0.05, panY: -0.03, cloudScale: 0.94, flashX: 0.5, flashY: 0.45 },
+        { up: 0.74, driftX: 0.150, driftY: -0.920, panX: 0.0, panY: 0.06, cloudScale: 1.02, flashX: 0.38, flashY: 0.58 },
+        { up: 0.36, driftX: -0.820, driftY: -0.550, panX: 0.08, panY: -0.05, cloudScale: 1.12, flashX: 0.6, flashY: 0.42 },
+        { up: 0.90, driftX: 0.550, driftY: 0.350, panX: -0.04, panY: 0.02, cloudScale: 0.88, driftSpeed: 0.012, flashX: 0.32, flashY: 0.68 },
+        { up: 0.50, driftX: -0.250, driftY: -0.680, panX: 0.03, panY: 0.0, cloudScale: 1.05, driftSpeed: 0.018, flashX: 0.48, flashY: 0.52 },
+        // 6D-1 «Иллюминатор» — зеркало Y+X, полёт вперёд
+        { up: 0.58, driftX: -0.450, driftY: -0.880, panX: 0.05, panY: -0.03, cloudScale: 0.94, flashX: 0.5, flashY: 0.45, flipY: true, flipX: true },
+      ];
+
+      static buildCityOfShadowsSkyComp(v) {
+        const panX = v.panX || 0;
+        const panY = v.panY || 0;
+        const cloudScale = v.cloudScale || 1;
+        const driftSpeed = v.driftSpeed || 0.015;
+        const cropBottom = v.cropBottom || 0;
+        const cropTopStart = v.cropTop || 0;
+        const cropTopFeather = v.cropTopFeather || 0.08;
+        const centerX = (0.5 + (v.flipX ? -panX : panX)).toFixed(6);
+        const centerY = (v.flipY && v.flipReframe)
+          ? (1.0 + 0.5 + v.up + panY).toFixed(6)
+          : (0.5 + v.up + panY).toFixed(6);
+        const flipBlock = v.flipY
+          ? '  uv_3.y = (1.0 - uv_3.y);\n'
+          : '';
+        const flipXBlock = v.flipX
+          ? '  uv_3.x = (1.0 - uv_3.x);\n'
+          : '';
+        const fillBlock = v.fillBottom
+          ? `  {
+    float fillN;
+    vec2 fillUv;
+    fillUv = ((uv_3 * vec2(2.8, 4.2)) + (trel_5 * 0.65));
+    fillN = dot(
+      texture (sampler_noise_hq, (fillUv + (0.02 * texture (sampler_noise_hq, (fillUv * 1.7)).xy))),
+      vec4(0.32, 0.49, 0.29, 0.0)
+    );
+    cloud = max(cloud, (fillN * smoothstep(0.38, 0.04, uv_3.y) * 0.72));
+  }
+`
+          : '';
+        const fillTopBlock = v.fillTop
+          ? `  {
+    float fillNTop;
+    vec2 fillUvTop;
+    fillUvTop = ((uv_3 * vec2(3.1, 2.6)) + (trel_5 * vec2(0.55, -0.4)));
+    fillNTop = dot(
+      texture (sampler_noise_hq, (fillUvTop + (0.025 * texture (sampler_noise_hq, (fillUvTop * 1.55)).xy))),
+      vec4(0.32, 0.49, 0.29, 0.0)
+    );
+    fillNTop = max(fillNTop, dot(
+      texture (sampler_noise_hq, ((fillUvTop * 1.35) + (0.018 * texture (sampler_noise_hq, (fillUvTop * 2.1)).xy))),
+      vec4(0.28, 0.46, 0.26, 0.0)
+    ));
+    cloud = max(cloud, (fillNTop * smoothstep(0.46, 0.86, uv_3.y) * 0.95));
+  }
+`
+          : '';
+        const cropBlock = cropBottom > 0
+          ? `  sky = (sky * smoothstep(0.0, ${cropBottom.toFixed(4)}, uv_3.y));\n`
+          : '';
+        const cropTopEnd = cropTopStart > 0 ? (cropTopStart + cropTopFeather).toFixed(4) : '0';
+        const cropTopBlock = cropTopStart > 0
+          ? `  {
+    float topMask;
+    topMask = (1.0 - smoothstep(${cropTopStart.toFixed(4)}, ${cropTopEnd}, uv_3.y));
+    sky = mix((skycol * 0.07), sky, topMask);
+  }
+`
+          : '';
+        const flashX = (v.flipX ? (1.0 - v.flashX) : v.flashX).toFixed(6);
+        const flashY = v.flashY.toFixed(6);
+        return ` shader_body {
+  vec2 uv_3;
+  uv_3 = (uv + (texsize.zw * 0.5));
+${flipBlock}${flipXBlock}  vec2 uv1;
+  uv1 = ((uv_3 - vec2(${centerX}, ${centerY})) * ${cloudScale.toFixed(4)});
+  float z0;
+  z0 = clamp((0.25 / (uv1.y - 0.3)), -0.7, 0.0);
+  vec2 trel_5;
+  trel_5 = ((${driftSpeed.toFixed(4)} * time) * vec2(${v.driftX}, ${v.driftY}));
+  float cloud;
+  cloud = 0.0;
+  float z;
+  vec2 uv2;
+  vec2 uvi;
+  for (int n = 0; n < 4; n++) {
+    z = (z0 + (cloud * 0.015));
+    uv2 = (vec2((uv1.x * z), z) - trel_5);
+    uvi = ((uv2 * 3.0) + (2.0 * trel_5));
+    cloud = dot(
+      texture (sampler_noise_hq, (uv2 + (0.015 * (
+        texture (sampler_noise_hq, uvi).xy +
+        (texture (sampler_noise_hq, (uvi * 2.0)).xy * 0.5)
+      )))),
+      vec4(0.32, 0.49, 0.29, 0.0)
+    );
+  }
+${fillBlock}${fillTopBlock}  vec3 skycol;
+  skycol = (vec3(0.1333333, 0.1666667, 0.3333333) * 1.45);
+  vec2 flashZone;
+  flashZone = vec2(${flashX}, ${flashY});
+  float flashAmt;
+  flashAmt = clamp((bass_att - 1.0), 0.0, 1.0);
+  float strike1;
+  strike1 = floor((time * (3.2 + bass_att * 1.8)) + 0.5);
+  vec2 seed1;
+  seed1 = fract((sin(vec2((strike1 * 12.9898), (strike1 * 78.233))) * 43758.5453));
+  vec2 bolt1;
+  bolt1 = (flashZone + ((seed1 - 0.5) * vec2(0.72, 0.52)));
+  vec2 x1;
+  x1 = ((uv_3 - (cloud * 0.2)) - bolt1);
+  vec3 flash;
+  flash = ((flashAmt / sqrt(max(dot (x1, x1), 0.0001))) * (1.0 - cloud)) * vec3(0.0, 0.3, 0.6);
+  float strike2;
+  strike2 = floor((time * (5.0 + bass * 2.5)) + bass_att);
+  vec2 seed2;
+  seed2 = fract((sin(vec2((strike2 * 45.164), (strike2 * 91.537))) * 43758.5453));
+  vec2 bolt2;
+  bolt2 = (flashZone + ((seed2 - 0.5) * vec2(0.68, 0.48)));
+  vec2 x2;
+  x2 = ((uv_3 - (cloud * 0.2)) - bolt2);
+  float flash2;
+  flash2 = (step(1.25, bass_att) * clamp((bass_att - 1.25), 0.0, 1.0));
+  flash = (flash + (((flash2 / sqrt(max(dot (x2, x2), 0.00012))) * (1.0 - cloud)) * vec3(0.0, 0.26, 0.55)));
+  vec2 bolt3;
+  bolt3 = (flashZone + ((rand_frame.xy - 0.5) * vec2(0.85, 0.58)));
+  vec2 x3;
+  x3 = ((uv_3 - (cloud * 0.2)) - bolt3);
+  float flash3;
+  flash3 = (step(1.55, bass_att) * clamp((bass_att - 1.55), 0.0, 1.0));
+  flash = (flash + (((flash3 / sqrt(max(dot (x3, x3), 0.00008))) * (1.0 - cloud)) * vec3(0.0, 0.34, 0.62) * 0.75));
+  float horizon;
+  horizon = clamp((1.0 - smoothstep(-0.05, 0.38, uv1.y)), 0.0, 1.0);
+  vec3 sky;
+  sky = (((1.0 - cloud) * skycol) + flash) * horizon;
+${cropBlock}${cropTopBlock}  vec4 tmpvar_out;
+  tmpvar_out.w = 1.0;
+  tmpvar_out.xyz = sky;
+  ret = tmpvar_out.xyz;
+ }`;
+      }
+
+      /** martin — city of shadows: только процедурное небо, без camera/feedback */
+      static patchCityOfShadowsSkyOnly(preset, variantIdx = 0) {
+        const vi = Math.max(0, Math.min(variantIdx, MilkDropEngine.CITY_OF_SHADOWS_SKY_VARIANTS.length - 1));
+        const v = MilkDropEngine.CITY_OF_SHADOWS_SKY_VARIANTS[vi];
+        const p = JSON.parse(JSON.stringify(preset));
+        p.baseVals = p.baseVals || {};
+        Object.assign(p.baseVals, {
+          decay: 0.985,
+          echo_alpha: 0,
+          echo_orient: 0,
+          echo_zoom: 1,
+          warp: 0,
+          darken: 0,
+          wave_a: 0,
+          wrap: 1,
+          gammaadj: p.baseVals.gammaadj || 1.98,
+        });
+        p.comp = MilkDropEngine.buildCityOfShadowsSkyComp(v);
+        p.warp = ` shader_body {
+  ret = vec3(0.012, 0.014, 0.032);
+}`;
+        p.frame_eqs_str = "a['warp']=0; a['zoom']=1; a['dx']=0; a['dy']=0; a['rot']=0; a['cx']=0.5; a['cy']=0.5;";
+        p.init_eqs_str = '';
+        p.pixel_eqs_str = '';
+        if (Array.isArray(p.shapes)) {
+          p.shapes = p.shapes.map((shape) => ({
+            ...shape,
+            init_eqs_str: '',
+            frame_eqs_str: '',
+            baseVals: {
+              ...(shape.baseVals || {}),
+              enabled: 0,
+              num_inst: 0,
+              a: 0,
+              a2: 0,
+            },
+          }));
+        }
+        if (Array.isArray(p.waves)) {
+          p.waves = p.waves.map((wave) => ({
+            ...wave,
+            init_eqs_str: '',
+            frame_eqs_str: '',
+            baseVals: { ...(wave.baseVals || {}), enabled: 0 },
+          }));
+        }
+        return p;
+      }
+
+      // Правки ANTI-пресетов (индекс 0-based или path из anti-manifest)
+      static ANTI_PRESET_PATCHES = {
+        7028: (preset) => MilkDropEngine.patchUltimatePreset7029(preset),
+        'Reaction/Liquid Windy/the ultimate preset.milk': (preset) => MilkDropEngine.patchUltimatePreset7029(preset),
+      };
+
+      static patchUltimatePreset7029(preset) {
+        const p = JSON.parse(JSON.stringify(preset));
+        if (p.baseVals) {
+          if (p.baseVals.wave_a > 1) p.baseVals.wave_a = 1.0;
+          p.baseVals.wrap = 1;
+          p.baseVals.decay = Math.max(0.96, p.baseVals.decay || 0.96);
+        }
+        delete p.pixel_eqs_str;
+        delete p.pixel_eqs_eel;
+        // butterchurn-safe mxv: умножение вместо ret-mxv*2, без color bleed из blur
+        p.warp = ` shader_body { 
+  vec3 mxv_1;
+  vec3 ret_2;
+  vec3 src_1;
+  vec3 b1_w;
+  float mx_s;
+  mxv_1 = (abs((
+    ((((
+      ((((texture (sampler_blur2, 
+        (uv + (texsize.zw * vec2(1.0, 0.0)))
+      ).xyz * scale2) + bias2) - ((texture (sampler_blur2, 
+        (uv + (texsize.zw * vec2(0.0, 1.0)))
+      ).xyz * scale2) + bias2)) + ((texture (sampler_blur2, (uv + 
+        (texsize.zw * vec2(-1.0, 0.0))
+      )).xyz * scale2) + bias2))
+     - 
+      ((texture (sampler_blur2, (uv + (texsize.zw * vec2(0.0, -1.0)))).xyz * scale2) + bias2)
+    ) + (
+      (texture (sampler_blur2, (uv + (texsize.zw * vec2(5.656848, -5.656848)))).xyz * scale2)
+     + bias2)) - ((texture (sampler_blur2, 
+      (uv + (texsize.zw * vec2(-5.656848, 5.656848)))
+    ).xyz * scale2) + bias2)) + ((texture (sampler_blur2, (uv + 
+      (texsize.zw * vec2(5.656848, 5.656848))
+    )).xyz * scale2) + bias2))
+   - 
+    ((texture (sampler_blur2, (uv + (texsize.zw * vec2(-5.656848, -5.656848)))).xyz * scale2) + bias2)
+  )) * 0.5);
+  mxv_1 = smoothstep(vec3(0.015), vec3(0.4), mxv_1);
+  src_1 = texture (sampler_main, uv).xyz;
+  b1_w = ((texture (sampler_blur1, uv).xyz * scale1) + bias1);
+  mx_s = dot(mxv_1, vec3(0.32, 0.49, 0.29));
+  ret_2 = (src_1 * (mxv_1 + 0.99));
+  ret_2 = (ret_2 * clamp(vec3(1.0) - (mx_s * 1.28), vec3(0.13), vec3(1.0))) + vec3(0.085);
+  ret_2 = (ret_2 + (0.08 * (0.15 - dot(texture (sampler_noise_lq, ((uv * rand_frame.xy) * 9.0)).xyz, vec3(0.32, 0.49, 0.29)))));
+  ret_2 = (ret_2 - (0.08 * b1_w));
+  ret_2 = max(ret_2, vec3(0.022));
+  vec4 tmpvar_3;
+  tmpvar_3.w = 1.0;
+  tmpvar_3.xyz = ret_2;
+  ret = tmpvar_3.xyz;
+ }`;
+        p.comp = ` shader_body { 
+  vec2 uv_1;
+  vec3 ret_2;
+  vec3 nv_1;
+  uv_1 = (0.5 + ((uv - 0.5) * 0.98));
+  vec2 tmpvar_3;
+  tmpvar_3 = (texsize.zw * 4.0);
+  vec3 tmpvar_4;
+  tmpvar_4 = (((texture (sampler_blur1, 
+    (uv_1 + (vec2(1.0, 0.0) * tmpvar_3))
+  ).xyz * scale1) + bias1) - ((texture (sampler_blur1, 
+    (uv_1 - (vec2(1.0, 0.0) * tmpvar_3))
+  ).xyz * scale1) + bias1));
+  vec3 tmpvar_5;
+  tmpvar_5 = (((texture (sampler_blur1, 
+    (uv_1 + (vec2(0.0, 1.0) * tmpvar_3))
+  ).xyz * scale1) + bias1) - ((texture (sampler_blur1, 
+    (uv_1 - (vec2(0.0, 1.0) * tmpvar_3))
+  ).xyz * scale1) + bias1));
+  vec2 tmpvar_8;
+  tmpvar_8.x = dot (tmpvar_4, vec3(0.32, 0.49, 0.29));
+  tmpvar_8.y = dot (tmpvar_5, vec3(0.32, 0.49, 0.29));
+  uv_1 = (uv_1 - (tmpvar_8 * 0.04));
+  nv_1.xy = uv_1;
+  nv_1.z = fract(time * 0.2);
+  float tmpvar_noise;
+  tmpvar_noise = max(dot (texture (sampler_noisevol_hq, nv_1).xyz, vec3(0.32, 0.49, 0.29)), 0.14);
+  ret_2 = (abs((
+    ((texture (sampler_main, uv_1).xyz + ((texture (sampler_blur1, uv_1).xyz * scale1) + bias1)) - ((texture (sampler_blur2, uv_1).xyz * scale2) + bias2))
+   - 
+    ((texture (sampler_blur3, uv_1).xyz * scale3) + bias3)
+  )) * (tmpvar_noise * 3.0));
+  ret_2 = pow (max(ret_2, vec3(0.016)), vec3(0.5, 0.5, 0.5));
+  vec4 tmpvar_10;
+  tmpvar_10.w = 1.0;
+  tmpvar_10.xyz = ret_2;
+  ret = tmpvar_10.xyz;
+ }`;
+        if (typeof p.frame_eqs_str === 'string' && !p.frame_eqs_str.includes("a['zoom']")) {
+          p.frame_eqs_str += " a['zoom']=(1+(0.018*Math.sin(a['q5'])));";
+        }
+        return p;
+      }
+
+      applyAntiPresetPatch(idx, entry, preset) {
+        if (!preset) return preset;
+        const byIdx = MilkDropEngine.ANTI_PRESET_PATCHES[idx];
+        if (byIdx) return byIdx(preset);
+        const byPath = entry?.path ? MilkDropEngine.ANTI_PRESET_PATCHES[entry.path] : null;
+        return byPath ? byPath(preset) : preset;
+      }
+
       // Доп. ослабление audio/CSS для отдельных пресетов (номер = Other #N)
       static PRESET_NEO_TUNING = {
         'shifter - fire and brimstone': { sensMul: 0.48, brightMul: 0.82, brightCss: -0.1, contrastCss: -0.05 },
@@ -7852,6 +9310,108 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
       applyPresetPatch(key, preset) {
         const patch = MilkDropEngine.PRESET_PATCHES[key];
         return patch ? patch(preset) : preset;
+      }
+
+      buildBcKeyLookup() {
+        if (this._bcNormMap) return;
+        this.ensurePresetList();
+        this._bcNormMap = new Map();
+        for (const key of this.presetKeys) {
+          this._bcNormMap.set(MilkDropEngine.normPresetName(key), key);
+          this._bcNormMap.set(MilkDropEngine.normPresetLookupName(key), key);
+        }
+      }
+
+      resolveBcPreset(entry) {
+        if (!entry?.name) return null;
+        this.buildBcKeyLookup();
+        const candidates = [
+          MilkDropEngine.normPresetName(entry.name),
+          MilkDropEngine.normPresetLookupName(entry.name),
+        ];
+        for (const norm of candidates) {
+          const key = this._bcNormMap.get(norm);
+          if (key) {
+            return this.applyPresetPatch(key, JSON.parse(JSON.stringify(this.presets[key])));
+          }
+        }
+        return null;
+      }
+
+      getEmergencyPreset() {
+        this.ensurePresetList();
+        const key = this.presetKeys[this.presetIndex] || this.presetKeys[0];
+        if (!key) return MilkDropEngine.minimalFromPreset({ baseVals: {} });
+        return this.applyPresetPatch(key, JSON.parse(JSON.stringify(this.presets[key])));
+      }
+
+      resolveAntiBcPreset(entry) {
+        if (!entry?.name) return null;
+        this.buildBcKeyLookup();
+        const key = this._bcNormMap.get(MilkDropEngine.normPresetName(entry.name));
+        if (!key) return null;
+        return this.applyPresetPatch(key, JSON.parse(JSON.stringify(this.presets[key])));
+      }
+
+      async loadAntiVisualizerPreset(presetData, blend = 0) {
+        await this.init();
+        if (!this.visualizer) throw new Error('MilkDrop not ready');
+        const tryLoad = async (data) => {
+          const result = this.visualizer.loadPreset(data, blend);
+          if (result && typeof result.then === 'function') await result;
+        };
+        const sanitized = MilkDropEngine.sanitizeConvertedPreset(presetData);
+        const attempts = [
+          sanitized,
+          MilkDropEngine.stripCustomShaders(sanitized),
+          MilkDropEngine.relaxPresetForLoad(sanitized),
+        ];
+        let lastErr = null;
+        for (const data of attempts) {
+          try {
+            await tryLoad(data);
+            lastErr = null;
+            break;
+          } catch (err) {
+            lastErr = err;
+          }
+        }
+        if (lastErr) throw lastErr;
+        this.applyNeoSettings(this.getNeoSettings());
+        for (let i = 0; i < 4; i++) this.visualizer.render();
+      }
+
+      async loadVisualizerPreset(presetData, blend = 0, opts = {}) {
+        await this.init({ bootstrapPreset: false });
+        if (!this.visualizer) return false;
+        const tryLoad = async (data) => {
+          const result = this.visualizer.loadPreset(data, blend);
+          if (result && typeof result.then === 'function') await result;
+        };
+        const sanitized = MilkDropEngine.sanitizeConvertedPreset(presetData);
+        const base = MilkDropEngine.boostVisibility(sanitized);
+        const attempts = [
+          base,
+          MilkDropEngine.stripCustomShaders(base),
+          MilkDropEngine.relaxPresetForLoad(base),
+          MilkDropEngine.stripEquations(base),
+          MilkDropEngine.minimalFromPreset(base),
+          this.getEmergencyPreset(),
+        ];
+        // Для предконвертированных пресетов сперва пробуем оригинал без boost —
+        // он передаёт авторский вид максимально точно.
+        if (opts.authentic) attempts.unshift(sanitized);
+        for (const data of attempts) {
+          try {
+            await tryLoad(data);
+            this.applyNeoSettings(this.getNeoSettings());
+            for (let i = 0; i < 4; i++) this.visualizer.render();
+            return true;
+          } catch (err) {
+            console.warn('MilkDrop load attempt:', err?.message || err);
+          }
+        }
+        return false;
       }
 
       getNeoSettings() {
@@ -7905,6 +9465,7 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
         } else if (renderer?.preset?.baseVals) {
           renderer.preset.baseVals.decay = trail;
         }
+
       }
 
       collectPresets() {
@@ -7927,7 +9488,8 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
         return this.presetKeys.length > 0;
       }
 
-      async init() {
+      async init(opts = {}) {
+        const bootstrapPreset = opts.bootstrapPreset !== false;
         this.ensurePresetList();
         if (!this.presetKeys.length) return;
         if (this.ready) return Promise.resolve();
@@ -7949,11 +9511,13 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
             this.reactor.visualTap.connect(this.mdGain);
             this.visualizer.connectAudio(this.mdGain);
           }
-          const available = this.presetKeys
-            .map((_, i) => i)
-            .filter(i => !isOtherPresetExcluded(this.presetKeys[i], i));
-          this.presetIndex = available[Math.floor(Math.random() * available.length)] || 0;
-          this.loadPresetByIndex(this.presetIndex, 0);
+if (bootstrapPreset) {
+            const available = this.presetKeys
+              .map((_, i) => i)
+              .filter(i => !isOtherPresetExcluded(this.presetKeys[i], i));
+            this.presetIndex = available[Math.floor(Math.random() * available.length)] || 0;
+            this.loadPresetByIndex(this.presetIndex, 0);
+          }
           this.resize();
           this.ready = true;
         })().catch((err) => {
@@ -7977,6 +9541,7 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
 
       loadPresetByIndex(idx, blend = 5.7, updateSelect = true) {
         if (!this.presetKeys.length) return;
+        this.activePool = 'other';
         const safeIdx = Math.max(0, Math.min(idx, this.presetKeys.length - 1));
         this.presetIndex = safeIdx;
         if (!this.visualizer) return;
@@ -7991,6 +9556,15 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
         if (updateSelect) {
           const sel = document.getElementById('milkdropPresetSelect');
           if (sel) sel.value = String(safeIdx);
+          const mdropSel = document.getElementById('mdropPresetSelect');
+          if (mdropSel) mdropSel.value = '';
+          const antiSel = document.getElementById('antiPresetSelect');
+          if (antiSel) antiSel.value = '';
+          this.mdropIndex = -1;
+          this.antiIndex = -1;
+          afterPresetSelectUpdated('milkdropPresetSelect');
+          afterPresetSelectUpdated('mdropPresetSelect');
+          afterPresetSelectUpdated('antiPresetSelect');
         }
       }
 
@@ -8005,22 +9579,502 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
       }
 
       loadDirectoryPreset(dirEntry, blend = 0) {
+        if (dirEntry?.antiPresetNumber) {
+          return this.loadAntiPresetByIndex(dirEntry.antiPresetNumber - 1, blend, false)
+            .then(() => true)
+            .catch(() => false);
+        }
+        if (dirEntry?.mdropPresetNumber) {
+          return this.loadMdropPresetByIndex(
+            dirEntry.mdropPresetNumber - 1, blend, false, dirEntry.mdropPatch,
+            { skyVariant: dirEntry.skyVariant ?? 0 }
+          );
+        }
         this.ensurePresetList();
         let key = dirEntry.presetKey;
         if (!key && dirEntry.presetNumber) {
           key = this.presetKeys[dirEntry.presetNumber - 1];
         }
-        if (!key) return Promise.resolve();
-        return this.loadPresetByKey(key, blend, false);
+        if (!key) return Promise.resolve(false);
+        return this.loadPresetByKey(key, blend, false).then(() => true).catch(() => false);
       }
 
       render() {
         if (!this.visualizer) return;
         try {
-          this.applyNeoSettings(this.getNeoSettings());
+this.applyNeoSettings(this.getNeoSettings());
           this.visualizer.render();
         } catch (err) {
           console.warn('MilkDrop render:', err);
+        }
+      }
+
+      async ensureMdropConverter(kind = 'local') {
+        if (kind === 'aws') {
+          if (this._mdropConvertAwsFn) return this._mdropConvertAwsFn;
+          const mod = await import('https://esm.sh/milkdrop-preset-converter-aws@0.1.6');
+          this._mdropConvertAwsFn = mod.convertPreset || mod.default?.convertPreset;
+          if (!this._mdropConvertAwsFn) throw new Error('MDrop AWS converter unavailable');
+          return this._mdropConvertAwsFn;
+        }
+        if (this._mdropConvertFn) return this._mdropConvertFn;
+        const mod = await import('https://esm.sh/milkdrop-preset-converter@0.0.1');
+        this._mdropConvertFn = mod.convertPreset || mod.default?.convertPreset;
+        if (!this._mdropConvertFn) throw new Error('MDrop converter unavailable');
+        return this._mdropConvertFn;
+      }
+
+      static loadAntiManifestScript() {
+        if (window.ANTI_PRESET_MANIFEST?.presets?.length) {
+          return Promise.resolve();
+        }
+        if (!MilkDropEngine._antiManifestScriptPromise) {
+          MilkDropEngine._antiManifestScriptPromise = new Promise((resolve, reject) => {
+            const s = document.createElement('script');
+            s.src = MilkDropEngine.ANTI_MANIFEST_SCRIPT;
+            s.async = true;
+            s.onload = () => resolve();
+            s.onerror = () => {
+              MilkDropEngine._antiManifestScriptPromise = null;
+              reject(new Error('ANTI manifest script failed'));
+            };
+            document.head.appendChild(s);
+          });
+        }
+        return MilkDropEngine._antiManifestScriptPromise;
+      }
+
+      static loadAntiConverterScript() {
+        if (window.milkdropPresetConverter?.convertPreset) {
+          return Promise.resolve();
+        }
+        if (!MilkDropEngine._antiConverterScriptPromise) {
+          MilkDropEngine._antiConverterScriptPromise = new Promise((resolve, reject) => {
+            const s = document.createElement('script');
+            s.src = MilkDropEngine.ANTI_CONVERTER_SCRIPT;
+            s.async = true;
+            s.onload = () => resolve();
+            s.onerror = () => {
+              MilkDropEngine._antiConverterScriptPromise = null;
+              reject(new Error('ANTI converter script failed'));
+            };
+            document.head.appendChild(s);
+          });
+        }
+        return MilkDropEngine._antiConverterScriptPromise;
+      }
+
+      async ensureAntiConverter(kind = 'local') {
+        if (kind === 'aws') {
+          if (this._antiConvertAwsFn) return this._antiConvertAwsFn;
+          const mod = await import('https://esm.sh/milkdrop-preset-converter-aws@0.1.6');
+          this._antiConvertAwsFn = mod.convertPreset || mod.default?.convertPreset;
+          if (!this._antiConvertAwsFn) throw new Error('ANTI AWS converter unavailable');
+          return this._antiConvertAwsFn;
+        }
+        if (this._antiConvertFn) return this._antiConvertFn;
+        await MilkDropEngine.loadAntiConverterScript();
+        if (window.milkdropPresetConverter?.convertPreset) {
+          this._antiConvertFn = window.milkdropPresetConverter.convertPreset;
+          return this._antiConvertFn;
+        }
+        const mod = await import('https://esm.sh/milkdrop-preset-converter@0.0.1');
+        this._antiConvertFn = mod.convertPreset || mod.default?.convertPreset;
+        if (!this._antiConvertFn) throw new Error('ANTI converter unavailable');
+        return this._antiConvertFn;
+      }
+
+      async convertMdropMilk(milkText, opts = false) {
+        const options = typeof opts === 'boolean' ? { forceLocal: opts } : (opts || {});
+        const fn = await this.ensureMdropConverter('local');
+        const localPreset = MilkDropEngine.sanitizeConvertedPreset(await fn(milkText));
+        if (!options.forceAws) return localPreset;
+        if (!MilkDropEngine.milkNeedsShaderConvert(milkText)) return localPreset;
+        try {
+          const awsFn = await this.ensureMdropConverter('aws');
+          const awsPreset = MilkDropEngine.sanitizeConvertedPreset(await awsFn(milkText));
+          if (MilkDropEngine.isValidConvertedPreset(awsPreset) && MilkDropEngine.hasConvertedShaders(awsPreset)) {
+            return awsPreset;
+          }
+        } catch (err) {
+          console.warn('MDrop AWS convert failed:', err);
+        }
+        return localPreset;
+      }
+
+      async loadMdropManifest() {
+        if (this.mdropEntries.length) return this.mdropEntries;
+        if (window.MDROP_PRESET_MANIFEST?.presets?.length) {
+          this.mdropEntries = window.MDROP_PRESET_MANIFEST.presets;
+          fillMdropPresetSelect();
+          return this.mdropEntries;
+        }
+        if (!this._mdropManifestPromise) {
+          this._mdropManifestPromise = (async () => {
+            for (const url of MilkDropEngine.MDROP_MANIFEST_URLS) {
+              try {
+                const res = await fetch(url);
+                if (!res.ok) continue;
+                const data = await res.json();
+                if (Array.isArray(data?.presets) && data.presets.length) {
+                  this.mdropEntries = data.presets;
+                  fillMdropPresetSelect();
+                  return this.mdropEntries;
+                }
+              } catch (_) {}
+            }
+            console.warn('MDrop manifest load failed');
+            this._mdropManifestPromise = null;
+            fillMdropPresetSelect(true);
+            return [];
+          })();
+        }
+        return this._mdropManifestPromise;
+      }
+
+      async loadAntiManifest() {
+        if (this.antiEntries.length) return this.antiEntries;
+        if (window.ANTI_PRESET_MANIFEST?.presets?.length) {
+          this.antiEntries = window.ANTI_PRESET_MANIFEST.presets;
+          fillAntiPresetSelect();
+          return this.antiEntries;
+        }
+        if (!this._antiManifestPromise) {
+          this._antiManifestPromise = (async () => {
+            for (const url of MilkDropEngine.ANTI_MANIFEST_URLS) {
+              try {
+                const res = await fetch(url);
+                if (!res.ok) continue;
+                const data = await res.json();
+                if (Array.isArray(data?.presets) && data.presets.length) {
+                  this.antiEntries = data.presets;
+                  fillAntiPresetSelect();
+                  return this.antiEntries;
+                }
+              } catch (_) {}
+            }
+            console.warn('ANTI manifest load failed');
+            this._antiManifestPromise = null;
+            fillAntiPresetSelect(true);
+            return [];
+          })();
+        }
+        return this._antiManifestPromise;
+      }
+
+      async fetchMdropMilkText(entry) {
+        const rel = entry.path.split('/').map(encodeURIComponent).join('/');
+        let lastErr = null;
+        for (const base of MilkDropEngine.MDROP_PRESET_BASES) {
+          try {
+            const res = await fetch(base + rel);
+            if (!res.ok) {
+              lastErr = new Error('fetch ' + res.status);
+              continue;
+            }
+            return await res.text();
+          } catch (err) {
+            lastErr = err;
+          }
+        }
+        throw lastErr || new Error('milk not found');
+      }
+
+      async fetchAntiConvertedJson(idx) {
+        if (!this._antiJsonCache) this._antiJsonCache = new Map();
+        if (this._antiJsonCache.has(idx)) return this._antiJsonCache.get(idx);
+        let data = null;
+        try {
+          const res = await fetch(MilkDropEngine.ANTI_JSON_BASE + idx + '.json');
+          if (res.ok) data = await res.json();
+        } catch (_) {}
+        this._antiJsonCache.set(idx, data);
+        return data;
+      }
+
+      async fetchMdropConvertedJson(idx) {
+        if (!this._mdropJsonCache) this._mdropJsonCache = new Map();
+        if (this._mdropJsonCache.has(idx)) return this._mdropJsonCache.get(idx);
+        let data = null;
+        try {
+          const res = await fetch(MilkDropEngine.MDROP_JSON_BASE + idx + '.json');
+          if (res.ok) data = await res.json();
+        } catch (_) {}
+        this._mdropJsonCache.set(idx, data);
+        return data;
+      }
+
+      async loadMdropPresetByIndex(idx, blend = 0, updateSelect = true, patchKey = null, patchOptions = null) {
+        await this.loadMdropManifest();
+        if (!this.mdropEntries.length) {
+          if (patchKey) return false;
+          return false;
+        }
+        const safeIdx = Math.max(0, Math.min(idx, this.mdropEntries.length - 1));
+        const entry = this.mdropEntries[safeIdx];
+        if (!entry?.path) return false;
+        this.activePool = 'mdrop';
+        this.mdropIndex = safeIdx;
+        this.antiIndex = -1;
+
+        const cacheKey = entry.path + '|v4';
+        let milkText = null;
+        let loaded = false;
+
+        const applyDirPatch = (presetData) => {
+          if (!presetData) return presetData;
+          const patch = patchKey && MilkDropEngine.MDROP_DIRECTORY_PATCHES[patchKey];
+          return patch ? patch(presetData, patchOptions) : presetData;
+        };
+
+        const tryPreset = async (presetData, opts) => {
+          if (!presetData) return false;
+          return this.loadVisualizerPreset(applyDirPatch(presetData), blend, opts);
+        };
+
+        // 1) Предконвертированный JSON (полные шейдеры, авторское качество)
+        let jsonPreset = await this.fetchMdropConvertedJson(safeIdx);
+        if (jsonPreset && !MilkDropEngine.isValidConvertedPreset(jsonPreset)) {
+          jsonPreset = null;
+        }
+        if (jsonPreset && !MilkDropEngine.hasConvertedShaders(jsonPreset)) {
+          try {
+            milkText = await this.fetchMdropMilkText(entry);
+            if (MilkDropEngine.milkNeedsShaderConvert(milkText)) jsonPreset = null;
+          } catch (_) {
+            jsonPreset = null;
+          }
+        }
+        if (jsonPreset) {
+          loaded = await tryPreset(jsonPreset, { authentic: true });
+        }
+
+        // 2) Совпадение с готовым butterchurn-пресетом
+        if (!loaded) loaded = await tryPreset(this.resolveBcPreset(entry));
+        if (!loaded) {
+          let presetData = this._mdropCache.get(cacheKey);
+          if (!presetData) {
+            try {
+              milkText = await this.fetchMdropMilkText(entry);
+              presetData = await this.convertMdropMilk(milkText);
+              this._mdropCache.set(cacheKey, presetData);
+            } catch (err) {
+              console.warn('MDrop preset convert failed:', entry.path, err);
+            }
+          }
+          loaded = await tryPreset(presetData);
+        }
+
+        if (!loaded) {
+          try {
+            milkText = milkText || await this.fetchMdropMilkText(entry);
+            if (MilkDropEngine.milkNeedsShaderConvert(milkText)) {
+              const awsPreset = await this.convertMdropMilk(milkText, { forceAws: true });
+              this._mdropCache.set(cacheKey, awsPreset);
+              loaded = await tryPreset(awsPreset);
+            }
+          } catch (err) {
+            console.warn('MDrop AWS retry failed:', entry.path, err);
+          }
+        }
+
+        if (!loaded && patchKey) {
+          console.warn('Directory MDrop preset failed (no emergency fallback):', entry.path);
+          return false;
+        }
+
+        if (!loaded) {
+          console.warn('MDrop using emergency preset for:', entry.path);
+          await tryPreset(this.getEmergencyPreset());
+          loaded = true;
+        }
+
+        if (updateSelect) {
+          const sel = document.getElementById('mdropPresetSelect');
+          if (sel) sel.value = String(safeIdx);
+          const otherSel = document.getElementById('milkdropPresetSelect');
+          if (otherSel) otherSel.value = '';
+          const antiSel = document.getElementById('antiPresetSelect');
+          if (antiSel) antiSel.value = '';
+          this.antiIndex = -1;
+          afterPresetSelectUpdated('mdropPresetSelect');
+          afterPresetSelectUpdated('milkdropPresetSelect');
+          afterPresetSelectUpdated('antiPresetSelect');
+        }
+        return !!loaded;
+      }
+
+      /** ANTI (~9795): предконвертированный anti-json → butterchurn match → AWS/local convert. */
+      async convertAntiMilk(milkText, opts = false) {
+        const options = typeof opts === 'boolean' ? { forceLocal: opts } : (opts || {});
+        const needsShaders = MilkDropEngine.milkNeedsShaderConvert(milkText);
+        if (needsShaders && !options.forceLocal) {
+          try {
+            const awsFn = await this.ensureAntiConverter('aws');
+            const preset = await awsFn(milkText);
+            const sanitized = MilkDropEngine.sanitizeConvertedPreset(preset);
+            if (MilkDropEngine.isValidConvertedPreset(sanitized) && MilkDropEngine.hasConvertedShaders(sanitized)) {
+              return sanitized;
+            }
+            console.warn('ANTI AWS convert returned invalid preset');
+          } catch (err) {
+            console.warn('ANTI AWS convert failed, fallback:', err);
+          }
+        }
+        if (options.forceAws && needsShaders) {
+          try {
+            const awsFn = await this.ensureAntiConverter('aws');
+            const preset = await awsFn(milkText);
+            const sanitized = MilkDropEngine.sanitizeConvertedPreset(preset);
+            if (MilkDropEngine.isValidConvertedPreset(sanitized) && MilkDropEngine.hasConvertedShaders(sanitized)) {
+              return sanitized;
+            }
+          } catch (err) {
+            console.warn('ANTI AWS force convert failed:', err);
+          }
+        }
+        const fn = await this.ensureAntiConverter('local');
+        const preset = await fn(milkText);
+        return MilkDropEngine.sanitizeConvertedPreset(preset);
+      }
+
+      async fetchAntiMilkText(entry) {
+        const rel = entry.path.split('/').map(encodeURIComponent).join('/');
+        let lastErr = null;
+        for (const base of MilkDropEngine.ANTI_PRESET_BASES) {
+          try {
+            const res = await fetch(base + rel);
+            if (!res.ok) {
+              lastErr = new Error('fetch ' + res.status);
+              continue;
+            }
+            return await res.text();
+          } catch (err) {
+            lastErr = err;
+          }
+        }
+        throw lastErr || new Error('milk not found');
+      }
+
+      async loadAntiPresetByIndex(idx, blend = 0, updateSelect = true) {
+        await this.loadAntiManifest();
+        if (!this.antiEntries.length) return;
+        const safeIdx = Math.max(0, Math.min(idx, this.antiEntries.length - 1));
+        const entry = this.antiEntries[safeIdx];
+        if (!entry?.path) return;
+        this.activePool = 'anti';
+        this.antiIndex = safeIdx;
+        this.mdropIndex = -1;
+
+        const cacheKey = entry.path + '|v7';
+        let milkText = null;
+        let loaded = false;
+        let errorDetails = '';
+
+        const tryPreset = async (presetData, opts = {}) => {
+          if (!presetData) return false;
+          if (opts.authentic) {
+            return this.loadVisualizerPreset(presetData, blend, { authentic: true });
+          }
+          try {
+            await this.loadAntiVisualizerPreset(presetData, blend);
+            return true;
+          } catch (err) {
+            console.warn('ANTI preset load attempt failed:', entry.path, err);
+            errorDetails = 'Visualizer load error: ' + (err.message || err);
+            return false;
+          }
+        };
+
+        // 1) Предконвертированный anti-json (msconvert, без артефактов runtime-конвертера)
+        let jsonPreset = await this.fetchAntiConvertedJson(safeIdx);
+        if (jsonPreset && !MilkDropEngine.isValidConvertedPreset(jsonPreset)) jsonPreset = null;
+        if (jsonPreset && !MilkDropEngine.hasConvertedShaders(jsonPreset)) {
+          try {
+            milkText = await this.fetchAntiMilkText(entry);
+            if (MilkDropEngine.milkNeedsShaderConvert(milkText)) jsonPreset = null;
+          } catch (_) {
+            jsonPreset = null;
+          }
+        }
+        if (jsonPreset) {
+          jsonPreset = this.applyAntiPresetPatch(safeIdx, entry, jsonPreset);
+          loaded = await tryPreset(jsonPreset, { authentic: true });
+        }
+
+        // 2) Butterchurn match — только для пресетов без кастомных шейдеров
+        if (!loaded) {
+          try {
+            milkText = milkText || await this.fetchAntiMilkText(entry);
+            if (!MilkDropEngine.milkNeedsShaderConvert(milkText)) {
+              loaded = await tryPreset(this.resolveAntiBcPreset(entry));
+            }
+          } catch (err) {
+            console.warn('ANTI milk fetch failed:', entry.path, err);
+            errorDetails = err.message || String(err);
+          }
+        }
+
+        // 3) Runtime-конвертация (AWS → local)
+        if (!loaded) {
+          let presetData = this._antiCache.get(cacheKey);
+          if (!presetData) {
+            try {
+              milkText = milkText || await this.fetchAntiMilkText(entry);
+              presetData = this.applyAntiPresetPatch(safeIdx, entry, await this.convertAntiMilk(milkText));
+              this._antiCache.set(cacheKey, presetData);
+            } catch (err) {
+              console.warn('ANTI preset convert failed:', entry.path, err);
+              errorDetails = err.message || String(err);
+            }
+          }
+          loaded = await tryPreset(this.applyAntiPresetPatch(safeIdx, entry, presetData));
+        }
+
+        // 4) Повтор AWS для шейдерных пресетов
+        if (!loaded) {
+          try {
+            milkText = milkText || await this.fetchAntiMilkText(entry);
+            if (MilkDropEngine.milkNeedsShaderConvert(milkText)) {
+              const awsPreset = this.applyAntiPresetPatch(safeIdx, entry, await this.convertAntiMilk(milkText, { forceAws: true }));
+              this._antiCache.set(cacheKey, awsPreset);
+              loaded = await tryPreset(awsPreset);
+            }
+          } catch (err) {
+            console.warn('ANTI AWS retry failed:', entry.path, err);
+          }
+        }
+
+        // 5) Локальный reconvert
+        if (!loaded) {
+          try {
+            this._antiCache.delete(cacheKey);
+            milkText = milkText || await this.fetchAntiMilkText(entry);
+            const presetData = this.applyAntiPresetPatch(safeIdx, entry, await this.convertAntiMilk(milkText, { forceLocal: true }));
+            this._antiCache.set(cacheKey, presetData);
+            loaded = await tryPreset(presetData);
+          } catch (err2) {
+            console.warn('ANTI local reconvert failed:', entry.path, err2);
+            errorDetails = err2.message || String(err2);
+          }
+        }
+
+        if (!loaded) {
+          console.warn('ANTI preset load failed:', entry.path);
+          showToast(t('antiConvertErr') + ': ' + (entry.name || entry.path) + (errorDetails ? ' (' + errorDetails + ')' : ''), false);
+        }
+
+        if (updateSelect) {
+          const sel = document.getElementById('antiPresetSelect');
+          if (sel) sel.value = String(safeIdx);
+          const otherSel = document.getElementById('milkdropPresetSelect');
+          if (otherSel) otherSel.value = '';
+          const mdropSel = document.getElementById('mdropPresetSelect');
+          if (mdropSel) mdropSel.value = '';
+          this.mdropIndex = -1;
+          afterPresetSelectUpdated('antiPresetSelect');
+          afterPresetSelectUpdated('milkdropPresetSelect');
+          afterPresetSelectUpdated('mdropPresetSelect');
         }
       }
     }
@@ -8034,6 +10088,7 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
         opt.value = '';
         opt.textContent = typeof t === 'function' ? t('milkdropLoading') : '…';
         sel.appendChild(opt);
+        afterPresetSelectUpdated('milkdropPresetSelect');
         return;
       }
       milkdropEngine.presetKeys.forEach((key, i) => {
@@ -8045,12 +10100,316 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
         sel.appendChild(opt);
       });
       const cur = milkdropEngine.presetIndex;
-      if (isOtherPresetExcluded(milkdropEngine.presetKeys[cur], cur)) {
-        const first = getAvailableOtherPresetIndices()[0];
-        if (first !== undefined) sel.value = String(first);
-      } else {
-        sel.value = String(cur);
+      if (milkdropEngine.activePool === 'other') {
+        if (isOtherPresetExcluded(milkdropEngine.presetKeys[cur], cur)) {
+          const first = getAvailableOtherPresetIndices()[0];
+          if (first !== undefined) sel.value = String(first);
+        } else {
+          sel.value = String(cur);
+        }
       }
+      afterPresetSelectUpdated('milkdropPresetSelect');
+    }
+
+    function countSelectPresets(sel) {
+      if (!sel) return 0;
+      let n = 0;
+      for (const opt of sel.options) {
+        if (opt.value !== '') n++;
+      }
+      return n;
+    }
+
+    function getSelectOptionAtScrub(sel, scrubIdx) {
+      if (!sel) return null;
+      let n = 0;
+      for (const opt of sel.options) {
+        if (opt.value === '') continue;
+        if (n === scrubIdx) return opt;
+        n++;
+      }
+      return null;
+    }
+
+    function getScrubIdxForSelectValue(sel, value) {
+      if (!sel || value === '' || value == null) return 0;
+      let n = 0;
+      for (const opt of sel.options) {
+        if (opt.value === '') continue;
+        if (opt.value === String(value)) return n;
+        n++;
+      }
+      return 0;
+    }
+
+    function syncPresetScrubber(selectId, scrubId, labelId) {
+      const sel = document.getElementById(selectId);
+      const scrub = document.getElementById(scrubId);
+      const label = document.getElementById(labelId);
+      if (!sel || !scrub) return;
+      const count = countSelectPresets(sel);
+      scrub.classList.toggle('preset-scrub-idle', count < 2);
+      scrub.max = String(Math.max(1, count - 1));
+      if (!count) {
+        scrub.value = '0';
+        if (label) label.textContent = '—';
+        return;
+      }
+      const scrubIdx = getScrubIdxForSelectValue(sel, sel.value);
+      scrub.value = String(Math.min(scrubIdx, Math.max(0, count - 1)));
+      const opt = getSelectOptionAtScrub(sel, parseInt(scrub.value, 10));
+      if (label && opt) {
+        const num = parseInt(opt.value, 10);
+        label.textContent = Number.isNaN(num) ? `${scrubIdx + 1} / ${count}` : `${num + 1} / ${count}`;
+      }
+    }
+
+    function bindPresetScrubber(selectId, scrubId, labelId) {
+      const sel = document.getElementById(selectId);
+      const scrub = document.getElementById(scrubId);
+      const label = document.getElementById(labelId);
+      if (!sel || !scrub) return;
+
+      let loadTimer = null;
+      let scrubbing = false;
+
+      const applyScrub = (loadPreset) => {
+        const count = countSelectPresets(sel);
+        const scrubIdx = Math.max(0, Math.min(parseInt(scrub.value, 10) || 0, count - 1));
+        const opt = getSelectOptionAtScrub(sel, scrubIdx);
+        if (!opt) return;
+        if (sel.value !== opt.value) sel.value = opt.value;
+        if (label) {
+          const num = parseInt(opt.value, 10);
+          label.textContent = Number.isNaN(num) ? `${scrubIdx + 1} / ${count}` : `${num + 1} / ${count}`;
+        }
+        if (loadPreset) sel.dispatchEvent(new Event('change', { bubbles: true }));
+      };
+
+      scrub.addEventListener('pointerdown', () => { scrubbing = true; });
+      scrub.addEventListener('pointerup', () => {
+        scrubbing = false;
+        clearTimeout(loadTimer);
+        applyScrub(true);
+      });
+      scrub.addEventListener('input', () => {
+        applyScrub(false);
+        if (!scrubbing) return;
+        clearTimeout(loadTimer);
+        loadTimer = setTimeout(() => applyScrub(true), 100);
+      });
+      scrub.addEventListener('change', () => applyScrub(true));
+      sel.addEventListener('change', () => afterPresetSelectUpdated(selectId));
+    }
+
+    function initPresetScrubbers() {
+      bindPresetScrubber('milkdropPresetSelect', 'milkdropPresetScrub', 'milkdropPresetScrubLabel');
+      bindPresetScrubber('mdropPresetSelect', 'mdropPresetScrub', 'mdropPresetScrubLabel');
+      bindPresetScrubber('antiPresetSelect', 'antiPresetScrub', 'antiPresetScrubLabel');
+    }
+
+    const PRESET_PICKERS = [
+      { selectId: 'milkdropPresetSelect', listId: 'milkdropPresetList', triggerId: 'milkdropPresetTrigger', panelId: 'milkdropPresetPanel', scrubId: 'milkdropPresetScrub', scrubLabelId: 'milkdropPresetScrubLabel' },
+      { selectId: 'mdropPresetSelect', listId: 'mdropPresetList', triggerId: 'mdropPresetTrigger', panelId: 'mdropPresetPanel', scrubId: 'mdropPresetScrub', scrubLabelId: 'mdropPresetScrubLabel' },
+      { selectId: 'antiPresetSelect', listId: 'antiPresetList', triggerId: 'antiPresetTrigger', panelId: 'antiPresetPanel', scrubId: 'antiPresetScrub', scrubLabelId: 'antiPresetScrubLabel' },
+    ];
+
+    function updatePresetPickerTrigger(selectId, triggerId) {
+      const sel = document.getElementById(selectId);
+      const trigger = document.getElementById(triggerId);
+      if (!sel || !trigger) return;
+      let opt = null;
+      for (const o of sel.options) {
+        if (o.value !== '' && o.value === sel.value) { opt = o; break; }
+      }
+      if (!opt && sel.value) opt = sel.options[sel.selectedIndex];
+      trigger.textContent = opt && opt.value ? opt.textContent : '…';
+    }
+
+    function syncPresetPicker(selectId, listId, triggerId) {
+      const sel = document.getElementById(selectId);
+      const list = document.getElementById(listId);
+      if (!sel || !list) return;
+      list.innerHTML = sel.innerHTML;
+      if (sel.value) list.value = sel.value;
+      updatePresetPickerTrigger(selectId, triggerId);
+    }
+
+    function syncAllPresetPickers() {
+      PRESET_PICKERS.forEach((p) => syncPresetPicker(p.selectId, p.listId, p.triggerId));
+    }
+
+    function closeAllPresetPickerPanels(exceptPanelId = null) {
+      PRESET_PICKERS.forEach((p) => {
+        const panel = document.getElementById(p.panelId);
+        const trigger = document.getElementById(p.triggerId);
+        if (!panel || panel.id === exceptPanelId) return;
+        panel.classList.add('hidden');
+        if (trigger) trigger.setAttribute('aria-expanded', 'false');
+      });
+    }
+
+    function bindPresetPicker(cfg) {
+      const sel = document.getElementById(cfg.selectId);
+      const list = document.getElementById(cfg.listId);
+      const trigger = document.getElementById(cfg.triggerId);
+      const panel = document.getElementById(cfg.panelId);
+      if (!sel || !list || !trigger || !panel) return;
+
+      const commitListSelection = (loadPreset) => {
+        if (!list.value) return;
+        sel.value = list.value;
+        updatePresetPickerTrigger(cfg.selectId, cfg.triggerId);
+        syncPresetScrubber(cfg.selectId, cfg.scrubId, cfg.scrubLabelId);
+        if (loadPreset) sel.dispatchEvent(new Event('change', { bubbles: true }));
+      };
+
+      trigger.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const open = panel.classList.contains('hidden');
+        closeAllPresetPickerPanels(open ? panel.id : null);
+        if (open) {
+          syncPresetPicker(cfg.selectId, cfg.listId, cfg.triggerId);
+          panel.classList.remove('hidden');
+          trigger.setAttribute('aria-expanded', 'true');
+          list.focus();
+        } else {
+          panel.classList.add('hidden');
+          trigger.setAttribute('aria-expanded', 'false');
+        }
+      });
+
+      panel.addEventListener('click', (e) => e.stopPropagation());
+
+      list.addEventListener('change', () => commitListSelection(true));
+      list.addEventListener('keyup', (e) => {
+        if (e.key === 'Enter') commitListSelection(true);
+      });
+    }
+
+    function initPresetPickers() {
+      PRESET_PICKERS.forEach(bindPresetPicker);
+      document.addEventListener('click', () => closeAllPresetPickerPanels());
+      syncAllPresetPickers();
+    }
+
+    function afterPresetSelectUpdated(selectId) {
+      const cfg = PRESET_PICKERS.find((p) => p.selectId === selectId);
+      if (!cfg) return;
+      syncPresetScrubber(cfg.selectId, cfg.scrubId, cfg.scrubLabelId);
+      syncPresetPicker(cfg.selectId, cfg.listId, cfg.triggerId);
+    }
+
+    function fillMdropPresetSelect(failed = false) {
+      const sel = document.getElementById('mdropPresetSelect');
+      if (!sel || !milkdropEngine) return;
+      sel.innerHTML = '';
+      if (failed || !milkdropEngine.mdropEntries.length) {
+        const opt = document.createElement('option');
+        opt.value = '';
+        opt.textContent = failed
+          ? (typeof t === 'function' ? t('mdropEmpty') : 'MDropDX12 presets not found')
+          : (typeof t === 'function' ? t('mdropLoading') : '…');
+        sel.appendChild(opt);
+        afterPresetSelectUpdated('mdropPresetSelect');
+        return;
+      }
+      const groups = new Map();
+      milkdropEngine.mdropEntries.forEach((entry, i) => {
+        const folder = entry.path.split('/')[0] || 'Other';
+        if (!groups.has(folder)) groups.set(folder, []);
+        groups.get(folder).push({ entry, i });
+      });
+      [...groups.keys()].sort((a, b) => a.localeCompare(b)).forEach(folder => {
+        const og = document.createElement('optgroup');
+        og.label = folder;
+        groups.get(folder).forEach(({ entry, i }) => {
+          const opt = document.createElement('option');
+          opt.value = String(i);
+          const name = entry.name.length > 72 ? entry.name.slice(0, 72) + '…' : entry.name;
+          opt.textContent = `${i + 1}. ${name}`;
+          og.appendChild(opt);
+        });
+        sel.appendChild(og);
+      });
+      if (milkdropEngine.activePool === 'mdrop' && milkdropEngine.mdropIndex >= 0) {
+        sel.value = String(milkdropEngine.mdropIndex);
+      }
+      afterPresetSelectUpdated('mdropPresetSelect');
+    }
+
+    function tryLoadMdropManifest(attempt = 0) {
+      if (!milkdropEngine) return;
+      if (window.MDROP_PRESET_MANIFEST?.presets?.length) {
+        milkdropEngine.mdropEntries = window.MDROP_PRESET_MANIFEST.presets;
+        fillMdropPresetSelect();
+        return;
+      }
+      milkdropEngine.loadMdropManifest().then(entries => {
+        if (!entries.length && attempt < 8) {
+          setTimeout(() => tryLoadMdropManifest(attempt + 1), 400);
+        }
+      });
+    }
+
+    function fillAntiPresetSelect(failed = false) {
+      const sel = document.getElementById('antiPresetSelect');
+      if (!sel || !milkdropEngine) return;
+      sel.innerHTML = '';
+      if (failed || !milkdropEngine.antiEntries.length) {
+        const opt = document.createElement('option');
+        opt.value = '';
+        opt.textContent = failed
+          ? (typeof t === 'function' ? t('antiEmpty') : 'ANTI presets not found')
+          : (typeof t === 'function' ? t('antiLoading') : '…');
+        sel.appendChild(opt);
+        afterPresetSelectUpdated('antiPresetSelect');
+        return;
+      }
+      const groups = new Map();
+      milkdropEngine.antiEntries.forEach((entry, i) => {
+        const folder = entry.path.split('/')[0] || 'Other';
+        if (!groups.has(folder)) groups.set(folder, []);
+        groups.get(folder).push({ entry, i });
+      });
+      [...groups.keys()].sort((a, b) => a.localeCompare(b)).forEach(folder => {
+        const og = document.createElement('optgroup');
+        og.label = folder;
+        groups.get(folder).forEach(({ entry, i }) => {
+          const opt = document.createElement('option');
+          opt.value = String(i);
+          const name = entry.name.length > 72 ? entry.name.slice(0, 72) + '…' : entry.name;
+          opt.textContent = `${i + 1}. ${name}`;
+          og.appendChild(opt);
+        });
+        sel.appendChild(og);
+      });
+      if (milkdropEngine.activePool === 'anti' && milkdropEngine.antiIndex >= 0) {
+        sel.value = String(milkdropEngine.antiIndex);
+      }
+      afterPresetSelectUpdated('antiPresetSelect');
+    }
+
+    function tryLoadAntiManifest(attempt = 0) {
+      if (!milkdropEngine) return;
+      if (window.ANTI_PRESET_MANIFEST?.presets?.length) {
+        milkdropEngine.antiEntries = window.ANTI_PRESET_MANIFEST.presets;
+        fillAntiPresetSelect();
+        MilkDropEngine.loadAntiConverterScript().catch(() => {});
+        return;
+      }
+      if (attempt === 0) {
+        MilkDropEngine.loadAntiManifestScript()
+          .then(() => tryLoadAntiManifest(1))
+          .catch(() => tryLoadAntiManifest(1));
+        return;
+      }
+      milkdropEngine.loadAntiManifest().then(entries => {
+        if (entries.length) fillAntiPresetSelect();
+        else if (attempt < 8) setTimeout(() => tryLoadAntiManifest(attempt + 1), 400);
+        else fillAntiPresetSelect(true);
+      });
+      MilkDropEngine.loadAntiConverterScript().catch(() => {});
     }
 
     class IntroSplash {
@@ -8320,7 +10679,10 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
 
       const mdCanvas = document.getElementById('milkdropCanvas');
       milkdropEngine = new MilkDropEngine(mdCanvas, reactor);
-      tryLoadMilkdropPresetList();
+      // TEST: UI-списки Other/MDrop/ANTI не показываем, но manifest и ассеты directory грузим
+      tryLoadMdropManifest();
+      tryLoadAntiManifest();
+      getDirectoryAssetsReady();
 
       try {
         engine.init();
@@ -8353,25 +10715,50 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
         }
 
         const milkdropSelect = document.getElementById('milkdropPresetSelect');
+        initPresetScrubbers();
+        initPresetPickers();
         if (milkdropSelect) {
           milkdropSelect.addEventListener('change', async () => {
             const idx = parseInt(milkdropSelect.value, 10);
             if (Number.isNaN(idx)) return;
             if (!isAudioCtxStarted) await startAudioContext();
-            await milkdropEngine.init();
             if (engine && Math.round(engine.visualMode) !== 17) setVisualMode(17);
-            milkdropEngine.loadPresetByIndex(idx, 5.7);
+            await milkdropEngine.loadPresetByIndex(idx, 5.7);
           });
         }
 
-        const brandBadge = document.getElementById('brandBadge');
-        const milkdropParamGroup = document.getElementById('milkdropParamGroup');
-        if (brandBadge && milkdropParamGroup) {
-          brandBadge.addEventListener('dblclick', (e) => {
-            e.preventDefault();
-            milkdropParamGroup.classList.toggle('other-visible');
+        const mdropSelect = document.getElementById('mdropPresetSelect');
+        if (mdropSelect) {
+          mdropSelect.addEventListener('change', async () => {
+            const idx = parseInt(mdropSelect.value, 10);
+            if (Number.isNaN(idx)) return;
+            if (!isAudioCtxStarted) await startAudioContext();
+            if (engine && Math.round(engine.visualMode) !== 17) setVisualMode(17);
+            mdropSelect.disabled = true;
+            try {
+              await milkdropEngine.loadMdropPresetByIndex(idx, 0);
+            } finally {
+              mdropSelect.disabled = false;
+            }
           });
         }
+
+        const antiSelect = document.getElementById('antiPresetSelect');
+        if (antiSelect) {
+          antiSelect.addEventListener('change', async () => {
+            const idx = parseInt(antiSelect.value, 10);
+            if (Number.isNaN(idx)) return;
+            if (!isAudioCtxStarted) await startAudioContext();
+            if (engine && Math.round(engine.visualMode) !== 17) setVisualMode(17);
+            antiSelect.disabled = true;
+            try {
+              await milkdropEngine.loadAntiPresetByIndex(idx, 0);
+            } finally {
+              antiSelect.disabled = false;
+            }
+          });
+        }
+
 
         window.addEventListener('wheel', e => {
           if (engine && engine.visualMode < 11) {
@@ -8858,11 +11245,14 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
       
       const modeIdx = engine ? Math.round(engine.visualMode) : 0;
       const renderedIdx = getRenderedMode(modeIdx);
-      const variantIdx = engine ? (engine.variantIdx || 0) : 0;
+      const variantIdx = engine ? (Number(engine.variantIdx) || 0) : 0;
       const dir = getDirectoryEntry(modeIdx, variantIdx);
+
+      ensureDirectoryVisualApplied(dir, modeIdx, variantIdx);
 
       if (dir?.type === 'milkdrop') {
         if (milkdropEngine) milkdropEngine.render();
+        if (dir.overlayImage && canvas2dEngine) canvas2dEngine.render(dt);
       } else if (dir?.type === 'webgl') {
         const savedMode = engine.visualMode;
         const savedVar = engine.variantIdx;
@@ -8871,6 +11261,8 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
         engine.render(dt);
         engine.visualMode = savedMode;
         engine.variantIdx = savedVar;
+      } else if (dir?.type === 'canvas2d') {
+        if (canvas2dEngine) canvas2dEngine.render(dt);
       } else if (dir?.type === 'three') {
         if (threeEngine) threeEngine.render(dt);
       } else if (renderedIdx < 11) {
@@ -9058,86 +11450,21 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
     function applyVisualCanvases() {
       if (!engine) return;
       const modeIdx = Math.round(engine.visualMode);
-      const renderedIdx = getRenderedMode(modeIdx);
-      const variantIdx = engine.variantIdx || 0;
+      const variantIdx = Number(engine.variantIdx) || 0;
       const dir = getDirectoryEntry(modeIdx, variantIdx);
+      lastAppliedDirSlot = null;
+      ensureDirectoryVisualApplied(dir, modeIdx, variantIdx);
 
-      const particleCanvas = document.getElementById('canvas');
-      const threeCanvas = document.getElementById('threeCanvas');
-      const canvas2d = document.getElementById('canvas2d');
-      const milkdropCanvas = document.getElementById('milkdropCanvas');
-      if (!particleCanvas || !threeCanvas || !canvas2d || !milkdropCanvas) return;
-
-      canvas2d.classList.remove('hybrid-overlay');
-
-      if (dir?.type === 'milkdrop') {
-        particleCanvas.style.display = 'none';
-        threeCanvas.style.display = 'none';
-        canvas2d.style.display = 'none';
-        milkdropCanvas.style.display = 'block';
-        const slot = getDirSlot(modeIdx, variantIdx);
-        if (milkdropEngine && slot) {
-          activeDirectorySlot = slot;
-          milkdropEngine.loadDirectoryPreset(dir, 0);
+      if (!dir) {
+        const renderedIdx = getRenderedMode(modeIdx);
+        if (threeEngine && ((renderedIdx >= 11 && renderedIdx <= 14) || renderedIdx === 16)) {
+          threeEngine.setMode(renderedIdx);
         }
-        applyCanvasGrayscale();
-        return;
+        if (canvas2dEngine && (renderedIdx === 15 || renderedIdx === 16)) {
+          canvas2dEngine.setMode(renderedIdx);
+        }
+        if (renderedIdx === 17 && milkdropEngine) milkdropEngine.init({ bootstrapPreset: true });
       }
-
-      activeDirectorySlot = null;
-
-      if (dir?.type === 'webgl') {
-        particleCanvas.style.display = 'block';
-        threeCanvas.style.display = 'none';
-        canvas2d.style.display = 'none';
-        milkdropCanvas.style.display = 'none';
-        applyCanvasGrayscale();
-        return;
-      }
-
-      if (dir?.type === 'three') {
-        particleCanvas.style.display = 'none';
-        threeCanvas.style.display = 'block';
-        canvas2d.style.display = 'none';
-        milkdropCanvas.style.display = 'none';
-        if (threeEngine) threeEngine.setMode(dir.threeMode);
-        applyCanvasGrayscale();
-        return;
-      }
-
-      if (renderedIdx < 11) {
-        particleCanvas.style.display = 'block';
-        threeCanvas.style.display = 'none';
-        canvas2d.style.display = 'none';
-        milkdropCanvas.style.display = 'none';
-      } else if (renderedIdx === 16) {
-        particleCanvas.style.display = 'none';
-        threeCanvas.style.display = 'block';
-        canvas2d.style.display = 'block';
-        milkdropCanvas.style.display = 'none';
-        canvas2d.classList.add('hybrid-overlay');
-        if (threeEngine) threeEngine.setMode(renderedIdx);
-        if (canvas2dEngine) canvas2dEngine.setMode(renderedIdx);
-      } else if (renderedIdx >= 11 && renderedIdx <= 14) {
-        particleCanvas.style.display = 'none';
-        threeCanvas.style.display = 'block';
-        canvas2d.style.display = 'none';
-        milkdropCanvas.style.display = 'none';
-        if (threeEngine) threeEngine.setMode(renderedIdx);
-      } else if (renderedIdx === 15) {
-        particleCanvas.style.display = 'none';
-        threeCanvas.style.display = 'none';
-        canvas2d.style.display = 'block';
-        milkdropCanvas.style.display = 'none';
-        if (canvas2dEngine) canvas2dEngine.setMode(renderedIdx);
-      } else if (renderedIdx === 17) {
-        particleCanvas.style.display = 'none';
-        threeCanvas.style.display = 'none';
-        canvas2d.style.display = 'none';
-        milkdropCanvas.style.display = 'block';
-        if (milkdropEngine) milkdropEngine.init();
-      }
-      applyCanvasGrayscale();
     }
 
     function setVisualMode(modeIdx, isAuto = false) {
@@ -9154,6 +11481,7 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
         visualVariantIdx = 0;
         engine.variantIdx = 0;
       }
+      if (prevVisualMode !== modeIdx) lastAppliedDirSlot = null;
       if (isMainVisualMode(modeIdx)) resetVariantIfRemoved(modeIdx);
 
       if (modeIdx === 4) {
@@ -9174,7 +11502,10 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
       applyVisualCanvases();
       
       if (prevVisualMode !== modeIdx) {
-        applyModeBrightnessDefault(modeIdx);
+        if (modeIdx === 10) apply10DVariantParams(Number(engine.variantIdx) || 0);
+        else applyModeBrightnessDefault(modeIdx);
+      } else if (modeIdx === 10) {
+        apply10DVariantCamera(Number(engine.variantIdx) || 0);
       }
 
       if (!isAuto || modeXActive) {
