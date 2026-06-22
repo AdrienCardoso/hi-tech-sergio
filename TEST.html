@@ -1402,22 +1402,24 @@
       }
       .modes-variants-wrap.visible {
         position: static;
-        flex-direction: row;
+        flex-direction: column;
         flex-wrap: nowrap;
-        overflow: hidden;
+        overflow: visible;
         width: auto;
         margin-top: 0;
         padding-bottom: 0;
         max-height: 100%;
         align-self: stretch;
-        gap: 3px;
+        gap: 0;
+        flex: 0 0 auto;
+        min-height: 0;
       }
       .modes-variants-wrap.visible > .modes-variants-panel {
         flex-direction: column;
         width: 28px;
         min-width: 28px;
         height: auto;
-        max-height: 100%;
+        max-height: calc(18px * 12 + 2px * 11 + 8px);
         min-height: 0;
         padding: 4px 2px;
         gap: 2px;
@@ -1425,27 +1427,23 @@
         overflow-y: auto;
         overflow-x: hidden;
         -webkit-overflow-scrolling: touch;
+        overscroll-behavior: contain;
+        scrollbar-width: thin;
         background: rgba(22, 22, 22, 0.55);
         border: 1px solid rgba(48, 48, 48, 0.45);
         border-radius: 8px;
         box-shadow: none;
         justify-content: flex-start;
       }
-      .modes-variants-panel--extra-col {
-        justify-content: flex-start;
-      }
-      .modes-variants-panel--extra-col .variant-cell,
-      .modes-variants-panel--extra-col .variant-cell-spacer {
-        flex: 0 0 18px;
-        height: 18px;
-        min-height: 18px;
-      }
-      .variant-cell {
+      .modes-variants-wrap.visible > .modes-variants-panel .variant-cell {
         flex: 0 0 18px;
         height: 18px;
         min-height: 18px;
         width: 100%;
         border-radius: 2px;
+      }
+      .modes-variants-panel--extra-col {
+        display: none !important;
       }
       .variant-cell-num {
         font-size: 5.5px;
@@ -4475,6 +4473,7 @@
       }
       if (document.getElementById('modesColLeft') && typeof MODES !== 'undefined' && engine) {
         renderModeCards();
+        renderVariantCells();
       }
     }
     MOBILE_MQ.addEventListener('change', applyMobileLayout);
@@ -4939,28 +4938,20 @@
       '4D-2': { type: 'milkdrop', presetNumber: 25 },
       '4D-3': { type: 'milkdrop', presetNumber: 288 },
       '4D-4': { type: 'milkdrop', presetNumber: 278 },
-      '4D-6': { type: 'milkdrop', presetNumber: 48 },
-      '4D-7': { type: 'milkdrop', presetNumber: 51 },
-      '4D-8': { type: 'milkdrop', presetNumber: 77 },
-      '4D-9': { type: 'milkdrop', presetNumber: 80 },
-      '4D-10': { type: 'milkdrop', presetNumber: 90 },
-      '4D-11': { type: 'milkdrop', presetNumber: 132 },
-      '4D-12': { type: 'milkdrop', presetNumber: 148 },
-      '4D-13': { type: 'milkdrop', presetNumber: 172 },
-      '4D-14': { type: 'milkdrop', presetNumber: 174 },
-      '4D-15': { type: 'milkdrop', presetNumber: 189 },
-      '4D-16': { type: 'milkdrop', presetNumber: 266 },
-      '4D-17': { type: 'milkdrop', antiPresetNumber: 5949 },
-      '4D-18': { type: 'milkdrop', antiPresetNumber: 305 },
-      '5D-2': { type: 'milkdrop', presetNumber: 52 },
-      '5D-3': { type: 'milkdrop', presetNumber: 71 },
-      '5D-4': { type: 'milkdrop', presetNumber: 72 },
-      '5D-5': { type: 'milkdrop', presetNumber: 116 },
-      '5D-6': { type: 'milkdrop', presetNumber: 129 },
-      '5D-7': { type: 'milkdrop', presetNumber: 139 },
-      '5D-8': { type: 'milkdrop', presetNumber: 163 },
-      '5D-9': { type: 'milkdrop', presetNumber: 183 },
-      '5D-10': { type: 'milkdrop', presetNumber: 240 },
+      '4D-5': { type: 'milkdrop', presetNumber: 48 },
+      '4D-6': { type: 'milkdrop', presetNumber: 51 },
+      '4D-7': { type: 'milkdrop', presetNumber: 77 },
+      '4D-8': { type: 'milkdrop', presetNumber: 80 },
+      '4D-9': { type: 'milkdrop', presetNumber: 90 },
+      '4D-10': { type: 'milkdrop', presetNumber: 132 },
+      '4D-11': { type: 'milkdrop', presetNumber: 148 },
+      '4D-12': { type: 'milkdrop', presetNumber: 172 },
+      '4D-13': { type: 'milkdrop', presetNumber: 174 },
+      '4D-14': { type: 'milkdrop', presetNumber: 189 },
+      '4D-15': { type: 'milkdrop', presetNumber: 266 },
+      '4D-16': { type: 'milkdrop', antiPresetNumber: 5949 },
+      '4D-17': { type: 'milkdrop', antiPresetNumber: 305 },
+      '4D-18': { type: 'milkdrop', antiPresetNumber: 1027 },
       '9D-1': { type: 'milkdrop', presetNumber: 263 },
       '9D-2': { type: 'milkdrop', presetNumber: 41 },
       '9D-3': { type: 'milkdrop', presetNumber: 45 },
@@ -4975,12 +4966,47 @@
       '9D-12': { type: 'milkdrop', presetNumber: 185 },
       '9D-13': { type: 'milkdrop', presetNumber: 206 },
       '9D-14': { type: 'milkdrop', presetNumber: 227 },
-      '9D-18': { type: 'milkdrop', mdropPresetNumber: 6652 },
-      '9D-19': { type: 'milkdrop', antiPresetNumber: 124 },
-      '9D-20': { type: 'milkdrop', antiPresetNumber: 126 },
-      '9D-21': { type: 'milkdrop', antiPresetNumber: 143 },
-      '9D-22': { type: 'milkdrop', antiPresetNumber: 141 },
-      '9D-23': { type: 'milkdrop', antiPresetNumber: 531 },
+      '9D-15': { type: 'milkdrop', mdropPresetNumber: 6652 },
+      '9D-16': { type: 'milkdrop', antiPresetNumber: 124 },
+      '9D-17': { type: 'milkdrop', antiPresetNumber: 126 },
+      '9D-18': { type: 'milkdrop', antiPresetNumber: 143 },
+      '9D-19': { type: 'milkdrop', antiPresetNumber: 141 },
+      '9D-20': { type: 'milkdrop', antiPresetNumber: 531 },
+      '9D-21': { type: 'milkdrop', antiPresetNumber: 643 },
+      '9D-22': { type: 'milkdrop', antiPresetNumber: 710 },
+      '9D-23': { type: 'milkdrop', antiPresetNumber: 739 },
+      '9D-24': { type: 'milkdrop', antiPresetNumber: 743 },
+      '9D-25': { type: 'milkdrop', antiPresetNumber: 757 },
+      '9D-26': { type: 'milkdrop', antiPresetNumber: 789 },
+      '9D-27': { type: 'milkdrop', antiPresetNumber: 873 },
+      '9D-28': { type: 'milkdrop', antiPresetNumber: 889 },
+      '9D-29': { type: 'milkdrop', antiPresetNumber: 1000 },
+      '9D-30': { type: 'milkdrop', antiPresetNumber: 1066 },
+      '9D-31': { type: 'milkdrop', antiPresetNumber: 1007 },
+      '9D-32': { type: 'milkdrop', antiPresetNumber: 1073 },
+      '9D-33': { type: 'milkdrop', antiPresetNumber: 1083 },
+      '9D-34': { type: 'milkdrop', antiPresetNumber: 1118 },
+      '9D-35': { type: 'milkdrop', antiPresetNumber: 1195 },
+      '9D-36': { type: 'milkdrop', antiPresetNumber: 1202 },
+      '9D-37': { type: 'milkdrop', antiPresetNumber: 1225 },
+      '9D-38': { type: 'milkdrop', antiPresetNumber: 1245 },
+      '9D-39': { type: 'milkdrop', antiPresetNumber: 1274 },
+      '9D-40': { type: 'milkdrop', antiPresetNumber: 1280 },
+      '9D-41': { type: 'milkdrop', antiPresetNumber: 1309 },
+      '9D-42': { type: 'milkdrop', antiPresetNumber: 1342 },
+      '9D-43': { type: 'milkdrop', antiPresetNumber: 1726 },
+      '9D-44': { type: 'milkdrop', antiPresetNumber: 1757 },
+      '9D-45': { type: 'milkdrop', antiPresetNumber: 1778 },
+      '9D-46': { type: 'milkdrop', antiPresetNumber: 9771 },
+      '5D-2': { type: 'milkdrop', presetNumber: 52 },
+      '5D-3': { type: 'milkdrop', presetNumber: 71 },
+      '5D-4': { type: 'milkdrop', presetNumber: 72 },
+      '5D-5': { type: 'milkdrop', presetNumber: 116 },
+      '5D-6': { type: 'milkdrop', presetNumber: 129 },
+      '5D-7': { type: 'milkdrop', presetNumber: 139 },
+      '5D-8': { type: 'milkdrop', presetNumber: 163 },
+      '5D-9': { type: 'milkdrop', presetNumber: 183 },
+      '5D-10': { type: 'milkdrop', presetNumber: 240 },
       '7D-1': { type: 'milkdrop', presetNumber: 8 },
       '7D-2': { type: 'milkdrop', presetNumber: 16 },
       '7D-3': { type: 'milkdrop', presetNumber: 39 },
@@ -5043,7 +5069,6 @@
       '2D-23': { type: 'milkdrop', antiPresetNumber: 783 },
       '2D-24': { type: 'milkdrop', antiPresetNumber: 880 },
       '2D-25': { type: 'milkdrop', antiPresetNumber: 1366 },
-      '4D-20': { type: 'milkdrop', antiPresetNumber: 1027 },
       '5D-11': { type: 'milkdrop', antiPresetNumber: 843 },
       '5D-12': { type: 'milkdrop', antiPresetNumber: 890 },
       '5D-13': { type: 'milkdrop', antiPresetNumber: 946 },
@@ -5070,33 +5095,6 @@
       '8D-38': { type: 'milkdrop', antiPresetNumber: 1058 },
       '8D-39': { type: 'milkdrop', antiPresetNumber: 1168 },
       '8D-40': { type: 'milkdrop', antiPresetNumber: 1170 },
-      '9D-24': { type: 'milkdrop', antiPresetNumber: 643 },
-      '9D-25': { type: 'milkdrop', antiPresetNumber: 710 },
-      '9D-26': { type: 'milkdrop', antiPresetNumber: 739 },
-      '9D-27': { type: 'milkdrop', antiPresetNumber: 743 },
-      '9D-28': { type: 'milkdrop', antiPresetNumber: 757 },
-      '9D-29': { type: 'milkdrop', antiPresetNumber: 789 },
-      '9D-30': { type: 'milkdrop', antiPresetNumber: 873 },
-      '9D-31': { type: 'milkdrop', antiPresetNumber: 889 },
-      '9D-32': { type: 'milkdrop', antiPresetNumber: 1000 },
-      '9D-33': { type: 'milkdrop', antiPresetNumber: 1066 },
-      '9D-34': { type: 'milkdrop', antiPresetNumber: 1007 },
-      '9D-35': { type: 'milkdrop', antiPresetNumber: 1073 },
-      '9D-36': { type: 'milkdrop', antiPresetNumber: 1083 },
-      '9D-37': { type: 'milkdrop', antiPresetNumber: 1118 },
-      '9D-38': { type: 'milkdrop', antiPresetNumber: 1195 },
-      '9D-39': { type: 'milkdrop', antiPresetNumber: 1202 },
-      '9D-40': { type: 'milkdrop', antiPresetNumber: 1214 },
-      '9D-41': { type: 'milkdrop', antiPresetNumber: 1225 },
-      '9D-42': { type: 'milkdrop', antiPresetNumber: 1245 },
-      '9D-43': { type: 'milkdrop', antiPresetNumber: 1274 },
-      '9D-44': { type: 'milkdrop', antiPresetNumber: 1280 },
-      '9D-45': { type: 'milkdrop', antiPresetNumber: 1309 },
-      '9D-46': { type: 'milkdrop', antiPresetNumber: 1342 },
-      '9D-47': { type: 'milkdrop', antiPresetNumber: 1726 },
-      '9D-48': { type: 'milkdrop', antiPresetNumber: 1757 },
-      '9D-49': { type: 'milkdrop', antiPresetNumber: 1778 },
-      '9D-50': { type: 'milkdrop', antiPresetNumber: 9771 },
       '10D-6': { type: 'milkdrop', antiPresetNumber: 741 },
       '10D-7': { type: 'milkdrop', antiPresetNumber: 1002 },
       '10D-8': { type: 'milkdrop', antiPresetNumber: 1279 },
@@ -5111,8 +5109,6 @@
       '6D-7', '6D-8', '6D-9', '6D-10', '6D-11', '6D-12',
       '6D-13', '6D-14', '6D-15', '6D-16', '6D-17', '6D-18', '6D-19',
       '3D-10', '3D-11', '3D-12',
-      '4D-5', '4D-19',
-      '9D-15', '9D-16', '9D-17',
       '10D-9', '10D-10', '10D-11', '10D-12',
     ]);
 
@@ -5493,13 +5489,27 @@
       if (!show) return;
       const family = MODES[mode] ? (isRu ? MODES[mode].ru : MODES[mode].en) : '';
       resetVariantIfRemoved(mode);
-      panel.innerHTML = Array.from({ length: VISUAL_VARIANT_COL_SIZE }, (_, i) =>
-        renderVariantSlotHtml(i, family, mode)
-      ).join('');
 
       Array.from(wrap.children).forEach(el => {
         if (el !== panel) el.remove();
       });
+
+      if (isMobileLayout()) {
+        const indices = getAllowedVariantIndices(mode);
+        panel.innerHTML = indices.map((idx) => renderVariantCellHtml(idx, family, mode)).join('');
+        const nums = indices.map((i) => i + 1);
+        panel.setAttribute('aria-label', nums.length ? `Variants ${nums[0]}–${nums[nums.length - 1]}` : 'Variants');
+        requestAnimationFrame(() => {
+          const active = panel.querySelector('.variant-cell.active');
+          if (active?.scrollIntoView) active.scrollIntoView({ block: 'nearest' });
+        });
+        return;
+      }
+
+      panel.innerHTML = Array.from({ length: VISUAL_VARIANT_COL_SIZE }, (_, i) =>
+        renderVariantSlotHtml(i, family, mode)
+      ).join('');
+
       getVariantExtraColumns(mode).forEach(colRows => {
         const col = document.createElement('div');
         col.className = 'modes-variants-panel modes-variants-panel--extra-col';
