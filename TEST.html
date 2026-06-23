@@ -1435,19 +1435,36 @@
           + 8px
         );
         min-height: 0;
-        padding: 4px 3px;
+        padding: 4px 2px 4px 3px;
         gap: var(--mobile-mode-cell-gap);
         flex-shrink: 0;
-        overflow-y: auto;
+        overflow-y: scroll;
         overflow-x: hidden;
         -webkit-overflow-scrolling: touch;
         overscroll-behavior: contain;
         scrollbar-width: thin;
+        scrollbar-color: rgba(168, 85, 247, 0.85) rgba(48, 48, 48, 0.55);
         background: rgba(22, 22, 22, 0.55);
         border: 1px solid rgba(48, 48, 48, 0.45);
         border-radius: 8px;
         box-shadow: none;
         justify-content: flex-start;
+      }
+      .modes-variants-wrap.visible > .modes-variants-panel::-webkit-scrollbar {
+        width: 6px;
+      }
+      .modes-variants-wrap.visible > .modes-variants-panel::-webkit-scrollbar-track {
+        background: rgba(48, 48, 48, 0.55);
+        border-radius: 4px;
+        margin: 2px 0;
+      }
+      .modes-variants-wrap.visible > .modes-variants-panel::-webkit-scrollbar-thumb {
+        background: rgba(168, 85, 247, 0.85);
+        border-radius: 4px;
+        border: 1px solid rgba(88, 28, 135, 0.45);
+      }
+      .modes-variants-wrap.visible > .modes-variants-panel::-webkit-scrollbar-thumb:hover {
+        background: rgba(192, 132, 252, 0.95);
       }
       .modes-variants-wrap.visible > .modes-variants-panel .variant-cell {
         flex: 0 0 var(--mobile-mode-cell-h);
@@ -5261,6 +5278,7 @@
         activeDirectorySlot = slot;
         const loadToken = ++directoryLoadToken;
         milkdropEngine._directoryLoadToken = loadToken;
+        cancelDirectoryPresetFailureWarn();
         getDirectoryAssetsReady()
           .then(() => {
             if (loadToken !== directoryLoadToken) return null;
@@ -5273,18 +5291,14 @@
           .then((ok) => {
             if (loadToken !== directoryLoadToken) return;
             if (activeDirectorySlot !== slot) return;
-            if (ok === false && milkdropEngine._dirPresetLoadOk?.has(loadToken)) return;
-            if (ok === false) {
-              showDirectoryAssetWarning('preset', slot || 'milkdrop');
-            }
+            if (ok === false) scheduleDirectoryPresetFailureWarn(loadToken, slot);
           })
           .catch((err) => {
             if (loadToken !== directoryLoadToken) return;
             if (activeDirectorySlot !== slot) return;
-            if (milkdropEngine._dirPresetLoadOk?.has(loadToken)) return;
             if (err?.message === 'stale directory load') return;
             console.warn('Directory preset load failed:', slot, err);
-            showDirectoryAssetWarning('preset', slot || 'milkdrop');
+            scheduleDirectoryPresetFailureWarn(loadToken, slot);
           });
       } else if (dir?.type !== 'milkdrop') {
         activeDirectorySlot = null;
@@ -5315,6 +5329,25 @@
     }
 
     const _directoryAssetWarnings = new Set();
+    let _directoryPresetWarnTimer = null;
+
+    function cancelDirectoryPresetFailureWarn() {
+      if (_directoryPresetWarnTimer) {
+        clearTimeout(_directoryPresetWarnTimer);
+        _directoryPresetWarnTimer = null;
+      }
+    }
+
+    function scheduleDirectoryPresetFailureWarn(loadToken, slot) {
+      cancelDirectoryPresetFailureWarn();
+      _directoryPresetWarnTimer = setTimeout(() => {
+        _directoryPresetWarnTimer = null;
+        if (loadToken !== directoryLoadToken) return;
+        if (activeDirectorySlot !== slot) return;
+        if (milkdropEngine?._dirPresetLoadOk?.has(loadToken)) return;
+        showDirectoryAssetWarning('preset', slot || 'milkdrop');
+      }, 700);
+    }
 
     function showDirectoryAssetWarning(kind, detail) {
       const key = kind + ':' + detail;
@@ -8923,7 +8956,10 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
       }
 
       _markDirectoryPresetOk(loadToken = this._directoryLoadToken) {
-        if (loadToken != null) this._dirPresetLoadOk.add(loadToken);
+        if (loadToken != null) {
+          this._dirPresetLoadOk.add(loadToken);
+          cancelDirectoryPresetFailureWarn();
+        }
       }
 
       _isDirectoryLoadStale(loadToken = this._directoryLoadToken) {
@@ -9498,22 +9534,29 @@ ${cropBlock}${cropTopBlock}  vec4 tmpvar_out;
           MilkDropEngine.relaxPresetForLoad(sanitized),
         ];
         let lastErr = null;
+        let applied = false;
         for (const data of attempts) {
-          if (this._isDirectoryLoadStale(loadToken)) return false;
+          if (this._isDirectoryLoadStale(loadToken)) return applied ? true : null;
           try {
             await tryLoad(data);
             lastErr = null;
+            applied = true;
             break;
           } catch (err) {
             lastErr = err;
           }
         }
-        if (this._isDirectoryLoadStale(loadToken)) return false;
+        if (applied) {
+          this._markDirectoryPresetOk(loadToken);
+          if (this._isDirectoryLoadStale(loadToken)) return true;
+          if (lastErr) throw lastErr;
+          this.applyNeoSettings(this.getNeoSettings());
+          for (let i = 0; i < 4; i++) this.visualizer.render();
+          return true;
+        }
+        if (this._isDirectoryLoadStale(loadToken)) return null;
         if (lastErr) throw lastErr;
-        this._markDirectoryPresetOk(loadToken);
-        this.applyNeoSettings(this.getNeoSettings());
-        for (let i = 0; i < 4; i++) this.visualizer.render();
-        return true;
+        return false;
       }
 
       async loadVisualizerPreset(presetData, blend = 0, opts = {}) {
@@ -10038,6 +10081,7 @@ this.applyNeoSettings(this.getNeoSettings());
           loaded = true;
         }
 
+        if (this._dirPresetLoadOk.has(loadToken)) return true;
         if (this._isDirectoryLoadStale(loadToken)) return loaded ? true : null;
 
         if (updateSelect) {
@@ -10110,7 +10154,7 @@ this.applyNeoSettings(this.getNeoSettings());
       async loadAntiPresetByIndex(idx, blend = 0, updateSelect = true) {
         const loadToken = this._directoryLoadToken;
         await this.loadAntiManifest();
-        if (this._isDirectoryLoadStale(loadToken)) return false;
+        if (this._isDirectoryLoadStale(loadToken)) return null;
         if (!this.antiEntries.length) return false;
         const safeIdx = Math.max(0, Math.min(idx, this.antiEntries.length - 1));
         const entry = this.antiEntries[safeIdx];
@@ -10128,7 +10172,9 @@ this.applyNeoSettings(this.getNeoSettings());
           if (this._isDirectoryLoadStale(loadToken)) return false;
           if (!presetData) return false;
           if (opts.authentic) {
-            return this.loadVisualizerPreset(presetData, blend, { authentic: true });
+            const ok = await this.loadVisualizerPreset(presetData, blend, { authentic: true });
+            if (ok === true || this._dirPresetLoadOk.has(loadToken)) return true;
+            return ok === null ? null : false;
           }
           try {
             const applied = await this.loadAntiVisualizerPreset(presetData, blend);
@@ -10144,7 +10190,7 @@ this.applyNeoSettings(this.getNeoSettings());
 
         // 1) Предконвертированный anti-json (msconvert, без артефактов runtime-конвертера)
         let jsonPreset = await this.fetchAntiConvertedJson(safeIdx);
-        if (this._isDirectoryLoadStale(loadToken)) return false;
+        if (this._isDirectoryLoadStale(loadToken)) return null;
         if (jsonPreset && !MilkDropEngine.isValidConvertedPreset(jsonPreset)) jsonPreset = null;
         if (jsonPreset && !MilkDropEngine.hasConvertedShaders(jsonPreset)) {
           try {
@@ -10223,6 +10269,7 @@ this.applyNeoSettings(this.getNeoSettings());
           }
         }
 
+        if (this._dirPresetLoadOk.has(loadToken)) return true;
         if (this._isDirectoryLoadStale(loadToken)) return loaded ? true : null;
 
         if (updateSelect) {
