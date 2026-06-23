@@ -1136,7 +1136,7 @@
     .play-btn:hover { background: #c084fc; }
     .play-btn svg { width: 16px; height: 16px; fill: #000; }
 
-    @media (max-width: 860px) {
+    @media (max-width: 860px) and (min-width: 769px) {
       .modes-panel-wrap {
         left: 10px;
       }
@@ -1336,7 +1336,11 @@
         border: 1px solid rgba(48, 48, 48, 0.45);
         box-shadow: none;
         border-radius: 8px;
-        max-height: 100%;
+        max-height: calc(
+          var(--mobile-mode-cell-h) * 12
+          + var(--mobile-mode-cell-gap) * 11
+          + 8px
+        );
         overflow-x: hidden;
         overflow-y: auto;
         -webkit-overflow-scrolling: touch;
@@ -1412,9 +1416,9 @@
         flex-wrap: nowrap;
         overflow: visible;
         width: auto;
-        margin-top: calc(var(--mobile-mode-cell-h) + var(--mobile-mode-cell-gap));
+        margin-top: 0;
         padding-bottom: 0;
-        max-height: 100%;
+        max-height: none;
         align-self: flex-start;
         gap: 0;
         flex: 0 0 auto;
@@ -1451,6 +1455,11 @@
         min-height: var(--mobile-mode-cell-h);
         width: 100%;
         border-radius: 5px;
+      }
+      .modes-variants-wrap.visible > .modes-variants-panel .variant-cell-spacer--mode-x {
+        flex: 0 0 var(--mobile-mode-cell-h);
+        height: var(--mobile-mode-cell-h);
+        min-height: var(--mobile-mode-cell-h);
       }
       .modes-variants-panel--extra-col {
         display: none !important;
@@ -2260,7 +2269,6 @@
         </div>
         <select class="preset-select-hidden" id="antiPresetSelect" tabindex="-1" aria-hidden="true"><option value="">…</option></select>
       </div>
-    </div>
     </div>
     <button type="button" class="params-donate-link mobile-only" id="mobileDonateLink">Поддержать</button>
 
@@ -5265,6 +5273,7 @@
           .then((ok) => {
             if (loadToken !== directoryLoadToken) return;
             if (activeDirectorySlot !== slot) return;
+            if (ok === false && milkdropEngine._dirPresetLoadOk?.has(loadToken)) return;
             if (ok === false) {
               showDirectoryAssetWarning('preset', slot || 'milkdrop');
             }
@@ -5272,6 +5281,7 @@
           .catch((err) => {
             if (loadToken !== directoryLoadToken) return;
             if (activeDirectorySlot !== slot) return;
+            if (milkdropEngine._dirPresetLoadOk?.has(loadToken)) return;
             if (err?.message === 'stale directory load') return;
             console.warn('Directory preset load failed:', slot, err);
             showDirectoryAssetWarning('preset', slot || 'milkdrop');
@@ -5526,7 +5536,8 @@
 
       if (isMobileLayout()) {
         const indices = getAllowedVariantIndices(mode);
-        panel.innerHTML = indices.map((idx) => renderVariantCellHtml(idx, family, mode)).join('');
+        const xSpacer = '<div class="variant-cell-spacer variant-cell-spacer--mode-x" aria-hidden="true"></div>';
+        panel.innerHTML = xSpacer + indices.map((idx) => renderVariantCellHtml(idx, family, mode)).join('');
         const nums = indices.map((i) => i + 1);
         panel.setAttribute('aria-label', nums.length ? `Variants ${nums[0]}–${nums[nums.length - 1]}` : 'Variants');
         requestAnimationFrame(() => {
@@ -8908,6 +8919,11 @@ class XI{constructor(t){this.use3d=!0,this.time=0,this.sBass=0,this.sMid=0,this.
         this._antiJsonCache = null;
         this._bcNormMap = null;
         this._directoryLoadToken = 0;
+        this._dirPresetLoadOk = new Set();
+      }
+
+      _markDirectoryPresetOk(loadToken = this._directoryLoadToken) {
+        if (loadToken != null) this._dirPresetLoadOk.add(loadToken);
       }
 
       _isDirectoryLoadStale(loadToken = this._directoryLoadToken) {
@@ -9494,6 +9510,7 @@ ${cropBlock}${cropTopBlock}  vec4 tmpvar_out;
         }
         if (this._isDirectoryLoadStale(loadToken)) return false;
         if (lastErr) throw lastErr;
+        this._markDirectoryPresetOk(loadToken);
         this.applyNeoSettings(this.getNeoSettings());
         for (let i = 0; i < 4; i++) this.visualizer.render();
         return true;
@@ -9522,11 +9539,14 @@ ${cropBlock}${cropTopBlock}  vec4 tmpvar_out;
         // Для предконвертированных пресетов сперва пробуем оригинал без boost —
         // он передаёт авторский вид максимально точно.
         if (opts.authentic) attempts.unshift(sanitized);
+        let applied = false;
         for (const data of attempts) {
-          if (this._isDirectoryLoadStale(loadToken)) return false;
+          if (this._isDirectoryLoadStale(loadToken)) return applied || null;
           try {
             await tryLoad(data);
-            if (this._isDirectoryLoadStale(loadToken)) return false;
+            applied = true;
+            this._markDirectoryPresetOk(loadToken);
+            if (this._isDirectoryLoadStale(loadToken)) return true;
             this.applyNeoSettings(this.getNeoSettings());
             for (let i = 0; i < 4; i++) this.visualizer.render();
             return true;
@@ -9534,7 +9554,7 @@ ${cropBlock}${cropTopBlock}  vec4 tmpvar_out;
             console.warn('MilkDrop load attempt:', err?.message || err);
           }
         }
-        return false;
+        return applied || false;
       }
 
       getNeoSettings() {
@@ -9717,7 +9737,10 @@ if (bootstrapPreset) {
           key = this.presetKeys[dirEntry.presetNumber - 1];
         }
         if (!key) return Promise.resolve(false);
-        return this.loadPresetByKey(key, blend, false).then(() => true).catch(() => false);
+        return this.loadPresetByKey(key, blend, false).then(() => {
+          this._markDirectoryPresetOk(this._directoryLoadToken);
+          return true;
+        }).catch(() => false);
       }
 
       render() {
@@ -10015,7 +10038,7 @@ this.applyNeoSettings(this.getNeoSettings());
           loaded = true;
         }
 
-        if (this._isDirectoryLoadStale(loadToken)) return false;
+        if (this._isDirectoryLoadStale(loadToken)) return loaded ? true : null;
 
         if (updateSelect) {
           const sel = document.getElementById('mdropPresetSelect');
@@ -10200,7 +10223,7 @@ this.applyNeoSettings(this.getNeoSettings());
           }
         }
 
-        if (this._isDirectoryLoadStale(loadToken)) return false;
+        if (this._isDirectoryLoadStale(loadToken)) return loaded ? true : null;
 
         if (updateSelect) {
           const sel = document.getElementById('antiPresetSelect');
